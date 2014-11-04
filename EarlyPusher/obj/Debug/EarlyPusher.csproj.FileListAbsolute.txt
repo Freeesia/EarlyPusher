@@ -1,0 +1,14 @@
+J:\WPF\EarlyPusher\EarlyPusher\bin\Debug\EarlyPusher.exe.config
+J:\WPF\EarlyPusher\EarlyPusher\bin\Debug\EarlyPusher.exe
+J:\WPF\EarlyPusher\EarlyPusher\bin\Debug\EarlyPusher.pdb
+J:\WPF\EarlyPusher\EarlyPusher\obj\Debug\EarlyPusher.csprojResolveAssemblyReference.cache
+J:\WPF\EarlyPusher\EarlyPusher\obj\Debug\MainWindow.baml
+J:\WPF\EarlyPusher\EarlyPusher\obj\Debug\MainWindow.g.cs
+J:\WPF\EarlyPusher\EarlyPusher\obj\Debug\App.g.cs
+J:\WPF\EarlyPusher\EarlyPusher\obj\Debug\EarlyPusher_MarkupCompile.cache
+J:\WPF\EarlyPusher\EarlyPusher\obj\Debug\EarlyPusher.g.resources
+J:\WPF\EarlyPusher\EarlyPusher\obj\Debug\EarlyPusher.Properties.Resources.resources
+J:\WPF\EarlyPusher\EarlyPusher\obj\Debug\EarlyPusher.csproj.GenerateResource.Cache
+J:\WPF\EarlyPusher\EarlyPusher\obj\Debug\EarlyPusher.exe
+J:\WPF\EarlyPusher\EarlyPusher\obj\Debug\EarlyPusher.pdb
+J:\WPF\EarlyPusher\EarlyPusher\bin\Debug\SlimDX.dll
