@@ -9,6 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
+using System.Windows.Threading;
 using System.Xml.Serialization;
 
 namespace EarlyPusher
@@ -24,6 +25,8 @@ namespace EarlyPusher
 		private Timer inputLoop;
 
 		private double fps = 0.0;
+
+		private Dispatcher dispatcher = Dispatcher.CurrentDispatcher;
 
 		public DelegateCommand SearchCommand { get; private set; }
 
@@ -61,7 +64,6 @@ namespace EarlyPusher
 			this.input = new DirectInput();
 			this.inputLoop = new Timer( GetInput, null, 0, 2 );
 		}
-
 
 		private void LoadData()
 		{
@@ -143,6 +145,7 @@ namespace EarlyPusher
 					{
 						joy.Unacquire();
 						joy.Dispose();
+						WriteLogLine( "joy.Poll().IsFailure" );
 						continue;
 					}
 
@@ -162,12 +165,15 @@ namespace EarlyPusher
 					}
 				}
 
-				var dev = this.devices.FirstOrDefault( d => d.Disposed );
-				while( dev != null )
+				this.DispatcherInvoke( () => 
 				{
-					this.devices.Remove( dev );
-					dev = this.devices.FirstOrDefault( d => d.Disposed );
-				}
+					var dev = this.devices.FirstOrDefault( d => d.Disposed );
+					while( dev != null )
+					{
+						this.devices.Remove( dev );
+						dev = this.devices.FirstOrDefault( d => d.Disposed );
+					}
+				} );
 
 
 				foreach( Keyboard key in this.devices.OfType<Keyboard>() )
@@ -207,5 +213,16 @@ namespace EarlyPusher
 			this.NotifyPropertyChanged( "Log" );
 		}
 
+		public void DispatcherInvoke( Action action )
+		{
+			if( !this.dispatcher.CheckAccess() )
+			{
+				this.dispatcher.BeginInvoke( action );
+			}
+			else
+			{
+				action();
+			}
+		}
 	}
 }
