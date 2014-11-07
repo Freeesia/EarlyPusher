@@ -23,15 +23,5 @@ namespace EarlyPusher.Models
 			get { return key; }
 			set { SetProperty( ref key, value ); }
 		}
-
-		public string CollectionKey
-		{
-			get
-			{
-				return string.Format( "{0}_{1}", this.DeviceGuid, this.Key );
-			}
-		}
-
-
 	}
 }

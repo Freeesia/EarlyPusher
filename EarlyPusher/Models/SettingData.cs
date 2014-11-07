@@ -11,16 +11,16 @@ namespace EarlyPusher.Models
 	{
 		public const string FileName = "conf.xml";
 
-		private ObservableKeyedCollection<string, KeyBindData> keyBindCollection;
+		private List<KeyBindData> keyBindCollection;
 
-		public ObservableKeyedCollection<string, KeyBindData> KeyBindCollection
+		public List<KeyBindData> KeyBindCollection
 		{
 			get { return keyBindCollection; }
 		}
 
 		public SettingData()
 		{
-			this.keyBindCollection = new ObservableKeyedCollection<string, KeyBindData>( k => k.CollectionKey );
+			this.keyBindCollection = new List<KeyBindData>();
 		}
 
 	}

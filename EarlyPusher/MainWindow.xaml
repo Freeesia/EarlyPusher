@@ -1,23 +1,75 @@
-﻿<Window x:Class="EarlyPusher.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:sf="clr-namespace:StFrLibs.Core.Behaviors;assembly=StFrCore"
-        Title="MainWindow" Height="350" Width="525">
+﻿<Window x:Class="EarlyPusher.MainWindow" 
+		xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+		xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" 
+		xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions" 
+		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+		xmlns:b="clr-namespace:StFrLibs.Core.Behaviors;assembly=StFrCore"
+		xmlns:c="clr-namespace:StFrLibs.Core.Converter;assembly=StFrCore"
+		Title="MainWindow" Height="350" Width="525">
+	<Window.Resources>
+		<c:BoolReverseConverter x:Key="brConv" />
+		<c:BoolToVisibilityConverter x:Key="b2vConv" True="Visible" False="Collapsed" />
+		<c:CombiningConverter x:Key="br2vConv" Converter1="{StaticResource brConv}" Converter2="{StaticResource b2vConv}" />
+	</Window.Resources>
+	<i:Interaction.Triggers>
+		<i:EventTrigger EventName="Loaded">
+			<i:InvokeCommandAction Command="{Binding LoadedCommand}" />
+		</i:EventTrigger>
+		<i:EventTrigger EventName="Closing">
+			<i:InvokeCommandAction Command="{Binding ClosingCommand}" />
+		</i:EventTrigger>
+	</i:Interaction.Triggers>
 	<DockPanel>
-		<Button DockPanel.Dock="Top" Content="検索" Command="{Binding SearchCommand}" />
-		<ListBox Width="150" ItemsSource="{Binding Devices}">
-			<ListBox.ItemTemplate>
-				<DataTemplate>
-					<TextBlock Text="{Binding Information.InstanceName}" />
-				</DataTemplate>
-			</ListBox.ItemTemplate>
-		</ListBox>
+		<ListBox Width="150" ItemsSource="{Binding Devices}" />
 		<WrapPanel Orientation="Horizontal" DockPanel.Dock="Top">
-			<TextBlock Text="InputFPS : " />
-			<TextBlock Text="{Binding FPS}" />
 			<TextBlock Text=" UpdateTime : " />
-			<TextBlock Text="{Binding UpdateTime}" />
+			<TextBlock Text="{Binding UpdateTime}" Width="60" />
+			<Button Content="検索" Command="{Binding SearchCommand}" IsEnabled="{Binding IsSettingMode}" />
+			<Button Content="追加" Command="{Binding AddCommand}" IsEnabled="{Binding IsSettingMode}" />
+			<Button Content="削除" Command="{Binding DelCommand}" IsEnabled="{Binding IsSettingMode}" />
+			<Button Content="スタート" Command="{Binding StartCommand}" IsEnabled="{Binding IsSettingMode, Converter={StaticResource brConv}}"/>
+			<ToggleButton Content="設定モード" IsChecked="{Binding IsSettingMode}" />
 		</WrapPanel>
-		<ScrollViewer>
-			<TextBox sf:LogBehavior.IsScrollEnd="True" sf:LogBehavior.Log="{Binding Log}" x:Name="log" AcceptsReturn="True" IsReadOnly="True" />
+		<ScrollViewer Height="100" DockPanel.Dock="Bottom">
+			<TextBox b:LogBehavior.IsScrollEnd="True" b:LogBehavior.Log="{Binding Log}" x:Name="log" AcceptsReturn="True" IsReadOnly="True" />
 		</ScrollViewer>
+		<ItemsControl ItemsSource="{Binding Items}">
+			<ItemsControl.ItemsPanel>
+				<ItemsPanelTemplate>
+					<WrapPanel Orientation="Horizontal" />
+				</ItemsPanelTemplate>
+			</ItemsControl.ItemsPanel>
+			<ItemsControl.ItemTemplate>
+				<DataTemplate>
+					<Button Command="{Binding DataContext.SelectCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}" CommandParameter="{Binding}">
+						<Button.Template>
+							<ControlTemplate>
+								<Border Width="100" Height="100" CornerRadius="10" Margin="5" BorderThickness="5" Background="Yellow">
+									<i:Interaction.Triggers>
+										<ei:DataTrigger Binding="{Binding IsSelected}" Value="true">
+											<ei:ChangePropertyAction PropertyName="BorderBrush" Value="LightSkyBlue" />
+										</ei:DataTrigger>
+										<ei:DataTrigger Binding="{Binding IsSelected}" Value="false">
+											<ei:ChangePropertyAction PropertyName="BorderBrush" Value="Transparent" />
+										</ei:DataTrigger>
+									</i:Interaction.Triggers>
+									<Grid>
+										<StackPanel Orientation="Vertical" Margin="5" Visibility="{Binding DataContext.IsSettingMode, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}, Converter={StaticResource b2vConv}}">
+											<TextBlock Text="Guid:" />
+											<TextBlock Text="{Binding Data.DeviceGuid}" />
+											<TextBlock Text="Key:" />
+											<TextBlock Text="{Binding Data.Key}" />
+										</StackPanel>
+										<TextBlock Text="{Binding Rank}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="72" Visibility="{Binding DataContext.IsSettingMode, 
+																RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}, 
+																Converter={StaticResource br2vConv}}" />
+									</Grid>
+								</Border>
+							</ControlTemplate>
+						</Button.Template>
+					</Button>
+				</DataTemplate>
+			</ItemsControl.ItemTemplate>
+		</ItemsControl>
 	</DockPanel>
 </Window>
