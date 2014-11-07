@@ -102,6 +102,7 @@ namespace EarlyPusher.ViewModels
 
 		private void Start( object obj )
 		{
+			rank = 0;
 			DeselectAll();
 			InitRank();
 		}
@@ -166,7 +167,7 @@ namespace EarlyPusher.ViewModels
 			else
 			{
 				var item = this.Items.FirstOrDefault( i => i.Data.DeviceGuid == e.InstanceID && i.Data.Key == e.Key );
-				if( item != null )
+				if( item != null && string.IsNullOrEmpty( item.Rank ) )
 				{
 					rank++;
 					item.Rank = rank.ToString();
