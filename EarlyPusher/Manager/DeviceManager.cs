@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Threading;
+using EarlyPusher.Extensions;
 
 namespace EarlyPusher.Manager
 {
@@ -100,6 +101,8 @@ namespace EarlyPusher.Manager
 
 			lock( this.devicesLock )
 			{
+				var newPush = new List<Tuple<Guid, int>>();
+
 				foreach( Device d in this.devices )
 				{
 
@@ -127,8 +130,7 @@ namespace EarlyPusher.Manager
 							Tuple<Guid,int> key = new Tuple<Guid,int>(joy.Information.InstanceGuid, i+1);
 							if( buttons[i] && !this.pushingKeys.Contains( key ) )
 							{
-								this.pushingKeys.Add( key );
-								Pushed( key );
+								newPush.Add(key);
 							}
 							else if( !buttons[i] && this.pushingKeys.Contains( key ) )
 							{
@@ -152,8 +154,7 @@ namespace EarlyPusher.Manager
 							Tuple<Guid, int> key = new Tuple<Guid, int>( board.Information.InstanceGuid, ( int )item );
 							if( state.IsPressed(item) && !this.pushingKeys.Contains( key ) )
 							{
-								this.pushingKeys.Add( key );
-								Pushed( key );
+								newPush.Add(key);
 							}
 							else if( state.IsReleased( item ) && this.pushingKeys.Contains( key ) )
 							{
@@ -162,6 +163,18 @@ namespace EarlyPusher.Manager
 							}
 						}
 					}
+
+					newPush.Shuffle();
+					if (newPush.Count > 0)
+					{
+						Debug.WriteLine("同時押し数 : " + newPush.Count);
+					}
+					foreach (var key in newPush)
+					{
+						this.pushingKeys.Add(key);
+						Pushed(key);
+					}
+
 				}
 
 				var dev = this.devices.FirstOrDefault( d => d.Disposed );
