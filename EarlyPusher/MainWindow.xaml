@@ -10,6 +10,7 @@
 		<c:BoolReverseConverter x:Key="brConv" />
 		<c:BoolToVisibilityConverter x:Key="b2vConv" True="Visible" False="Collapsed" />
 		<c:CombiningConverter x:Key="br2vConv" Converter1="{StaticResource brConv}" Converter2="{StaticResource b2vConv}" />
+		<c:ColorToBrushConverter x:Key="c2bConv"/>
 	</Window.Resources>
 	<i:Interaction.Triggers>
 		<i:EventTrigger EventName="Loaded">
@@ -44,7 +45,7 @@
 					<Button Command="{Binding DataContext.SelectCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}" CommandParameter="{Binding}">
 						<Button.Template>
 							<ControlTemplate>
-								<Border Width="100" Height="100" CornerRadius="10" Margin="5" BorderThickness="5" Background="Yellow">
+								<Border Width="100" Height="100" CornerRadius="10" Margin="5" BorderThickness="5" Background="{Binding PanelColor, Converter={StaticResource c2bConv}}">
 									<i:Interaction.Triggers>
 										<ei:DataTrigger Binding="{Binding IsSelected}" Value="true">
 											<ei:ChangePropertyAction PropertyName="BorderBrush" Value="LightSkyBlue" />

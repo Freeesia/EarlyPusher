@@ -15,6 +15,7 @@ using System.Text;
 using System.Threading;
 using System.Windows.Threading;
 using System.Xml.Serialization;
+using System.Windows.Media;
 
 namespace EarlyPusher.ViewModels
 {
@@ -234,9 +235,37 @@ namespace EarlyPusher.ViewModels
 			{
 				this.data = new SettingData();
 			}
-			foreach( var item in this.data.KeyBindCollection )
+			//foreach( var item in this.data.KeyBindCollection )
+			//{
+			//	this.Items.Add( new ItemVM() { Data = item } );
+			//}
+			for( int i = 0; i < this.data.KeyBindCollection.Count; i++ )
 			{
-				this.Items.Add( new ItemVM() { Data = item } );
+				var color = Colors.Yellow;
+				switch( i )
+				{
+					case 0:
+						color = Colors.Red;
+						break;
+					case 1:
+						color = Colors.DarkTurquoise;
+						break;
+					case 2:
+						color = Colors.SeaGreen;
+						break;
+					case 3:
+						color = Colors.Gray;
+						break;
+					case 4:
+						color = Colors.Gold;
+						break;
+					case 5:
+						color = Colors.Violet;
+						break;
+					default:
+						break;
+				}
+				this.Items.Add( new ItemVM() { Data = this.data.KeyBindCollection[i], PanelColor = color } );
 			}
 		}
 

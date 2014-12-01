@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media;
 
 namespace EarlyPusher.ViewModels
 {
@@ -14,6 +15,7 @@ namespace EarlyPusher.ViewModels
 		private KeyBindData data;
 		private bool isSelected;
 		private string rank = string.Empty;
+		private Color color;
 
 		public KeyBindData Data
 		{
@@ -31,6 +33,12 @@ namespace EarlyPusher.ViewModels
 		{
 			get { return this.rank; }
 			set { SetProperty( ref this.rank, value ); }
-		}		
+		}
+
+		public Color PanelColor
+		{
+			get { return this.color; }
+			set { SetProperty( ref this.color, value ); }
+		}
 	}
 }
