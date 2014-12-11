@@ -45,6 +45,7 @@ namespace EarlyPusher.ViewModels
 		public DelegateCommand SelectCommand { get; private set; }
 
 		public DelegateCommand StartCommand { get; private set; }
+		public DelegateCommand ResetCommand { get; private set; }
 
 		public DispatchObservableCollection<string> Devices
 		{
@@ -90,6 +91,7 @@ namespace EarlyPusher.ViewModels
 			this.DelCommand = new DelegateCommand( DelItem, CanDelItem );
 			this.SelectCommand = new DelegateCommand( Select, null );
 			this.StartCommand = new DelegateCommand( Start, null );
+			this.ResetCommand = new DelegateCommand( Reset, null );
 			this.manager = new DeviceManager();
 			this.manager.Devices.CollectionChanged += Devices_CollectionChanged;
 			this.manager.PropertyChanged += Manager_PropertyChanged;
@@ -100,6 +102,14 @@ namespace EarlyPusher.ViewModels
 		}
 
 		#region コマンド関係
+
+		private void Reset( object obj )
+		{
+			foreach( var item in this.Items )
+			{
+				item.CanAnswer = true;
+			}
+		}
 
 		private void Start( object obj )
 		{
@@ -168,7 +178,7 @@ namespace EarlyPusher.ViewModels
 			else
 			{
 				var item = this.Items.FirstOrDefault( i => i.Data.DeviceGuid == e.InstanceID && i.Data.Key == e.Key );
-				if( item != null && string.IsNullOrEmpty( item.Rank ) )
+				if( item != null && string.IsNullOrEmpty( item.Rank ) && item.CanAnswer )
 				{
 					rank++;
 					item.Rank = rank.ToString();

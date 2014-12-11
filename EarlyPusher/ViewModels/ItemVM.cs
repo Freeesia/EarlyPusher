@@ -15,6 +15,7 @@ namespace EarlyPusher.ViewModels
 		private KeyBindData data;
 		private bool isSelected;
 		private string rank = string.Empty;
+		private bool canAnswer = true;
 
 		public KeyBindData Data
 		{
@@ -33,5 +34,24 @@ namespace EarlyPusher.ViewModels
 			get { return this.rank; }
 			set { SetProperty( ref this.rank, value ); }
 		}
+
+		public bool CanAnswer
+		{
+			get { return this.canAnswer; }
+			set 
+			{ 
+				SetProperty( ref this.canAnswer, value );
+				NotifyPropertyChanged( "Opacity" );
+			}
+		}
+
+		public double Opacity
+		{
+			get
+			{
+				return this.canAnswer ? 1.0 : 0.5;
+			}
+		}
+
 	}
 }

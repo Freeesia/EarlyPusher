@@ -31,6 +31,7 @@
 			<Button Content="削除" Command="{Binding DelCommand}" IsEnabled="{Binding IsSettingMode}" />
 			<Button Content="スタート" Command="{Binding StartCommand}" IsEnabled="{Binding IsSettingMode, Converter={StaticResource brConv}}"/>
 			<ToggleButton Content="設定モード" IsChecked="{Binding IsSettingMode}" />
+			<Button Content="休みリセット" Command="{Binding ResetCommand}" />
 		</WrapPanel>
 		<ScrollViewer Height="100" DockPanel.Dock="Bottom">
 			<TextBox b:LogBehavior.IsScrollEnd="True" b:LogBehavior.Log="{Binding Log}" x:Name="log" AcceptsReturn="True" IsReadOnly="True" />
@@ -46,7 +47,9 @@
 					<Button Command="{Binding DataContext.SelectCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}" CommandParameter="{Binding}">
 						<Button.Template>
 							<ControlTemplate>
-								<Border Width="100" Height="100" CornerRadius="10" Margin="5" BorderThickness="5" Background="{Binding Data.PanelColor, Converter={StaticResource c2bConv}}">
+								<Border Width="100" Height="100" CornerRadius="10" Margin="5" BorderThickness="5" 
+										Background="{Binding Data.PanelColor, Converter={StaticResource c2bConv}}"
+										Opacity="{Binding Opacity}" >
 									<i:Interaction.Triggers>
 										<ei:DataTrigger Binding="{Binding IsSelected}" Value="true">
 											<ei:ChangePropertyAction PropertyName="BorderBrush" Value="LightSkyBlue" />
@@ -69,6 +72,7 @@
 									<Border.ContextMenu>
 										<ContextMenu>
 											<xctk:ColorPicker SelectedColor="{Binding Data.PanelColor}"/>
+											<CheckBox Content="解答可能" IsChecked="{Binding CanAnswer}"/>
 										</ContextMenu>
 									</Border.ContextMenu>
 								</Border>
