@@ -5,6 +5,7 @@
 		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
 		xmlns:b="clr-namespace:StFrLibs.Core.Behaviors;assembly=StFrCore"
 		xmlns:c="clr-namespace:StFrLibs.Core.Converter;assembly=StFrCore"
+		xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
 		Title="MainWindow" Height="350" Width="525">
 	<Window.Resources>
 		<c:BoolReverseConverter x:Key="brConv" />
@@ -45,7 +46,7 @@
 					<Button Command="{Binding DataContext.SelectCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}" CommandParameter="{Binding}">
 						<Button.Template>
 							<ControlTemplate>
-								<Border Width="100" Height="100" CornerRadius="10" Margin="5" BorderThickness="5" Background="{Binding PanelColor, Converter={StaticResource c2bConv}}">
+								<Border Width="100" Height="100" CornerRadius="10" Margin="5" BorderThickness="5" Background="{Binding Data.PanelColor, Converter={StaticResource c2bConv}}">
 									<i:Interaction.Triggers>
 										<ei:DataTrigger Binding="{Binding IsSelected}" Value="true">
 											<ei:ChangePropertyAction PropertyName="BorderBrush" Value="LightSkyBlue" />
@@ -65,6 +66,11 @@
 																RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}, 
 																Converter={StaticResource br2vConv}}" />
 									</Grid>
+									<Border.ContextMenu>
+										<ContextMenu>
+											<xctk:ColorPicker SelectedColor="{Binding Data.PanelColor}"/>
+										</ContextMenu>
+									</Border.ContextMenu>
 								</Border>
 							</ControlTemplate>
 						</Button.Template>
