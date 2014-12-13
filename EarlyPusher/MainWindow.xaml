@@ -26,12 +26,12 @@
 		<WrapPanel Orientation="Horizontal" DockPanel.Dock="Top">
 			<TextBlock Text=" UpdateTime : " />
 			<TextBlock Text="{Binding UpdateTime}" Width="60" />
-			<Button Content="検索" Command="{Binding SearchCommand}" IsEnabled="{Binding IsSettingMode}" />
-			<Button Content="追加" Command="{Binding AddCommand}" IsEnabled="{Binding IsSettingMode}" />
-			<Button Content="削除" Command="{Binding DelCommand}" IsEnabled="{Binding IsSettingMode}" />
-			<Button Content="スタート" Command="{Binding StartCommand}" IsEnabled="{Binding IsSettingMode, Converter={StaticResource brConv}}"/>
-			<ToggleButton Content="設定モード" IsChecked="{Binding IsSettingMode}" />
-			<Button Content="休みリセット" Command="{Binding ResetCommand}" />
+			<Button Content="検索(_E)" Command="{Binding SearchCommand}" IsEnabled="{Binding IsSettingMode}" />
+			<Button Content="追加(_A)" Command="{Binding AddCommand}" IsEnabled="{Binding IsSettingMode}" />
+			<Button Content="削除(_D)" Command="{Binding DelCommand}" IsEnabled="{Binding IsSettingMode}" />
+			<Button Content="スタート(_S)" Command="{Binding StartCommand}" IsEnabled="{Binding IsSettingMode, Converter={StaticResource brConv}}"/>
+			<ToggleButton Content="設定モード(_C)" IsChecked="{Binding IsSettingMode}" />
+			<Button Content="休みリセット(_R)" Command="{Binding ResetCommand}" />
 		</WrapPanel>
 		<!--<ScrollViewer Height="100" DockPanel.Dock="Bottom">
 			<TextBox Text="{Binding Log}" x:Name="log" AcceptsReturn="True" IsReadOnly="True" />
