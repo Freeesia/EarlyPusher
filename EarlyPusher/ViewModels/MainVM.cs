@@ -129,7 +129,9 @@ namespace EarlyPusher.ViewModels
 
 		private void AddItem( object obj )
 		{
-			this.Items.Add( new ItemVM() );
+			var item = new ItemVM();
+			item.Data = new PanelData();
+			this.Items.Add( item );
 		}
 
 		private bool CanDelItem( object obj )
@@ -172,7 +174,9 @@ namespace EarlyPusher.ViewModels
 				var item = this.Items.FirstOrDefault( i => i.IsSelected );
 				if( item != null )
 				{
-					item.Data = new PanelData() { DeviceGuid = e.InstanceID, Key = e.Key };
+					Contract.Assert( item.Data != null );
+					item.Data.DeviceGuid = e.InstanceID;
+					item.Data.Key = e.Key;
 				}
 			}
 			else
@@ -259,14 +263,7 @@ namespace EarlyPusher.ViewModels
 			this.data.KeyBindCollection.Clear();
 			foreach( var item in this.Items )
 			{
-				if( item.Data != null )
-				{
-					this.data.KeyBindCollection.Add( item.Data );
-				}
-				else
-				{
-					this.data.KeyBindCollection.Add( new PanelData() );
-				}
+				this.data.KeyBindCollection.Add( item.Data );
 			}
 			using( Stream file = new FileStream( SettingData.FileName, FileMode.Create ) )
 			{
