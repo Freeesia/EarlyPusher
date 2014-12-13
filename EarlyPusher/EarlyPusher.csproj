@@ -68,7 +68,7 @@
     <Compile Include="Extensions\ListExtension.cs" />
     <Compile Include="Manager\DeviceKeyEventArgs.cs" />
     <Compile Include="Manager\DeviceManager.cs" />
-    <Compile Include="Models\KeyBindData.cs" />
+    <Compile Include="Models\PanelData.cs" />
     <Compile Include="Models\SettingData.cs" />
     <Compile Include="ViewModels\ItemVM.cs" />
     <Compile Include="ViewModels\MainVM.cs" />

@@ -12,12 +12,12 @@ namespace EarlyPusher.ViewModels
 {
 	public class ItemVM : ViewModelBase, ISelectable
 	{
-		private KeyBindData data;
+		private PanelData data;
 		private bool isSelected;
 		private string rank = string.Empty;
 		private bool canAnswer = true;
 
-		public KeyBindData Data
+		public PanelData Data
 		{
 			get { return this.data; }
 			set { SetProperty( ref this.data, value ); }

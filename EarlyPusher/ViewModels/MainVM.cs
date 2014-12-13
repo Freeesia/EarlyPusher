@@ -172,7 +172,7 @@ namespace EarlyPusher.ViewModels
 				var item = this.Items.FirstOrDefault( i => i.IsSelected );
 				if( item != null )
 				{
-					item.Data = new KeyBindData() { DeviceGuid = e.InstanceID, Key = e.Key };
+					item.Data = new PanelData() { DeviceGuid = e.InstanceID, Key = e.Key };
 				}
 			}
 			else
@@ -265,7 +265,7 @@ namespace EarlyPusher.ViewModels
 				}
 				else
 				{
-					this.data.KeyBindCollection.Add( new KeyBindData() );
+					this.data.KeyBindCollection.Add( new PanelData() );
 				}
 			}
 			using( Stream file = new FileStream( SettingData.FileName, FileMode.Create ) )

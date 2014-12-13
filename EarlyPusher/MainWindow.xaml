@@ -33,9 +33,9 @@
 			<ToggleButton Content="設定モード" IsChecked="{Binding IsSettingMode}" />
 			<Button Content="休みリセット" Command="{Binding ResetCommand}" />
 		</WrapPanel>
-		<ScrollViewer Height="100" DockPanel.Dock="Bottom">
-			<TextBox b:LogBehavior.IsScrollEnd="True" b:LogBehavior.Log="{Binding Log}" x:Name="log" AcceptsReturn="True" IsReadOnly="True" />
-		</ScrollViewer>
+		<!--<ScrollViewer Height="100" DockPanel.Dock="Bottom">
+			<TextBox Text="{Binding Log}" x:Name="log" AcceptsReturn="True" IsReadOnly="True" />
+		</ScrollViewer>-->
 		<ItemsControl ItemsSource="{Binding Items}">
 			<ItemsControl.ItemsPanel>
 				<ItemsPanelTemplate>
@@ -47,35 +47,45 @@
 					<Button Command="{Binding DataContext.SelectCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}" CommandParameter="{Binding}">
 						<Button.Template>
 							<ControlTemplate>
-								<Border Width="100" Height="100" CornerRadius="10" Margin="5" BorderThickness="5" 
+								<Grid Margin="5 0 5 15">
+									<Grid.RowDefinitions>
+										<RowDefinition Height="*" />
+										<RowDefinition Height="Auto" />
+									</Grid.RowDefinitions>
+									<Border Grid.Row="0" Width="100" Height="100" CornerRadius="10" BorderThickness="5" 
 										Background="{Binding Data.PanelColor, Converter={StaticResource c2bConv}}"
 										Opacity="{Binding Opacity}" >
-									<i:Interaction.Triggers>
-										<ei:DataTrigger Binding="{Binding IsSelected}" Value="true">
-											<ei:ChangePropertyAction PropertyName="BorderBrush" Value="LightSkyBlue" />
-										</ei:DataTrigger>
-										<ei:DataTrigger Binding="{Binding IsSelected}" Value="false">
-											<ei:ChangePropertyAction PropertyName="BorderBrush" Value="Transparent" />
-										</ei:DataTrigger>
-									</i:Interaction.Triggers>
-									<Grid>
-										<StackPanel Orientation="Vertical" Margin="5" Visibility="{Binding DataContext.IsSettingMode, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}, Converter={StaticResource b2vConv}}">
-											<TextBlock Text="Guid:" />
-											<TextBlock Text="{Binding Data.DeviceGuid}" />
-											<TextBlock Text="Key:" />
-											<TextBlock Text="{Binding Data.Key}" />
-										</StackPanel>
-										<TextBlock Text="{Binding Rank}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="72" Visibility="{Binding DataContext.IsSettingMode, 
+										<i:Interaction.Triggers>
+											<ei:DataTrigger Binding="{Binding IsSelected}" Value="true">
+												<ei:ChangePropertyAction PropertyName="BorderBrush" Value="LightSkyBlue" />
+											</ei:DataTrigger>
+											<ei:DataTrigger Binding="{Binding IsSelected}" Value="false">
+												<ei:ChangePropertyAction PropertyName="BorderBrush" Value="Transparent" />
+											</ei:DataTrigger>
+										</i:Interaction.Triggers>
+										<Grid>
+											<StackPanel Orientation="Vertical" Margin="5" Visibility="{Binding DataContext.IsSettingMode, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}, Converter={StaticResource b2vConv}}">
+												<TextBlock Text="Guid:" />
+												<TextBlock Text="{Binding Data.DeviceGuid}" />
+												<TextBlock Text="Key:" />
+												<TextBlock Text="{Binding Data.Key}" />
+											</StackPanel>
+											<TextBlock Text="{Binding Rank}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="72" Visibility="{Binding DataContext.IsSettingMode, 
 																RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}, 
 																Converter={StaticResource br2vConv}}" />
-									</Grid>
-									<Border.ContextMenu>
-										<ContextMenu>
-											<xctk:ColorPicker SelectedColor="{Binding Data.PanelColor}"/>
-											<CheckBox Content="解答可能" IsChecked="{Binding CanAnswer}"/>
-										</ContextMenu>
-									</Border.ContextMenu>
-								</Border>
+										</Grid>
+										<Border.ContextMenu>
+											<ContextMenu>
+												<xctk:ColorPicker SelectedColor="{Binding Data.PanelColor}"/>
+												<CheckBox Content="解答可能" IsChecked="{Binding CanAnswer}"/>
+											</ContextMenu>
+										</Border.ContextMenu>
+									</Border>
+									<TextBox Grid.Row="1" Text="{Binding Data.Name, UpdateSourceTrigger=PropertyChanged}" Visibility="{Binding DataContext.IsSettingMode, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}, Converter={StaticResource b2vConv}}" />
+									<TextBlock Grid.Row="1" Text="{Binding Data.Name}" Visibility="{Binding DataContext.IsSettingMode, 
+																RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}, 
+																Converter={StaticResource br2vConv}}" HorizontalAlignment="Center"/>
+								</Grid>
 							</ControlTemplate>
 						</Button.Template>
 					</Button>
