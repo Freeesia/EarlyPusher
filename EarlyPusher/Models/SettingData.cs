@@ -18,6 +18,14 @@ namespace EarlyPusher.Models
 			get { return keyBindCollection; }
 		}
 
+		private string anserSoundPath;
+
+		public string AnserSoundPath
+		{
+			get { return anserSoundPath; }
+			set { SetProperty( ref anserSoundPath, value ); }
+		}
+
 		public SettingData()
 		{
 			this.keyBindCollection = new List<PanelData>();

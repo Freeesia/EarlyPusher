@@ -33,6 +33,24 @@
 			<ToggleButton Content="設定モード(_C)" IsChecked="{Binding IsSettingMode}" />
 			<Button Content="休みリセット(_R)" Command="{Binding ResetCommand}" />
 		</WrapPanel>
+		<Grid DockPanel.Dock="Top" Margin="5">
+			<Grid.RowDefinitions>
+				<RowDefinition Height="Auto"/>
+			</Grid.RowDefinitions>
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="Auto" />
+				<ColumnDefinition Width="*" />
+				<ColumnDefinition Width="Auto" />
+				<ColumnDefinition Width="Auto" />
+			</Grid.ColumnDefinitions>
+
+			<TextBlock Grid.Column="0" Grid.Row="0" Text="解答音" />
+			<TextBox Grid.Column="1" Grid.Row="0" Text="{Binding AnserSoundPath}" />
+			<Button Grid.Column="2" Grid.Row="0" Content="参照" Command="{Binding SelectAnserSoundCommand}" />
+			<Button Grid.Column="3" Grid.Row="0" Content="再生" Command="{Binding PlayCommand}" CommandParameter="{Binding AnserSoundPath}" />
+
+
+		</Grid>
 		<!--<ScrollViewer Height="100" DockPanel.Dock="Bottom">
 			<TextBox Text="{Binding Log}" x:Name="log" AcceptsReturn="True" IsReadOnly="True" />
 		</ScrollViewer>-->

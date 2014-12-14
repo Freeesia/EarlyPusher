@@ -16,6 +16,7 @@ using System.Threading;
 using System.Windows.Threading;
 using System.Xml.Serialization;
 using System.Windows.Media;
+using Microsoft.Win32;
 
 namespace EarlyPusher.ViewModels
 {
@@ -32,6 +33,9 @@ namespace EarlyPusher.ViewModels
 		private bool isSettingMode = true;
 		private int rank = 0;
 
+		private string anserSoundPath;
+		private MediaPlayer anserSound;
+
 		#region プロパティ
 
 		public DelegateCommand SearchCommand { get; private set; }
@@ -46,6 +50,10 @@ namespace EarlyPusher.ViewModels
 
 		public DelegateCommand StartCommand { get; private set; }
 		public DelegateCommand ResetCommand { get; private set; }
+
+		public DelegateCommand SelectAnserSoundCommand { get; private set; }
+
+		public DelegateCommand PlayCommand { get; private set; }
 
 		public DispatchObservableCollection<string> Devices
 		{
@@ -80,6 +88,12 @@ namespace EarlyPusher.ViewModels
 			set { SetProperty( ref isSettingMode, value, SettingChanged ); }
 		}
 
+		public string AnserSoundPath
+		{
+			get { return anserSoundPath; }
+			set { SetProperty( ref anserSoundPath, value ); }
+		}
+
 		#endregion
 
 		public MainVM()
@@ -92,6 +106,8 @@ namespace EarlyPusher.ViewModels
 			this.SelectCommand = new DelegateCommand( Select, null );
 			this.StartCommand = new DelegateCommand( Start, null );
 			this.ResetCommand = new DelegateCommand( Reset, null );
+			this.SelectAnserSoundCommand = new DelegateCommand( SelectAnser, null );
+			this.PlayCommand = new DelegateCommand( Play, null );
 			this.manager = new DeviceManager();
 			this.manager.Devices.CollectionChanged += Devices_CollectionChanged;
 			this.manager.PropertyChanged += Manager_PropertyChanged;
@@ -102,6 +118,23 @@ namespace EarlyPusher.ViewModels
 		}
 
 		#region コマンド関係
+
+		private void Play( object obj )
+		{
+			var player = OpenSound( obj as string );
+			player.Play();
+		}
+
+		private void SelectAnser( object obj )
+		{
+			OpenFileDialog dlg = new OpenFileDialog();
+			dlg.InitialDirectory = AppDomain.CurrentDomain.BaseDirectory;
+			dlg.Multiselect = false;
+			if( dlg.ShowDialog() == true )
+			{
+				this.AnserSoundPath = dlg.FileName;
+			}
+		}
 
 		private void Reset( object obj )
 		{
@@ -186,6 +219,11 @@ namespace EarlyPusher.ViewModels
 				{
 					rank++;
 					item.Rank = rank.ToString();
+					if( rank == 1 && this.anserSound != null )
+					{
+						this.anserSound.Stop();
+						this.anserSound.Play();
+					}
 				}
 			}
 		}
@@ -249,10 +287,12 @@ namespace EarlyPusher.ViewModels
 			{
 				this.data = new SettingData();
 			}
+
 			foreach( var item in this.data.KeyBindCollection )
 			{
 				this.Items.Add( new ItemVM() { Data = item } );
 			}
+			this.AnserSoundPath = this.data.AnserSoundPath;
 		}
 
 		/// <summary>
@@ -265,6 +305,8 @@ namespace EarlyPusher.ViewModels
 			{
 				this.data.KeyBindCollection.Add( item.Data );
 			}
+			this.data.AnserSoundPath = this.AnserSoundPath;
+
 			using( Stream file = new FileStream( SettingData.FileName, FileMode.Create ) )
 			{
 				XmlSerializer xml = new XmlSerializer( typeof( SettingData ) );
@@ -279,6 +321,15 @@ namespace EarlyPusher.ViewModels
 			rank = 0;
 			DeselectAll();
 			InitRank();
+			InitSound();
+		}
+
+		private void InitSound()
+		{
+			if( !string.IsNullOrEmpty( this.AnserSoundPath ) )
+			{
+				this.anserSound = OpenSound( this.AnserSoundPath );
+			}
 		}
 
 		private void DeselectAll()
@@ -313,6 +364,13 @@ namespace EarlyPusher.ViewModels
 			{
 				action();
 			}
+		}
+
+		private MediaPlayer OpenSound( string path )
+		{
+			var player = new MediaPlayer();
+			player.Open( new Uri( path ) );
+			return player;
 		}
 	}
 }
