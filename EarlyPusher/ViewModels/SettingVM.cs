@@ -20,7 +20,7 @@ using Microsoft.Win32;
 
 namespace EarlyPusher.ViewModels
 {
-	public class MainVM : ViewModelBase
+	public class SettingVM : ViewModelBase
 	{
 		private SettingData data;
 
@@ -96,7 +96,7 @@ namespace EarlyPusher.ViewModels
 
 		#endregion
 
-		public MainVM()
+		public SettingVM()
 		{
 			this.SearchCommand = new DelegateCommand( SearchDevice, null );
 			this.LoadedCommand = new DelegateCommand( Inited, null );

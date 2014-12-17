@@ -5,6 +5,7 @@ using System.Configuration;
 using System.Data;
 using System.Linq;
 using System.Windows;
+using EarlyPusher.Views;
 
 namespace EarlyPusher
 {
@@ -15,8 +16,8 @@ namespace EarlyPusher
 	{
 		protected override void OnStartup( StartupEventArgs e )
 		{
-			this.MainWindow = new MainWindow();
-			this.MainWindow.DataContext = new MainVM();
+			this.MainWindow = new SettingWindow();
+			this.MainWindow.DataContext = new SettingVM();
 			this.MainWindow.Show();
 		}
 	}

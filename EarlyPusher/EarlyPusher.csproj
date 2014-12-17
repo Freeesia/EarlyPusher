@@ -70,8 +70,8 @@
     <Compile Include="Models\PanelData.cs" />
     <Compile Include="Models\SettingData.cs" />
     <Compile Include="ViewModels\ItemVM.cs" />
-    <Compile Include="ViewModels\MainVM.cs" />
-    <Page Include="MainWindow.xaml">
+    <Compile Include="ViewModels\SettingVM.cs" />
+    <Page Include="Views\SettingWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -79,8 +79,8 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
+    <Compile Include="Views\SettingWindow.xaml.cs">
+      <DependentUpon>SettingWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
