@@ -17,6 +17,7 @@ using System.Windows.Threading;
 using System.Xml.Serialization;
 using System.Windows.Media;
 using Microsoft.Win32;
+using EarlyPusher.Views;
 
 namespace EarlyPusher.ViewModels
 {
@@ -36,6 +37,8 @@ namespace EarlyPusher.ViewModels
 		private string anserSoundPath;
 		private MediaPlayer anserSound;
 
+		private PlayWindow window;
+
 		#region プロパティ
 
 		public DelegateCommand SearchCommand { get; private set; }
@@ -50,9 +53,10 @@ namespace EarlyPusher.ViewModels
 
 		public DelegateCommand StartCommand { get; private set; }
 		public DelegateCommand ResetCommand { get; private set; }
+		public DelegateCommand WindowCommand { get; private set; }
+		public DelegateCommand WindowMaxCommand { get; private set; }
 
 		public DelegateCommand SelectAnserSoundCommand { get; private set; }
-
 		public DelegateCommand PlayCommand { get; private set; }
 
 		public DispatchObservableCollection<string> Devices
@@ -106,6 +110,8 @@ namespace EarlyPusher.ViewModels
 			this.SelectCommand = new DelegateCommand( Select, null );
 			this.StartCommand = new DelegateCommand( Start, null );
 			this.ResetCommand = new DelegateCommand( Reset, null );
+			this.WindowCommand = new DelegateCommand( ShowCloseWindow, null );
+			this.WindowMaxCommand = new DelegateCommand( MaximazeWindow, CanMaximaize );
 			this.SelectAnserSoundCommand = new DelegateCommand( SelectAnser, null );
 			this.PlayCommand = new DelegateCommand( Play, null );
 			this.manager = new DeviceManager();
@@ -134,6 +140,34 @@ namespace EarlyPusher.ViewModels
 			{
 				this.AnserSoundPath = dlg.FileName;
 			}
+		}
+
+		private void ShowCloseWindow( object obj )
+		{
+			if( this.window != null )
+			{
+				this.window.Close();
+				this.window = null;
+
+			}
+			else
+			{
+				this.window = new PlayWindow();
+				this.window.Show();
+			}
+			this.WindowMaxCommand.RaiseCanExecuteChanged();
+		}
+
+		private bool CanMaximaize( object obj )
+		{
+			return this.window != null;
+		}
+
+		private void MaximazeWindow( object obj )
+		{
+			Contract.Assert( this.window != null );
+
+			this.window.WindowState = System.Windows.WindowState.Maximized;
 		}
 
 		private void Reset( object obj )
@@ -188,6 +222,10 @@ namespace EarlyPusher.ViewModels
 		private void Closing( object obj )
 		{
 			SaveData();
+			if( this.window != null )
+			{
+				this.window.Close();
+			}
 		}
 
 		private void SearchDevice( object obj )

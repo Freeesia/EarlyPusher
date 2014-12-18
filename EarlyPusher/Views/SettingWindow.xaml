@@ -22,16 +22,22 @@
 		</i:EventTrigger>
 	</i:Interaction.Triggers>
 	<DockPanel>
+		<Menu DockPanel.Dock="Top">
+			<MenuItem Header="検索(_E)" Command="{Binding SearchCommand}" IsEnabled="{Binding IsSettingMode}" />
+			<MenuItem Header="追加(_A)" Command="{Binding AddCommand}" IsEnabled="{Binding IsSettingMode}" />
+			<MenuItem Header="削除(_D)" Command="{Binding DelCommand}" IsEnabled="{Binding IsSettingMode}" />
+			<MenuItem Header="スタート(_S)" Command="{Binding StartCommand}" IsEnabled="{Binding IsSettingMode, Converter={StaticResource brConv}}"/>
+			<MenuItem Header="休みリセット(_R)" Command="{Binding ResetCommand}" />
+			<MenuItem Header="プレイウィンドウ">
+				<MenuItem Header="ウィンドウ表示/非表示(_W)" Command="{Binding WindowCommand}" />
+				<MenuItem Header="ウィンドウ最大化(_M)" Command="{Binding WindowMaxCommand}" />
+			</MenuItem>
+		</Menu>
 		<ListBox Width="150" ItemsSource="{Binding Devices}" />
 		<WrapPanel Orientation="Horizontal" DockPanel.Dock="Top">
 			<TextBlock Text=" UpdateTime : " />
 			<TextBlock Text="{Binding UpdateTime}" Width="60" />
-			<Button Content="検索(_E)" Command="{Binding SearchCommand}" IsEnabled="{Binding IsSettingMode}" />
-			<Button Content="追加(_A)" Command="{Binding AddCommand}" IsEnabled="{Binding IsSettingMode}" />
-			<Button Content="削除(_D)" Command="{Binding DelCommand}" IsEnabled="{Binding IsSettingMode}" />
-			<Button Content="スタート(_S)" Command="{Binding StartCommand}" IsEnabled="{Binding IsSettingMode, Converter={StaticResource brConv}}"/>
 			<ToggleButton Content="設定モード(_C)" IsChecked="{Binding IsSettingMode}" />
-			<Button Content="休みリセット(_R)" Command="{Binding ResetCommand}" />
 		</WrapPanel>
 		<Grid DockPanel.Dock="Top" Margin="5">
 			<Grid.RowDefinitions>
