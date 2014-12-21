@@ -33,6 +33,7 @@ namespace EarlyPusher.ViewModels
 		private long updateTime;
 		private bool isSettingMode = true;
 		private int rank = 0;
+		private int wrapCount = 1;
 
 		private string anserSoundPath;
 		private MediaPlayer anserSound;
@@ -84,6 +85,12 @@ namespace EarlyPusher.ViewModels
 		{
 			get { return updateTime; }
 			set { SetProperty( ref updateTime, value ); }
+		}
+
+		public int WrapCount
+		{
+			get { return wrapCount; }
+			set { SetProperty( ref wrapCount, value ); }
 		}
 
 		public bool IsSettingMode
@@ -153,6 +160,7 @@ namespace EarlyPusher.ViewModels
 			else
 			{
 				this.window = new PlayWindow();
+				this.window.DataContext = this;
 				this.window.Show();
 			}
 			this.WindowMaxCommand.RaiseCanExecuteChanged();
@@ -167,7 +175,14 @@ namespace EarlyPusher.ViewModels
 		{
 			Contract.Assert( this.window != null );
 
-			this.window.WindowState = System.Windows.WindowState.Maximized;
+			if( this.window.WindowState != System.Windows.WindowState.Maximized )
+			{
+				this.window.WindowState = System.Windows.WindowState.Maximized;
+			}
+			else
+			{
+				this.window.WindowState = System.Windows.WindowState.Normal;
+			}
 		}
 
 		private void Reset( object obj )
@@ -331,6 +346,7 @@ namespace EarlyPusher.ViewModels
 				this.Items.Add( new ItemVM() { Data = item } );
 			}
 			this.AnserSoundPath = this.data.AnserSoundPath;
+			this.WrapCount = this.data.WrapCount;
 		}
 
 		/// <summary>
@@ -344,6 +360,7 @@ namespace EarlyPusher.ViewModels
 				this.data.KeyBindCollection.Add( item.Data );
 			}
 			this.data.AnserSoundPath = this.AnserSoundPath;
+			this.data.WrapCount = this.WrapCount;
 
 			using( Stream file = new FileStream( SettingData.FileName, FileMode.Create ) )
 			{
