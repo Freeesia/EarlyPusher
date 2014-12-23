@@ -13,11 +13,17 @@ namespace EarlyPusher.Models
 		private List<PanelData> keyBindCollection;
 		private string anserSoundPath;
 		private int wrapCount = 4;
+		private List<string> soundPaths;
 
 
 		public List<PanelData> KeyBindCollection
 		{
 			get { return keyBindCollection; }
+		}
+
+		public List<string> SoundPaths
+		{
+			get { return soundPaths; }
 		}
 
 		public string AnserSoundPath
@@ -36,6 +42,7 @@ namespace EarlyPusher.Models
 		public SettingData()
 		{
 			this.keyBindCollection = new List<PanelData>();
+			this.soundPaths = new List<string>();
 		}
 
 	}

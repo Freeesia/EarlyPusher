@@ -24,9 +24,11 @@
 	</i:Interaction.Triggers>
 	<DockPanel>
 		<Menu DockPanel.Dock="Top">
-			<MenuItem Header="検索(_E)" Command="{Binding SearchCommand}" IsEnabled="{Binding IsSettingMode}" />
-			<MenuItem Header="追加(_A)" Command="{Binding AddCommand}" IsEnabled="{Binding IsSettingMode}" />
-			<MenuItem Header="削除(_D)" Command="{Binding DelCommand}" IsEnabled="{Binding IsSettingMode}" />
+			<MenuItem Header="検索" Command="{Binding SearchCommand}" IsEnabled="{Binding IsSettingMode}" />
+			<MenuItem Header="パネル追加" Command="{Binding AddPanelCommand}" IsEnabled="{Binding IsSettingMode}" />
+			<MenuItem Header="パネル削除" Command="{Binding DelPanelCommand}" IsEnabled="{Binding IsSettingMode}" />
+			<MenuItem Header="サウンド追加" Command="{Binding AddSoundCommand}" IsEnabled="{Binding IsSettingMode}" />
+			<MenuItem Header="サウンド削除" Command="{Binding DelSoundCommand}" IsEnabled="{Binding IsSettingMode}" />
 			<MenuItem Header="スタート(_S)" Command="{Binding StartCommand}" IsEnabled="{Binding IsSettingMode, Converter={StaticResource brConv}}"/>
 			<MenuItem Header="休みリセット(_R)" Command="{Binding ResetCommand}" />
 			<MenuItem Header="プレイウィンドウ">
@@ -45,6 +47,7 @@
 		<Grid DockPanel.Dock="Top" Margin="5">
 			<Grid.RowDefinitions>
 				<RowDefinition Height="Auto"/>
+				<RowDefinition Height="Auto"/>
 			</Grid.RowDefinitions>
 			<Grid.ColumnDefinitions>
 				<ColumnDefinition Width="Auto" />
@@ -54,12 +57,43 @@
 			</Grid.ColumnDefinitions>
 
 			<TextBlock Grid.Column="0" Grid.Row="0" Text="解答音" />
-			<TextBox Grid.Column="1" Grid.Row="0" Text="{Binding AnserSoundPath}" />
+			<TextBox Grid.Column="1" Grid.Row="0" Text="{Binding AnserSound.Path}" />
 			<Button Grid.Column="2" Grid.Row="0" Content="参照" Command="{Binding SelectAnserSoundCommand}" />
-			<Button Grid.Column="3" Grid.Row="0" Content="再生" Command="{Binding PlayCommand}" CommandParameter="{Binding AnserSoundPath}" />
-
-
+			<Button Grid.Column="3" Grid.Row="0" Content="再生" Command="{Binding AnserSound.PlayCommand}" />			
 		</Grid>
+		<ListView ItemsSource="{Binding Sounds}" SelectedItem="{Binding SelectedSound}" DockPanel.Dock="Top" Margin="5">
+			<ListView.View>
+				<GridView AllowsColumnReorder="False" >
+					<GridView.ColumnHeaderContainerStyle>
+						<Style>
+							<Setter Property="UIElement.Visibility" Value="Collapsed"/>
+						</Style>
+					</GridView.ColumnHeaderContainerStyle>
+					<GridViewColumn Width="Auto">
+						<GridViewColumn.CellTemplate>
+							<DataTemplate>
+								<Button Content="再生" Command="{Binding PlayCommand}" />
+							</DataTemplate>
+						</GridViewColumn.CellTemplate>
+					</GridViewColumn>
+					<GridViewColumn Width="Auto">
+						<GridViewColumn.CellTemplate>
+							<DataTemplate>
+								<ToggleButton Content="一時停止" Command="{Binding PauseCommand}" />
+							</DataTemplate>
+						</GridViewColumn.CellTemplate>
+					</GridViewColumn>
+					<GridViewColumn Width="Auto">
+						<GridViewColumn.CellTemplate>
+							<DataTemplate>
+								<Button Content="停止" Command="{Binding StopCommand}" />
+							</DataTemplate>
+						</GridViewColumn.CellTemplate>
+					</GridViewColumn>
+					<GridViewColumn DisplayMemberBinding="{Binding Path}" Width="Auto"/>
+				</GridView>
+			</ListView.View>
+		</ListView>
 		<!--<ScrollViewer Height="100" DockPanel.Dock="Bottom">
 			<TextBox Text="{Binding Log}" x:Name="log" AcceptsReturn="True" IsReadOnly="True" />
 		</ScrollViewer>-->

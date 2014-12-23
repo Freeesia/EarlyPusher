@@ -30,14 +30,14 @@ namespace EarlyPusher.ViewModels
 		private DeviceManager manager;
 		private DispatchObservableCollection<string> devices;
 		private DispatchObservableCollection<ItemVM> items;
+		private DispatchObservableCollection<SoundVM> sounds;
 		private long updateTime;
 		private bool isSettingMode = true;
 		private int rank = 0;
 		private int wrapCount = 1;
 
-		private string anserSoundPath;
-		private MediaPlayer anserSound;
-
+		private SoundVM anserSound;
+		private SoundVM selectedSound;
 		private PlayWindow window;
 
 		#region プロパティ
@@ -47,8 +47,8 @@ namespace EarlyPusher.ViewModels
 		public DelegateCommand LoadedCommand { get; private set; }
 		public DelegateCommand ClosingCommand { get; private set; }
 
-		public DelegateCommand AddCommand { get; private set; }
-		public DelegateCommand DelCommand { get; private set; }
+		public DelegateCommand AddPanelCommand { get; private set; }
+		public DelegateCommand DelPanelCommand { get; private set; }
 
 		public DelegateCommand SelectCommand { get; private set; }
 
@@ -57,8 +57,9 @@ namespace EarlyPusher.ViewModels
 		public DelegateCommand WindowCommand { get; private set; }
 		public DelegateCommand WindowMaxCommand { get; private set; }
 
+		public DelegateCommand AddSoundCommand { get; private set; }
+		public DelegateCommand DelSoundCommand { get; private set; }
 		public DelegateCommand SelectAnserSoundCommand { get; private set; }
-		public DelegateCommand PlayCommand { get; private set; }
 
 		public DispatchObservableCollection<string> Devices
 		{
@@ -99,10 +100,21 @@ namespace EarlyPusher.ViewModels
 			set { SetProperty( ref isSettingMode, value, SettingChanged ); }
 		}
 
-		public string AnserSoundPath
+		public SoundVM AnserSound
 		{
-			get { return anserSoundPath; }
-			set { SetProperty( ref anserSoundPath, value ); }
+			get { return anserSound; }
+			set { SetProperty( ref anserSound, value ); }
+		}
+
+		public DispatchObservableCollection<SoundVM> Sounds
+		{
+			get { return this.sounds; }
+		}
+
+		public SoundVM SelectedSound
+		{
+			get { return selectedSound; }
+			set { SetProperty( ref selectedSound, value, SelectedSoundChanged ); }
 		}
 
 		#endregion
@@ -112,42 +124,28 @@ namespace EarlyPusher.ViewModels
 			this.SearchCommand = new DelegateCommand( SearchDevice, null );
 			this.LoadedCommand = new DelegateCommand( Inited, null );
 			this.ClosingCommand = new DelegateCommand( Closing, null );
-			this.AddCommand = new DelegateCommand( AddItem, null );
-			this.DelCommand = new DelegateCommand( DelItem, CanDelItem );
+			this.AddPanelCommand = new DelegateCommand( AddPanel, null );
+			this.DelPanelCommand = new DelegateCommand( DelPanel, CanDelPanel );
 			this.SelectCommand = new DelegateCommand( Select, null );
 			this.StartCommand = new DelegateCommand( Start, null );
 			this.ResetCommand = new DelegateCommand( Reset, null );
 			this.WindowCommand = new DelegateCommand( ShowCloseWindow, null );
 			this.WindowMaxCommand = new DelegateCommand( MaximazeWindow, CanMaximaize );
 			this.SelectAnserSoundCommand = new DelegateCommand( SelectAnser, null );
-			this.PlayCommand = new DelegateCommand( Play, null );
+			this.AddSoundCommand = new DelegateCommand( AddSound, null );
+			this.DelSoundCommand = new DelegateCommand( DelSound, CanDelSound );
+
 			this.manager = new DeviceManager();
 			this.manager.Devices.CollectionChanged += Devices_CollectionChanged;
 			this.manager.PropertyChanged += Manager_PropertyChanged;
 			this.manager.KeyPushed += Manager_KeyPushed;
 			this.devices = new DispatchObservableCollection<string>();
 			this.items = new DispatchObservableCollection<ItemVM>();
+			this.sounds = new DispatchObservableCollection<SoundVM>();
 			this.logBuilder = new StringBuilder();
 		}
 
 		#region コマンド関係
-
-		private void Play( object obj )
-		{
-			var player = OpenSound( obj as string );
-			player.Play();
-		}
-
-		private void SelectAnser( object obj )
-		{
-			OpenFileDialog dlg = new OpenFileDialog();
-			dlg.InitialDirectory = AppDomain.CurrentDomain.BaseDirectory;
-			dlg.Multiselect = false;
-			if( dlg.ShowDialog() == true )
-			{
-				this.AnserSoundPath = dlg.FileName;
-			}
-		}
 
 		private void ShowCloseWindow( object obj )
 		{
@@ -206,27 +204,60 @@ namespace EarlyPusher.ViewModels
 			Contract.Assert( item != null );
 			DeselectAll();
 			item.IsSelected = true;
-			this.DelCommand.RaiseCanExecuteChanged();
+			this.DelPanelCommand.RaiseCanExecuteChanged();
 		}
 
-		private void AddItem( object obj )
+		private void AddPanel( object obj )
 		{
 			var item = new ItemVM();
 			item.Data = new PanelData();
 			this.Items.Add( item );
 		}
 
-		private bool CanDelItem( object obj )
+		private bool CanDelPanel( object obj )
 		{
 			return this.Items.Where( i => i.IsSelected ).Count() == 1;
 		}
 
-		private void DelItem( object obj )
+		private void DelPanel( object obj )
 		{
 			var item = this.Items.FirstOrDefault( i => i.IsSelected );
 			Contract.Assert( item != null );
 
 			this.Items.Remove( item );
+		}
+
+		private void SelectAnser( object obj )
+		{
+			OpenFileDialog dlg = new OpenFileDialog();
+			dlg.InitialDirectory = AppDomain.CurrentDomain.BaseDirectory;
+			dlg.Multiselect = false;
+			if( dlg.ShowDialog() == true )
+			{
+				this.AnserSound = new SoundVM() { Path = dlg.FileName };
+			}
+		}
+
+		private void AddSound( object obj )
+		{
+			OpenFileDialog dlg = new OpenFileDialog();
+			dlg.InitialDirectory = AppDomain.CurrentDomain.BaseDirectory;
+			dlg.Multiselect = false;
+			if( dlg.ShowDialog() == true )
+			{
+				this.Sounds.Add( new SoundVM() { Path = dlg.FileName } );
+			}
+		}
+
+		private bool CanDelSound( object obj )
+		{
+			return this.SelectedSound != null;
+		}
+
+		private void DelSound( object obj )
+		{
+			this.Sounds.Remove( this.SelectedSound );
+			this.SelectedSound = null;
 		}
 
 		private void Inited( object obj )
@@ -241,6 +272,12 @@ namespace EarlyPusher.ViewModels
 			{
 				this.window.Close();
 			}
+
+			foreach( var item in this.Sounds )
+			{
+				item.Dispose();
+			}
+			this.manager.Dispose();
 		}
 
 		private void SearchDevice( object obj )
@@ -272,10 +309,9 @@ namespace EarlyPusher.ViewModels
 				{
 					rank++;
 					item.Rank = rank.ToString();
-					if( rank == 1 && this.anserSound != null )
+					if( rank == 1 && this.AnserSound.PlayCommand.CanExecute( null ) )
 					{
-						this.anserSound.Stop();
-						this.anserSound.Play();
+						this.AnserSound.PlayCommand.Execute( null );
 					}
 				}
 			}
@@ -319,6 +355,11 @@ namespace EarlyPusher.ViewModels
 			}
 		}
 
+		private void SelectedSoundChanged( bool obj )
+		{
+			this.DelSoundCommand.RaiseCanExecuteChanged();
+		}
+
 		#endregion
 
 		#region 設定
@@ -345,7 +386,11 @@ namespace EarlyPusher.ViewModels
 			{
 				this.Items.Add( new ItemVM() { Data = item } );
 			}
-			this.AnserSoundPath = this.data.AnserSoundPath;
+			foreach( var item in this.data.SoundPaths )
+			{
+				this.sounds.Add( new SoundVM() { Path = item } );
+			}
+			this.AnserSound = new SoundVM() { Path = this.data.AnserSoundPath };
 			this.WrapCount = this.data.WrapCount;
 		}
 
@@ -359,7 +404,12 @@ namespace EarlyPusher.ViewModels
 			{
 				this.data.KeyBindCollection.Add( item.Data );
 			}
-			this.data.AnserSoundPath = this.AnserSoundPath;
+			this.data.SoundPaths.Clear();
+			foreach( var item in this.sounds )
+			{
+				this.data.SoundPaths.Add( item.Path );
+			}
+			this.data.AnserSoundPath = this.AnserSound.Path;
 			this.data.WrapCount = this.WrapCount;
 
 			using( Stream file = new FileStream( SettingData.FileName, FileMode.Create ) )
@@ -376,15 +426,6 @@ namespace EarlyPusher.ViewModels
 			rank = 0;
 			DeselectAll();
 			InitRank();
-			InitSound();
-		}
-
-		private void InitSound()
-		{
-			if( !string.IsNullOrEmpty( this.AnserSoundPath ) )
-			{
-				this.anserSound = OpenSound( this.AnserSoundPath );
-			}
 		}
 
 		private void DeselectAll()
@@ -419,13 +460,6 @@ namespace EarlyPusher.ViewModels
 			{
 				action();
 			}
-		}
-
-		private MediaPlayer OpenSound( string path )
-		{
-			var player = new MediaPlayer();
-			player.Open( new Uri( path ) );
-			return player;
 		}
 	}
 }
