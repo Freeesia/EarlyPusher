@@ -7,12 +7,12 @@ using System.Windows;
 // アセンブリに関する一般情報は以下の属性セットをとおして制御されます。
 // アセンブリに関連付けられている情報を変更するには、
 // これらの属性値を変更してください。
-[assembly: AssemblyTitle( "EarlyPusher" )]
-[assembly: AssemblyDescription( "" )]
+[assembly: AssemblyTitle( "早押しボタンプログラム" )]
+[assembly: AssemblyDescription( "ゲームパッドを早押しボタンとして認識して進行を補助するプログラムです。" )]
 [assembly: AssemblyConfiguration( "" )]
-[assembly: AssemblyCompany( "" )]
+[assembly: AssemblyCompany( "StudioFreesia" )]
 [assembly: AssemblyProduct( "EarlyPusher" )]
-[assembly: AssemblyCopyright( "Copyright ©  2014" )]
+[assembly: AssemblyCopyright( "Copyright ©  StudioFreesia" )]
 [assembly: AssemblyTrademark( "" )]
 [assembly: AssemblyCulture( "" )]
 
