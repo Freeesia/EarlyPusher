@@ -48,7 +48,7 @@ namespace EarlyPusher.ViewModels
 					this.sound = OpenSound( this.Path );
 					this.PlayCommand.RaiseCanExecuteChanged();
 				}
-				else
+				else if( this.sound != null )
 				{
 					this.sound.Stop();
 					this.sound.Close();

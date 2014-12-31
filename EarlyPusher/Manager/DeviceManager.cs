@@ -220,6 +220,7 @@ namespace EarlyPusher.Manager
 					d.Unacquire();
 					d.Dispose();
 					this.Devices.Remove( d );
+					d = this.Devices.FirstOrDefault();
 				}
 			}
 			this.pushingKeys.Clear();
