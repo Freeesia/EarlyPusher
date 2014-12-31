@@ -3,7 +3,7 @@
 		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 		xmlns:c="clr-namespace:StFrLibs.Core.Converter;assembly=StFrCore"
 		xmlns:ctrl="clr-namespace:EarlyPusher.Controls"
-		Title="PlayWindow" Height="300" Width="300" WindowStyle="None" AllowsTransparency="True" ResizeMode="CanResizeWithGrip">
+		Title="PlayWindow" Height="300" Width="300" WindowStyle="None" AllowsTransparency="True" ResizeMode="CanResizeWithGrip" PreviewKeyDown="Window_PreviewKeyDown">
 	<Window.Resources>
 		<c:ColorToBrushConverter x:Key="c2bConv"/>
 	</Window.Resources>

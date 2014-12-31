@@ -28,5 +28,13 @@ namespace EarlyPusher.Views
 		{
 			this.DragMove();
 		}
+
+		private void Window_PreviewKeyDown( object sender, KeyEventArgs e )
+		{
+			if( e.Key == Key.Escape || e.ImeProcessedKey == Key.Escape )
+			{
+				this.Close();
+			}
+		}
 	}
 }

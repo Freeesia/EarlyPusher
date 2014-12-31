@@ -10,10 +10,9 @@ using System.Windows.Media;
 
 namespace EarlyPusher.ViewModels
 {
-	public class ItemVM : ViewModelBase, ISelectable
+	public class ItemVM : ViewModelBase
 	{
 		private PanelData data;
-		private bool isSelected;
 		private string rank = string.Empty;
 		private bool canAnswer = true;
 
@@ -21,12 +20,6 @@ namespace EarlyPusher.ViewModels
 		{
 			get { return this.data; }
 			set { SetProperty( ref this.data, value ); }
-		}
-
-		public bool IsSelected
-		{
-			get { return this.isSelected; }
-			set { SetProperty( ref this.isSelected, value ); }
 		}
 
 		public string Rank

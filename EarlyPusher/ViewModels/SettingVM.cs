@@ -37,6 +37,7 @@ namespace EarlyPusher.ViewModels
 		private int wrapCount = 1;
 
 		private SoundVM anserSound;
+		private ItemVM selectedPanel;
 		private SoundVM selectedSound;
 		private PlayWindow window;
 
@@ -49,8 +50,6 @@ namespace EarlyPusher.ViewModels
 
 		public DelegateCommand AddPanelCommand { get; private set; }
 		public DelegateCommand DelPanelCommand { get; private set; }
-
-		public DelegateCommand SelectCommand { get; private set; }
 
 		public DelegateCommand StartCommand { get; private set; }
 		public DelegateCommand ResetCommand { get; private set; }
@@ -75,6 +74,12 @@ namespace EarlyPusher.ViewModels
 			{
 				return this.items;
 			}
+		}
+
+		public ItemVM SelectedPanel
+		{
+			get { return selectedPanel; }
+			set { SetProperty( ref selectedPanel, value, SelectedPanelChanged ); }
 		}
 
 		public string Log
@@ -126,7 +131,6 @@ namespace EarlyPusher.ViewModels
 			this.ClosingCommand = new DelegateCommand( Closing, null );
 			this.AddPanelCommand = new DelegateCommand( AddPanel, null );
 			this.DelPanelCommand = new DelegateCommand( DelPanel, CanDelPanel );
-			this.SelectCommand = new DelegateCommand( Select, null );
 			this.StartCommand = new DelegateCommand( Start, null );
 			this.ResetCommand = new DelegateCommand( Reset, null );
 			this.WindowCommand = new DelegateCommand( ShowCloseWindow, null );
@@ -194,17 +198,7 @@ namespace EarlyPusher.ViewModels
 		private void Start( object obj )
 		{
 			rank = 0;
-			DeselectAll();
 			InitRank();
-		}
-
-		private void Select( object obj )
-		{
-			var item = obj as ItemVM;
-			Contract.Assert( item != null );
-			DeselectAll();
-			item.IsSelected = true;
-			this.DelPanelCommand.RaiseCanExecuteChanged();
 		}
 
 		private void AddPanel( object obj )
@@ -216,15 +210,13 @@ namespace EarlyPusher.ViewModels
 
 		private bool CanDelPanel( object obj )
 		{
-			return this.Items.Where( i => i.IsSelected ).Count() == 1;
+			return this.SelectedPanel != null;
 		}
 
 		private void DelPanel( object obj )
 		{
-			var item = this.Items.FirstOrDefault( i => i.IsSelected );
-			Contract.Assert( item != null );
-
-			this.Items.Remove( item );
+			this.Items.Remove( this.SelectedPanel );
+			this.SelectedPanel = null;
 		}
 
 		private void SelectAnser( object obj )
@@ -294,12 +286,11 @@ namespace EarlyPusher.ViewModels
 			WriteLogLine( e.Key.ToString() );
 			if( this.IsSettingMode )
 			{
-				var item = this.Items.FirstOrDefault( i => i.IsSelected );
-				if( item != null )
+				if( this.SelectedPanel != null )
 				{
-					Contract.Assert( item.Data != null );
-					item.Data.DeviceGuid = e.InstanceID;
-					item.Data.Key = e.Key;
+					Contract.Assert( this.SelectedPanel.Data != null );
+					this.SelectedPanel.Data.DeviceGuid = e.InstanceID;
+					this.SelectedPanel.Data.Key = e.Key;
 				}
 			}
 			else
@@ -358,6 +349,11 @@ namespace EarlyPusher.ViewModels
 		private void SelectedSoundChanged( bool obj )
 		{
 			this.DelSoundCommand.RaiseCanExecuteChanged();
+		}
+
+		private void SelectedPanelChanged( bool obj )
+		{
+			this.DelPanelCommand.RaiseCanExecuteChanged();
 		}
 
 		#endregion
@@ -424,16 +420,8 @@ namespace EarlyPusher.ViewModels
 		private void SettingChanged( bool isSucceed )
 		{
 			rank = 0;
-			DeselectAll();
+			this.SelectedPanel = null;
 			InitRank();
-		}
-
-		private void DeselectAll()
-		{
-			foreach( var i in this.Items )
-			{
-				i.IsSelected = false;
-			}
 		}
 
 		private void InitRank()

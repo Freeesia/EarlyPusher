@@ -41,7 +41,7 @@
 			<TextBlock Text=" UpdateTime : " />
 			<TextBlock Text="{Binding UpdateTime}" Width="60" />
 			<ToggleButton Content="設定モード(_C)" IsChecked="{Binding IsSettingMode}" />
-			<TextBlock Text="改行個数 : " />
+			<TextBlock Text="チーム数 : " />
 			<xctk:IntegerUpDown Minimum="1" Value="{Binding WrapCount}" Width="60" />
 		</WrapPanel>
 		<Grid DockPanel.Dock="Top" Margin="5">
@@ -97,61 +97,35 @@
 		<!--<ScrollViewer Height="100" DockPanel.Dock="Bottom">
 			<TextBox Text="{Binding Log}" x:Name="log" AcceptsReturn="True" IsReadOnly="True" />
 		</ScrollViewer>-->
-		<ItemsControl ItemsSource="{Binding Items}">
-			<ItemsControl.ItemsPanel>
-				<ItemsPanelTemplate>
-					<ctrl:FixedWrapPanel Orientation="Horizontal" WrapCount="{Binding WrapCount}" />
-				</ItemsPanelTemplate>
-			</ItemsControl.ItemsPanel>
-			<ItemsControl.ItemTemplate>
-				<DataTemplate>
-					<Button Command="{Binding DataContext.SelectCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}" CommandParameter="{Binding}">
-						<Button.Template>
-							<ControlTemplate>
-								<Grid Margin="5 0 5 15">
-									<Grid.RowDefinitions>
-										<RowDefinition Height="*" />
-										<RowDefinition Height="Auto" />
-									</Grid.RowDefinitions>
-									<Border Grid.Row="0" Width="100" Height="100" CornerRadius="10" BorderThickness="5" 
-										Background="{Binding Data.PanelColor, Converter={StaticResource c2bConv}}"
-										Opacity="{Binding Opacity}" >
-										<i:Interaction.Triggers>
-											<ei:DataTrigger Binding="{Binding IsSelected}" Value="true">
-												<ei:ChangePropertyAction PropertyName="BorderBrush" Value="LightSkyBlue" />
-											</ei:DataTrigger>
-											<ei:DataTrigger Binding="{Binding IsSelected}" Value="false">
-												<ei:ChangePropertyAction PropertyName="BorderBrush" Value="Transparent" />
-											</ei:DataTrigger>
-										</i:Interaction.Triggers>
-										<Grid>
-											<StackPanel Orientation="Vertical" Margin="5" Visibility="{Binding DataContext.IsSettingMode, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}, Converter={StaticResource b2vConv}}">
-												<TextBlock Text="Guid:" />
-												<TextBlock Text="{Binding Data.DeviceGuid}" />
-												<TextBlock Text="Key:" />
-												<TextBlock Text="{Binding Data.Key}" />
-											</StackPanel>
-											<TextBlock Text="{Binding Rank}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="72" Visibility="{Binding DataContext.IsSettingMode, 
-																RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}, 
-																Converter={StaticResource br2vConv}}" />
-										</Grid>
-										<Border.ContextMenu>
-											<ContextMenu>
-												<xctk:ColorPicker SelectedColor="{Binding Data.PanelColor}"/>
-												<CheckBox Content="解答可能" IsChecked="{Binding CanAnswer}"/>
-											</ContextMenu>
-										</Border.ContextMenu>
-									</Border>
-									<TextBox Grid.Row="1" Text="{Binding Data.Name, UpdateSourceTrigger=PropertyChanged}" Visibility="{Binding DataContext.IsSettingMode, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}, Converter={StaticResource b2vConv}}" />
-									<TextBlock Grid.Row="1" Text="{Binding Data.Name}" Visibility="{Binding DataContext.IsSettingMode, 
-																RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}, 
-																Converter={StaticResource br2vConv}}" HorizontalAlignment="Center"/>
-								</Grid>
-							</ControlTemplate>
-						</Button.Template>
-					</Button>
-				</DataTemplate>
-			</ItemsControl.ItemTemplate>
-		</ItemsControl>
+		<ListView ItemsSource="{Binding Items}" SelectedItem="{Binding SelectedPanel}" SelectionMode="Single">
+			<ListView.View>
+				<GridView>
+					<GridViewColumn Header="順位" DisplayMemberBinding="{Binding Rank}"/>
+					<GridViewColumn Header="キー" DisplayMemberBinding="{Binding Data.Key}"/>
+					<GridViewColumn Header="解答可能" >
+						<GridViewColumn.CellTemplate>
+							<DataTemplate>
+								<CheckBox IsChecked="{Binding CanAnswer}" />
+							</DataTemplate>
+						</GridViewColumn.CellTemplate>
+					</GridViewColumn>
+					<GridViewColumn Header="名前" >
+						<GridViewColumn.CellTemplate>
+							<DataTemplate>
+								<TextBox MinWidth="100" Text="{Binding Data.Name}" />
+							</DataTemplate>
+						</GridViewColumn.CellTemplate>
+					</GridViewColumn>
+					<GridViewColumn Header="色" >
+						<GridViewColumn.CellTemplate>
+							<DataTemplate>
+								<xctk:ColorPicker SelectedColor="{Binding Data.PanelColor}" />
+							</DataTemplate>
+						</GridViewColumn.CellTemplate>
+					</GridViewColumn>
+					<GridViewColumn Header="デバイス" DisplayMemberBinding="{Binding Data.DeviceGuid}"/>
+				</GridView>
+			</ListView.View>
+		</ListView>
 	</DockPanel>
 </Window>
