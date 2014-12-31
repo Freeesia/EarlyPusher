@@ -1,0 +1,157 @@
+﻿<Window x:Class="HayaoshiPusher.Views.SettingWindow" 
+		xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+		xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" 
+		xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions" 
+		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+		xmlns:b="clr-namespace:StFrLibs.Core.Behaviors;assembly=StFrCore"
+		xmlns:c="clr-namespace:StFrLibs.Core.Converter;assembly=StFrCore"
+		xmlns:ctrl="clr-namespace:HayaoshiPusher.Controls"
+		xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+		Title="SettingWindow" Height="350" Width="525">
+	<Window.Resources>
+		<c:BoolReverseConverter x:Key="brConv" />
+		<c:BoolToVisibilityConverter x:Key="b2vConv" True="Visible" False="Collapsed" />
+		<c:CombiningConverter x:Key="br2vConv" Converter1="{StaticResource brConv}" Converter2="{StaticResource b2vConv}" />
+		<c:ColorToBrushConverter x:Key="c2bConv"/>
+	</Window.Resources>
+	<i:Interaction.Triggers>
+		<i:EventTrigger EventName="Loaded">
+			<i:InvokeCommandAction Command="{Binding LoadedCommand}" />
+		</i:EventTrigger>
+		<i:EventTrigger EventName="Closing">
+			<i:InvokeCommandAction Command="{Binding ClosingCommand}" />
+		</i:EventTrigger>
+	</i:Interaction.Triggers>
+	<DockPanel>
+		<Menu DockPanel.Dock="Top">
+			<MenuItem Header="検索" Command="{Binding SearchCommand}" IsEnabled="{Binding IsSettingMode}" />
+			<MenuItem Header="パネル追加" Command="{Binding AddPanelCommand}" IsEnabled="{Binding IsSettingMode}" />
+			<MenuItem Header="パネル削除" Command="{Binding DelPanelCommand}" IsEnabled="{Binding IsSettingMode}" />
+			<MenuItem Header="サウンド追加" Command="{Binding AddSoundCommand}" IsEnabled="{Binding IsSettingMode}" />
+			<MenuItem Header="サウンド削除" Command="{Binding DelSoundCommand}" IsEnabled="{Binding IsSettingMode}" />
+			<MenuItem Header="スタート(_S)" Command="{Binding StartCommand}" IsEnabled="{Binding IsSettingMode, Converter={StaticResource brConv}}"/>
+			<MenuItem Header="休みリセット(_R)" Command="{Binding ResetCommand}" />
+			<MenuItem Header="プレイウィンドウ">
+				<MenuItem Header="ウィンドウ表示/非表示(_W)" Command="{Binding WindowCommand}" />
+				<MenuItem Header="ウィンドウ最大化(_M)" Command="{Binding WindowMaxCommand}" />
+			</MenuItem>
+		</Menu>
+		<ListBox Width="150" ItemsSource="{Binding Devices}" />
+		<WrapPanel Orientation="Horizontal" DockPanel.Dock="Top">
+			<TextBlock Text=" UpdateTime : " />
+			<TextBlock Text="{Binding UpdateTime}" Width="60" />
+			<ToggleButton Content="設定モード(_C)" IsChecked="{Binding IsSettingMode}" />
+			<TextBlock Text="改行個数 : " />
+			<xctk:IntegerUpDown Minimum="1" Value="{Binding WrapCount}" Width="60" />
+		</WrapPanel>
+		<Grid DockPanel.Dock="Top" Margin="5">
+			<Grid.RowDefinitions>
+				<RowDefinition Height="Auto"/>
+				<RowDefinition Height="Auto"/>
+			</Grid.RowDefinitions>
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="Auto" />
+				<ColumnDefinition Width="*" />
+				<ColumnDefinition Width="Auto" />
+				<ColumnDefinition Width="Auto" />
+			</Grid.ColumnDefinitions>
+
+			<TextBlock Grid.Column="0" Grid.Row="0" Text="解答音" />
+			<TextBox Grid.Column="1" Grid.Row="0" Text="{Binding AnserSound.Path}" />
+			<Button Grid.Column="2" Grid.Row="0" Content="参照" Command="{Binding SelectAnserSoundCommand}" />
+			<Button Grid.Column="3" Grid.Row="0" Content="再生" Command="{Binding AnserSound.PlayCommand}" />			
+		</Grid>
+		<ListView ItemsSource="{Binding Sounds}" SelectedItem="{Binding SelectedSound}" DockPanel.Dock="Top" Margin="5">
+			<ListView.View>
+				<GridView AllowsColumnReorder="False" >
+					<GridView.ColumnHeaderContainerStyle>
+						<Style>
+							<Setter Property="UIElement.Visibility" Value="Collapsed"/>
+						</Style>
+					</GridView.ColumnHeaderContainerStyle>
+					<GridViewColumn Width="Auto">
+						<GridViewColumn.CellTemplate>
+							<DataTemplate>
+								<Button Content="再生" Command="{Binding PlayCommand}" />
+							</DataTemplate>
+						</GridViewColumn.CellTemplate>
+					</GridViewColumn>
+					<GridViewColumn Width="Auto">
+						<GridViewColumn.CellTemplate>
+							<DataTemplate>
+								<ToggleButton Content="一時停止" Command="{Binding PauseCommand}" />
+							</DataTemplate>
+						</GridViewColumn.CellTemplate>
+					</GridViewColumn>
+					<GridViewColumn Width="Auto">
+						<GridViewColumn.CellTemplate>
+							<DataTemplate>
+								<Button Content="停止" Command="{Binding StopCommand}" />
+							</DataTemplate>
+						</GridViewColumn.CellTemplate>
+					</GridViewColumn>
+					<GridViewColumn DisplayMemberBinding="{Binding Path}" Width="Auto"/>
+				</GridView>
+			</ListView.View>
+		</ListView>
+		<!--<ScrollViewer Height="100" DockPanel.Dock="Bottom">
+			<TextBox Text="{Binding Log}" x:Name="log" AcceptsReturn="True" IsReadOnly="True" />
+		</ScrollViewer>-->
+		<ItemsControl ItemsSource="{Binding Items}">
+			<ItemsControl.ItemsPanel>
+				<ItemsPanelTemplate>
+					<ctrl:FixedWrapPanel Orientation="Horizontal" WrapCount="{Binding WrapCount}" />
+				</ItemsPanelTemplate>
+			</ItemsControl.ItemsPanel>
+			<ItemsControl.ItemTemplate>
+				<DataTemplate>
+					<Button Command="{Binding DataContext.SelectCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}" CommandParameter="{Binding}">
+						<Button.Template>
+							<ControlTemplate>
+								<Grid Margin="5 0 5 15">
+									<Grid.RowDefinitions>
+										<RowDefinition Height="*" />
+										<RowDefinition Height="Auto" />
+									</Grid.RowDefinitions>
+									<Border Grid.Row="0" Width="100" Height="100" CornerRadius="10" BorderThickness="5" 
+										Background="{Binding Data.PanelColor, Converter={StaticResource c2bConv}}"
+										Opacity="{Binding Opacity}" >
+										<i:Interaction.Triggers>
+											<ei:DataTrigger Binding="{Binding IsSelected}" Value="true">
+												<ei:ChangePropertyAction PropertyName="BorderBrush" Value="LightSkyBlue" />
+											</ei:DataTrigger>
+											<ei:DataTrigger Binding="{Binding IsSelected}" Value="false">
+												<ei:ChangePropertyAction PropertyName="BorderBrush" Value="Transparent" />
+											</ei:DataTrigger>
+										</i:Interaction.Triggers>
+										<Grid>
+											<StackPanel Orientation="Vertical" Margin="5" Visibility="{Binding DataContext.IsSettingMode, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}, Converter={StaticResource b2vConv}}">
+												<TextBlock Text="Guid:" />
+												<TextBlock Text="{Binding Data.DeviceGuid}" />
+												<TextBlock Text="Key:" />
+												<TextBlock Text="{Binding Data.Key}" />
+											</StackPanel>
+											<TextBlock Text="{Binding Rank}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="72" Visibility="{Binding DataContext.IsSettingMode, 
+																RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}, 
+																Converter={StaticResource br2vConv}}" />
+										</Grid>
+										<Border.ContextMenu>
+											<ContextMenu>
+												<xctk:ColorPicker SelectedColor="{Binding Data.PanelColor}"/>
+												<CheckBox Content="解答可能" IsChecked="{Binding CanAnswer}"/>
+											</ContextMenu>
+										</Border.ContextMenu>
+									</Border>
+									<TextBox Grid.Row="1" Text="{Binding Data.Name, UpdateSourceTrigger=PropertyChanged}" Visibility="{Binding DataContext.IsSettingMode, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}, Converter={StaticResource b2vConv}}" />
+									<TextBlock Grid.Row="1" Text="{Binding Data.Name}" Visibility="{Binding DataContext.IsSettingMode, 
+																RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}, 
+																Converter={StaticResource br2vConv}}" HorizontalAlignment="Center"/>
+								</Grid>
+							</ControlTemplate>
+						</Button.Template>
+					</Button>
+				</DataTemplate>
+			</ItemsControl.ItemTemplate>
+		</ItemsControl>
+	</DockPanel>
+</Window>

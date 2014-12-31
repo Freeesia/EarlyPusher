@@ -1,0 +1,33 @@
+﻿<Window x:Class="HayaoshiPusher.Views.PlayWindow"
+		xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+		xmlns:c="clr-namespace:StFrLibs.Core.Converter;assembly=StFrCore"
+		xmlns:ctrl="clr-namespace:HayaoshiPusher.Controls"
+		Title="PlayWindow" Height="300" Width="300" WindowStyle="None" AllowsTransparency="True" ResizeMode="CanResizeWithGrip">
+	<Window.Resources>
+		<c:ColorToBrushConverter x:Key="c2bConv"/>
+	</Window.Resources>
+	<ctrl:ScaleFitControl>
+		<ItemsControl ItemsSource="{Binding Items}">
+			<ItemsControl.ItemsPanel>
+				<ItemsPanelTemplate>
+					<ctrl:FixedWrapPanel Orientation="Horizontal" WrapCount="{Binding WrapCount}" />
+				</ItemsPanelTemplate>
+			</ItemsControl.ItemsPanel>
+			<ItemsControl.ItemTemplate>
+				<DataTemplate>
+					<StackPanel Orientation="Vertical" Margin="5 0 5 15">
+						<Border Grid.Row="0" Width="100" Height="100" CornerRadius="10" BorderThickness="5" 
+										Background="{Binding Data.PanelColor, Converter={StaticResource c2bConv}}"
+										Opacity="{Binding Opacity}" >
+							<Grid>
+								<TextBlock Text="{Binding Rank}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="72" />
+							</Grid>
+						</Border>
+						<TextBlock Grid.Row="1" Text="{Binding Data.Name}" HorizontalAlignment="Center"/>
+					</StackPanel>
+				</DataTemplate>
+			</ItemsControl.ItemTemplate>
+		</ItemsControl>
+	</ctrl:ScaleFitControl>
+</Window>
