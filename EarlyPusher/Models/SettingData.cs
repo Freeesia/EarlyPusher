@@ -11,6 +11,7 @@ namespace EarlyPusher.Models
 	{
 		public const string FileName = "conf.xml";
 		private List<PanelData> keyBindCollection;
+		private string videoDir;
 		private string anserSoundPath;
 		private int wrapCount = 4;
 		private List<string> soundPaths;
@@ -24,6 +25,12 @@ namespace EarlyPusher.Models
 		public List<string> SoundPaths
 		{
 			get { return soundPaths; }
+		}
+
+		public string VideoDir
+		{
+			get { return videoDir; }
+			set { SetProperty( ref videoDir, value ); }
 		}
 
 		public string AnserSoundPath

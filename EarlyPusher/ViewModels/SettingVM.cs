@@ -18,6 +18,7 @@ using System.Xml.Serialization;
 using System.Windows.Media;
 using Microsoft.Win32;
 using EarlyPusher.Views;
+using Ookii.Dialogs.Wpf;
 
 namespace EarlyPusher.ViewModels
 {
@@ -31,15 +32,20 @@ namespace EarlyPusher.ViewModels
 		private DispatchObservableCollection<string> devices;
 		private DispatchObservableCollection<ItemVM> items;
 		private DispatchObservableCollection<SoundVM> sounds;
+		private DispatchObservableCollection<VideoVM> videos;
 		private long updateTime;
 		private bool isSettingMode = true;
 		private int rank = 0;
 		private int wrapCount = 1;
+		private string videoDir;
 
 		private SoundVM anserSound;
 		private ItemVM selectedPanel;
 		private SoundVM selectedSound;
 		private PlayWindow window;
+
+		private Uri videoSource;
+		private bool isVideoPlaying;
 
 		#region プロパティ
 
@@ -58,7 +64,11 @@ namespace EarlyPusher.ViewModels
 
 		public DelegateCommand AddSoundCommand { get; private set; }
 		public DelegateCommand DelSoundCommand { get; private set; }
+
+		public DelegateCommand SelectVideoDirCommand { get; private set; }
 		public DelegateCommand SelectAnserSoundCommand { get; private set; }
+
+		public DelegateCommand PlayVideoCommand { get; private set; }
 
 		public DispatchObservableCollection<string> Devices
 		{
@@ -73,6 +83,14 @@ namespace EarlyPusher.ViewModels
 			get
 			{
 				return this.items;
+			}
+		}
+
+		public DispatchObservableCollection<VideoVM> Videos
+		{
+			get
+			{
+				return this.videos;
 			}
 		}
 
@@ -105,6 +123,12 @@ namespace EarlyPusher.ViewModels
 			set { SetProperty( ref isSettingMode, value, SettingChanged ); }
 		}
 
+		public string VideoDir
+		{
+			get { return videoDir; }
+			set { SetProperty( ref videoDir, value, LoadVideos ); }
+		}
+
 		public SoundVM AnserSound
 		{
 			get { return anserSound; }
@@ -122,6 +146,19 @@ namespace EarlyPusher.ViewModels
 			set { SetProperty( ref selectedSound, value, SelectedSoundChanged ); }
 		}
 
+		public Uri VideoSource
+		{
+			get { return videoSource; }
+			set { SetProperty( ref videoSource, value ); }
+		}
+
+		public bool IsVideoPlaying
+		{
+			get { return isVideoPlaying; }
+			set { SetProperty( ref isVideoPlaying, value ); }
+		}
+
+
 		#endregion
 
 		public SettingVM()
@@ -135,9 +172,11 @@ namespace EarlyPusher.ViewModels
 			this.ResetCommand = new DelegateCommand( Reset, null );
 			this.WindowCommand = new DelegateCommand( ShowCloseWindow, null );
 			this.WindowMaxCommand = new DelegateCommand( MaximazeWindow, CanMaximaize );
+			this.SelectVideoDirCommand = new DelegateCommand( SelectVideoDir, null );
 			this.SelectAnserSoundCommand = new DelegateCommand( SelectAnser, null );
 			this.AddSoundCommand = new DelegateCommand( AddSound, null );
 			this.DelSoundCommand = new DelegateCommand( DelSound, CanDelSound );
+			this.PlayVideoCommand = new DelegateCommand( PlayVideo );
 
 			this.manager = new DeviceManager();
 			this.manager.Devices.CollectionChanged += Devices_CollectionChanged;
@@ -146,6 +185,7 @@ namespace EarlyPusher.ViewModels
 			this.devices = new DispatchObservableCollection<string>();
 			this.items = new DispatchObservableCollection<ItemVM>();
 			this.sounds = new DispatchObservableCollection<SoundVM>();
+			this.videos = new DispatchObservableCollection<VideoVM>();
 			this.logBuilder = new StringBuilder();
 		}
 
@@ -219,6 +259,23 @@ namespace EarlyPusher.ViewModels
 			this.SelectedPanel = null;
 		}
 
+		private void SelectVideoDir( object obj )
+		{
+			VistaFolderBrowserDialog dlg = new VistaFolderBrowserDialog();
+			if( string.IsNullOrEmpty(this.VideoDir) )
+			{
+				dlg.SelectedPath = AppDomain.CurrentDomain.BaseDirectory;
+			}
+			else
+			{
+				dlg.SelectedPath = this.VideoDir;
+			}
+			if( dlg.ShowDialog() == true )
+			{
+				this.VideoDir = dlg.SelectedPath;
+			}
+		}
+
 		private void SelectAnser( object obj )
 		{
 			OpenFileDialog dlg = new OpenFileDialog();
@@ -277,6 +334,13 @@ namespace EarlyPusher.ViewModels
 			this.manager.SearchDevice();
 		}
 
+		private void PlayVideo( object obj )
+		{
+			Contract.Assert( obj is string );
+			this.IsVideoPlaying = false;
+			this.VideoSource = new Uri( obj as string );
+		}
+
 		#endregion
 
 		#region イベント関係
@@ -304,6 +368,7 @@ namespace EarlyPusher.ViewModels
 					{
 						this.AnserSound.PlayCommand.Execute( null );
 					}
+					this.IsVideoPlaying = false;
 				}
 			}
 		}
@@ -386,6 +451,7 @@ namespace EarlyPusher.ViewModels
 			{
 				this.sounds.Add( new SoundVM() { Path = item } );
 			}
+			this.VideoDir = this.data.VideoDir;
 			this.AnserSound = new SoundVM() { Path = this.data.AnserSoundPath };
 			this.WrapCount = this.data.WrapCount;
 		}
@@ -405,6 +471,7 @@ namespace EarlyPusher.ViewModels
 			{
 				this.data.SoundPaths.Add( item.Path );
 			}
+			this.data.VideoDir = this.VideoDir;
 			this.data.AnserSoundPath = this.AnserSound.Path;
 			this.data.WrapCount = this.WrapCount;
 
@@ -422,6 +489,18 @@ namespace EarlyPusher.ViewModels
 			rank = 0;
 			this.SelectedPanel = null;
 			InitRank();
+		}
+
+		private void LoadVideos( bool isSucceed )
+		{
+			if( isSucceed )
+			{
+				this.Videos.Clear();
+				foreach( string path in Directory.EnumerateFiles( this.VideoDir, "*", SearchOption.AllDirectories ) )
+				{
+					this.Videos.Add( new VideoVM() { FilePath = path } );
+				}
+			}
 		}
 
 		private void InitRank()
