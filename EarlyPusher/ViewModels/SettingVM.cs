@@ -493,7 +493,7 @@ namespace EarlyPusher.ViewModels
 
 		private void LoadVideos( bool isSucceed )
 		{
-			if( isSucceed )
+			if( isSucceed && !string.IsNullOrEmpty( this.VideoDir ) )
 			{
 				this.Videos.Clear();
 				foreach( string path in Directory.EnumerateFiles( this.VideoDir, "*", SearchOption.AllDirectories ) )
