@@ -7,7 +7,7 @@ using System.Windows.Media;
 
 namespace EarlyPusher.Models
 {
-	public class PanelData : ObservableObject
+	public class MemberData : ObservableObject
 	{
 		private Guid deviceGuid;
 		private int key;
@@ -22,14 +22,6 @@ namespace EarlyPusher.Models
 		{
 			get { return key; }
 			set { SetProperty( ref key, value ); }
-		}
-
-		private Color panelColor;
-
-		public Color PanelColor
-		{
-			get { return panelColor; }
-			set { SetProperty( ref panelColor, value ); }
 		}
 
 		private string name;

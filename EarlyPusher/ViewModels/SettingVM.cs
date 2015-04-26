@@ -26,21 +26,21 @@ namespace EarlyPusher.ViewModels
 	{
 		private SettingData data;
 
+		private SettingOnlyVM onlyVM;
+
 		private Dispatcher dispatcher = Dispatcher.CurrentDispatcher;
-		private StringBuilder logBuilder;
 		private DeviceManager manager;
-		private DispatchObservableCollection<string> devices;
-		private DispatchObservableCollection<ItemVM> items;
-		private DispatchObservableCollection<SoundVM> sounds;
-		private DispatchObservableCollection<VideoVM> videos;
+		private ObservableHashCollection<MemberVM> members = new ObservableHashCollection<MemberVM>();
+		private ObservableHashCollection<SoundVM> sounds = new ObservableHashCollection<SoundVM>();
+		private ObservableHashCollection<VideoVM> videos = new ObservableHashCollection<VideoVM>();
+
 		private long updateTime;
 		private bool isSettingMode = true;
 		private int rank = 0;
-		private int wrapCount = 1;
 		private string videoDir;
 
 		private SoundVM anserSound;
-		private ItemVM selectedPanel;
+		private MemberVM selectedMember;
 		private SoundVM selectedSound;
 		private PlayWindow window;
 
@@ -49,13 +49,11 @@ namespace EarlyPusher.ViewModels
 
 		#region プロパティ
 
-		public DelegateCommand SearchCommand { get; private set; }
-
 		public DelegateCommand LoadedCommand { get; private set; }
 		public DelegateCommand ClosingCommand { get; private set; }
 
-		public DelegateCommand AddPanelCommand { get; private set; }
-		public DelegateCommand DelPanelCommand { get; private set; }
+		public DelegateCommand AddMemberCommand { get; private set; }
+		public DelegateCommand DelMemberCommand { get; private set; }
 
 		public DelegateCommand StartCommand { get; private set; }
 		public DelegateCommand ResetCommand { get; private set; }
@@ -70,51 +68,43 @@ namespace EarlyPusher.ViewModels
 
 		public DelegateCommand PlayVideoCommand { get; private set; }
 
-		public DispatchObservableCollection<string> Devices
+		public DeviceManager Manager
+		{
+			get { return this.manager; }
+		}
+
+		public SettingOnlyVM SettingOnlyVM
+		{
+			get { return this.onlyVM; }
+			set { SetProperty( ref this.onlyVM, value ); }
+		}
+		
+		public ObservableHashCollection<MemberVM> Members
 		{
 			get
 			{
-				return this.devices;
+				return this.members;
 			}
 		}
 
-		public DispatchObservableCollection<ItemVM> Items
-		{
-			get
-			{
-				return this.items;
-			}
-		}
-
-		public DispatchObservableCollection<VideoVM> Videos
+		public ObservableHashCollection<VideoVM> Videos
 		{
 			get
 			{
 				return this.videos;
 			}
 		}
-
-		public ItemVM SelectedPanel
+		
+		public MemberVM SelectedMember
 		{
-			get { return selectedPanel; }
-			set { SetProperty( ref selectedPanel, value, SelectedPanelChanged ); }
-		}
-
-		public string Log
-		{
-			get { return this.logBuilder.ToString(); }
+			get { return selectedMember; }
+			set { SetProperty( ref selectedMember, value, SelectedPanelChanged ); }
 		}
 
 		public long UpdateTime
 		{
 			get { return updateTime; }
 			set { SetProperty( ref updateTime, value ); }
-		}
-
-		public int WrapCount
-		{
-			get { return wrapCount; }
-			set { SetProperty( ref wrapCount, value ); }
 		}
 
 		public bool IsSettingMode
@@ -135,7 +125,7 @@ namespace EarlyPusher.ViewModels
 			set { SetProperty( ref anserSound, value ); }
 		}
 
-		public DispatchObservableCollection<SoundVM> Sounds
+		public ObservableHashCollection<SoundVM> Sounds
 		{
 			get { return this.sounds; }
 		}
@@ -163,11 +153,10 @@ namespace EarlyPusher.ViewModels
 
 		public SettingVM()
 		{
-			this.SearchCommand = new DelegateCommand( SearchDevice, null );
 			this.LoadedCommand = new DelegateCommand( Inited, null );
 			this.ClosingCommand = new DelegateCommand( Closing, null );
-			this.AddPanelCommand = new DelegateCommand( AddPanel, null );
-			this.DelPanelCommand = new DelegateCommand( DelPanel, CanDelPanel );
+			this.AddMemberCommand = new DelegateCommand( AddMember, null );
+			this.DelMemberCommand = new DelegateCommand( DelMember, CanDelMember );
 			this.StartCommand = new DelegateCommand( Start, null );
 			this.ResetCommand = new DelegateCommand( Reset, null );
 			this.WindowCommand = new DelegateCommand( ShowCloseWindow, null );
@@ -178,15 +167,10 @@ namespace EarlyPusher.ViewModels
 			this.DelSoundCommand = new DelegateCommand( DelSound, CanDelSound );
 			this.PlayVideoCommand = new DelegateCommand( PlayVideo );
 
+
 			this.manager = new DeviceManager();
-			this.manager.Devices.CollectionChanged += Devices_CollectionChanged;
 			this.manager.PropertyChanged += Manager_PropertyChanged;
 			this.manager.KeyPushed += Manager_KeyPushed;
-			this.devices = new DispatchObservableCollection<string>();
-			this.items = new DispatchObservableCollection<ItemVM>();
-			this.sounds = new DispatchObservableCollection<SoundVM>();
-			this.videos = new DispatchObservableCollection<VideoVM>();
-			this.logBuilder = new StringBuilder();
 		}
 
 		#region コマンド関係
@@ -229,7 +213,7 @@ namespace EarlyPusher.ViewModels
 
 		private void Reset( object obj )
 		{
-			foreach( var item in this.Items )
+			foreach( var item in this.Members )
 			{
 				item.CanAnswer = true;
 			}
@@ -241,22 +225,21 @@ namespace EarlyPusher.ViewModels
 			InitRank();
 		}
 
-		private void AddPanel( object obj )
+		private void AddMember( object obj )
 		{
-			var item = new ItemVM();
-			item.Data = new PanelData();
-			this.Items.Add( item );
+			var team = obj as TeamData;
+			team.Members.Add( new MemberData() );
 		}
 
-		private bool CanDelPanel( object obj )
+		private bool CanDelMember( object obj )
 		{
-			return this.SelectedPanel != null;
+			return this.SelectedMember != null;
 		}
 
-		private void DelPanel( object obj )
+		private void DelMember( object obj )
 		{
-			this.Items.Remove( this.SelectedPanel );
-			this.SelectedPanel = null;
+			this.SelectedMember.Parent.Model.Members.Remove( this.SelectedMember.Model );
+			this.SelectedMember = null;
 		}
 
 		private void SelectVideoDir( object obj )
@@ -329,11 +312,6 @@ namespace EarlyPusher.ViewModels
 			this.manager.Dispose();
 		}
 
-		private void SearchDevice( object obj )
-		{
-			this.manager.SearchDevice();
-		}
-
 		private void PlayVideo( object obj )
 		{
 			Contract.Assert( obj is string );
@@ -347,19 +325,18 @@ namespace EarlyPusher.ViewModels
 
 		private void Manager_KeyPushed( object sender, DeviceKeyEventArgs e )
 		{
-			WriteLogLine( e.Key.ToString() );
 			if( this.IsSettingMode )
 			{
-				if( this.SelectedPanel != null )
+				if( this.SelectedMember != null )
 				{
-					Contract.Assert( this.SelectedPanel.Data != null );
-					this.SelectedPanel.Data.DeviceGuid = e.InstanceID;
-					this.SelectedPanel.Data.Key = e.Key;
+					Contract.Assert( this.SelectedMember.Model != null );
+					this.SelectedMember.Model.DeviceGuid = e.InstanceID;
+					this.SelectedMember.Model.Key = e.Key;
 				}
 			}
 			else
 			{
-				var item = this.Items.FirstOrDefault( i => i.Data.DeviceGuid == e.InstanceID && i.Data.Key == e.Key );
+				var item = this.Members.FirstOrDefault( i => i.Model.DeviceGuid == e.InstanceID && i.Model.Key == e.Key );
 				if( item != null && string.IsNullOrEmpty( item.Rank ) && item.CanAnswer )
 				{
 					rank++;
@@ -381,36 +358,6 @@ namespace EarlyPusher.ViewModels
 			}
 		}
 
-		private void Devices_CollectionChanged( object sender, NotifyCollectionChangedEventArgs e )
-		{
-			switch( e.Action )
-			{
-				case NotifyCollectionChangedAction.Add:
-				case NotifyCollectionChangedAction.Remove:
-				case NotifyCollectionChangedAction.Replace:
-					if( e.NewItems != null )
-					{
-						foreach( Device d in e.NewItems )
-						{
-							this.devices.Add( d.Information.InstanceName );
-						}
-					}
-					if( e.OldItems != null )
-					{
-						foreach( Device d in e.OldItems )
-						{
-							this.devices.Remove( d.Information.InstanceName );
-						}
-					}
-					break;
-				case NotifyCollectionChangedAction.Reset:
-					this.devices.Clear();
-					break;
-				default:
-					break;
-			}
-		}
-
 		private void SelectedSoundChanged( bool obj )
 		{
 			this.DelSoundCommand.RaiseCanExecuteChanged();
@@ -418,7 +365,7 @@ namespace EarlyPusher.ViewModels
 
 		private void SelectedPanelChanged( bool obj )
 		{
-			this.DelPanelCommand.RaiseCanExecuteChanged();
+			this.DelMemberCommand.RaiseCanExecuteChanged();
 		}
 
 		#endregion
@@ -430,30 +377,36 @@ namespace EarlyPusher.ViewModels
 		/// </summary>
 		private void LoadData()
 		{
-			if( File.Exists( SettingData.FileName ) )
+			try
 			{
-				using( FileStream file = new FileStream( SettingData.FileName, FileMode.Open ) )
+				if( File.Exists( SettingData.FileName ) )
 				{
-					XmlSerializer xml = new XmlSerializer( typeof( SettingData ) );
-					this.data = xml.Deserialize( file ) as SettingData;
+					using( FileStream file = new FileStream( SettingData.FileName, FileMode.Open ) )
+					{
+						XmlSerializer xml = new XmlSerializer( typeof( SettingData ) );
+						this.data = xml.Deserialize( file ) as SettingData;
+					}
 				}
 			}
-			else
+			catch
 			{
-				this.data = new SettingData();
+			}
+			finally
+			{
+				if( this.data == null )
+				{
+					this.data = new SettingData();
+				}
 			}
 
-			foreach( var item in this.data.KeyBindCollection )
-			{
-				this.Items.Add( new ItemVM() { Data = item } );
-			}
+			this.SettingOnlyVM = new SettingOnlyVM( this.data, this );
+
 			foreach( var item in this.data.SoundPaths )
 			{
 				this.sounds.Add( new SoundVM() { Path = item } );
 			}
 			this.VideoDir = this.data.VideoDir;
 			this.AnserSound = new SoundVM() { Path = this.data.AnserSoundPath };
-			this.WrapCount = this.data.WrapCount;
 		}
 
 		/// <summary>
@@ -461,11 +414,6 @@ namespace EarlyPusher.ViewModels
 		/// </summary>
 		public void SaveData()
 		{
-			this.data.KeyBindCollection.Clear();
-			foreach( var item in this.Items )
-			{
-				this.data.KeyBindCollection.Add( item.Data );
-			}
 			this.data.SoundPaths.Clear();
 			foreach( var item in this.sounds )
 			{
@@ -473,7 +421,6 @@ namespace EarlyPusher.ViewModels
 			}
 			this.data.VideoDir = this.VideoDir;
 			this.data.AnserSoundPath = this.AnserSound.Path;
-			this.data.WrapCount = this.WrapCount;
 
 			using( Stream file = new FileStream( SettingData.FileName, FileMode.Create ) )
 			{
@@ -487,7 +434,7 @@ namespace EarlyPusher.ViewModels
 		private void SettingChanged( bool isSucceed )
 		{
 			rank = 0;
-			this.SelectedPanel = null;
+			this.SelectedMember = null;
 			InitRank();
 		}
 
@@ -505,16 +452,10 @@ namespace EarlyPusher.ViewModels
 
 		private void InitRank()
 		{
-			foreach( var i in this.Items )
+			foreach( var i in this.Members )
 			{
 				i.Rank = string.Empty;
 			}
-		}
-
-		private void WriteLogLine( string str )
-		{
-			this.logBuilder.AppendLine( str );
-			this.NotifyPropertyChanged( "Log" );
 		}
 
 		public void DispatcherInvoke( Action action )

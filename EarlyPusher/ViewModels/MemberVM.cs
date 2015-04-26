@@ -10,16 +10,21 @@ using System.Windows.Media;
 
 namespace EarlyPusher.ViewModels
 {
-	public class ItemVM : ViewModelBase
+	public class MemberVM : ViewModelBase<MemberData>
 	{
-		private PanelData data;
+		private TeamVM parent;
 		private string rank = string.Empty;
 		private bool canAnswer = true;
 
-		public PanelData Data
+		public MemberVM( TeamVM parent, MemberData data )
+			: base( data )
 		{
-			get { return this.data; }
-			set { SetProperty( ref this.data, value ); }
+			this.parent = parent;
+		}
+
+		public TeamVM Parent
+		{
+			get { return this.parent; }
 		}
 
 		public string Rank
@@ -45,6 +50,5 @@ namespace EarlyPusher.ViewModels
 				return this.canAnswer ? 1.0 : 0.5;
 			}
 		}
-
 	}
 }

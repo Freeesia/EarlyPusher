@@ -72,9 +72,11 @@
     <Compile Include="Extensions\ListExtension.cs" />
     <Compile Include="Manager\DeviceKeyEventArgs.cs" />
     <Compile Include="Manager\DeviceManager.cs" />
-    <Compile Include="Models\PanelData.cs" />
+    <Compile Include="Models\MemberData.cs" />
     <Compile Include="Models\SettingData.cs" />
-    <Compile Include="ViewModels\ItemVM.cs" />
+    <Compile Include="Models\TeamData.cs" />
+    <Compile Include="ViewModels\MemberVM.cs" />
+    <Compile Include="ViewModels\SettingOnlyVM.cs" />
     <Compile Include="ViewModels\SettingVM.cs" />
     <Page Include="Views\PlayWindow.xaml">
       <SubType>Designer</SubType>
@@ -89,6 +91,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ViewModels\SoundVM.cs" />
+    <Compile Include="ViewModels\TeamVM.cs" />
     <Compile Include="ViewModels\VideoVM.cs" />
     <Compile Include="Views\PlayWindow.xaml.cs">
       <DependentUpon>PlayWindow.xaml</DependentUpon>

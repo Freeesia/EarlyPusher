@@ -4,22 +4,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace EarlyPusher.Models
 {
 	public class SettingData : ObservableObject
 	{
 		public const string FileName = "conf.xml";
-		private List<PanelData> keyBindCollection;
+		private ObservableHashCollection<TeamData> teamList;
 		private string videoDir;
 		private string anserSoundPath;
-		private int wrapCount = 4;
 		private List<string> soundPaths;
 
-
-		public List<PanelData> KeyBindCollection
+		public ObservableHashCollection<TeamData> TeamList
 		{
-			get { return keyBindCollection; }
+			get { return teamList; }
 		}
 
 		public List<string> SoundPaths
@@ -39,16 +38,9 @@ namespace EarlyPusher.Models
 			set { SetProperty( ref anserSoundPath, value ); }
 		}
 
-		public int WrapCount
-		{
-			get { return wrapCount; }
-			set { SetProperty( ref wrapCount, value ); }
-		}
-
-
 		public SettingData()
 		{
-			this.keyBindCollection = new List<PanelData>();
+			this.teamList = new ObservableHashCollection<TeamData>();
 			this.soundPaths = new List<string>();
 		}
 

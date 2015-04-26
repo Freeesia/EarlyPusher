@@ -8,8 +8,8 @@
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         Title="SettingWindow"
-        Width="525"
-        Height="350">
+        Width="700"
+        Height="500">
 	<Window.Resources>
 		<c:BoolReverseConverter x:Key="brConv" />
 		<c:BoolToVisibilityConverter x:Key="b2vConv"
@@ -29,16 +29,25 @@
 			<i:InvokeCommandAction Command="{Binding ClosingCommand}" />
 		</i:EventTrigger>
 	</i:Interaction.Triggers>
-	<DockPanel>
-		<Menu DockPanel.Dock="Top">
-			<MenuItem Command="{Binding SearchCommand}"
-			          Header="検索"
-			          IsEnabled="{Binding IsSettingMode}" />
-			<MenuItem Command="{Binding AddPanelCommand}"
-			          Header="パネル追加"
-			          IsEnabled="{Binding IsSettingMode}" />
-			<MenuItem Command="{Binding DelPanelCommand}"
-			          Header="パネル削除"
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="*" />
+		</Grid.RowDefinitions>
+		<Menu Grid.Row="0" DockPanel.Dock="Top">
+			<MenuItem Header="メンバー追加"
+			          IsEnabled="{Binding IsSettingMode}"
+			          ItemsSource="{Binding SettingOnlyVM.Teams}">
+				<MenuItem.ItemContainerStyle>
+					<Style TargetType="MenuItem">
+						<Setter Property="Header" Value="{Binding Model.TeamName}" />
+						<Setter Property="Command" Value="{Binding DataContext.AddMemberCommand, RelativeSource={RelativeSource AncestorType=Window, Mode=FindAncestor}}" />
+						<Setter Property="CommandParameter" Value="{Binding Model}" />
+					</Style>
+				</MenuItem.ItemContainerStyle>
+			</MenuItem>
+			<MenuItem Command="{Binding DelMemberCommand}"
+			          Header="メンバー削除"
 			          IsEnabled="{Binding IsSettingMode}" />
 			<MenuItem Command="{Binding AddSoundCommand}"
 			          Header="サウンド追加"
@@ -56,162 +65,211 @@
 				<MenuItem Command="{Binding WindowMaxCommand}" Header="ウィンドウ最大化(_M)" />
 			</MenuItem>
 		</Menu>
-		<Grid Width="150">
-			<Grid.RowDefinitions>
-				<RowDefinition Height="*" />
-				<RowDefinition Height="Auto" />
-				<RowDefinition Height="4*" />
-				<RowDefinition Height="Auto" />
-			</Grid.RowDefinitions>
-			<ListBox Grid.Row="0" ItemsSource="{Binding Devices}" />
-			<GridSplitter Grid.Row="1"
-			              Height="5"
-			              HorizontalAlignment="Stretch"
-			              VerticalAlignment="Center"
-			              ResizeDirection="Rows"
-			              ShowsPreview="True" />
-			<ListBox Grid.Row="2" ItemsSource="{Binding Videos}">
-				<ListBox.ItemTemplate>
-					<DataTemplate>
-						<ContentControl Content="{Binding FileName}">
-							<i:Interaction.Triggers>
-								<i:EventTrigger EventName="MouseDoubleClick">
-									<i:InvokeCommandAction Command="{Binding DataContext.PlayVideoCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}" CommandParameter="{Binding FilePath}" />
-								</i:EventTrigger>
-							</i:Interaction.Triggers>
-						</ContentControl>
-					</DataTemplate>
-				</ListBox.ItemTemplate>
-			</ListBox>
 
-			<ToggleButton Grid.Row="3"
-			              Content="再生/一時停止(_P)"
-			              IsChecked="{Binding IsVideoPlaying}"
-			              IsEnabled="{Binding VideoSource,
-			                                  Converter={StaticResource nullConv}}" />
-		</Grid>
-		<WrapPanel DockPanel.Dock="Top" Orientation="Horizontal">
-			<TextBlock Text=" UpdateTime : " />
-			<TextBlock Width="60" Text="{Binding UpdateTime}" />
-			<ToggleButton Content="設定モード(_C)" IsChecked="{Binding IsSettingMode}" />
-			<TextBlock Text="チーム数 : " />
-			<xctk:IntegerUpDown Width="60"
-			                    Minimum="1"
-			                    Value="{Binding WrapCount}" />
-		</WrapPanel>
-		<Grid Margin="5" DockPanel.Dock="Top">
-			<Grid.RowDefinitions>
-				<RowDefinition Height="Auto" />
-				<RowDefinition Height="Auto" />
-			</Grid.RowDefinitions>
-			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="Auto" />
-				<ColumnDefinition Width="*" />
-				<ColumnDefinition Width="Auto" />
-				<ColumnDefinition Width="Auto" />
-			</Grid.ColumnDefinitions>
+		<TabControl Grid.Row="1">
+			<TabItem Header="メインタブ">
+				<DockPanel>
+					<Grid Width="150">
+						<Grid.RowDefinitions>
+							<RowDefinition Height="*" />
+							<RowDefinition Height="Auto" />
+						</Grid.RowDefinitions>
+						<ListBox Grid.Row="0" ItemsSource="{Binding Videos}">
+							<ListBox.ItemTemplate>
+								<DataTemplate>
+									<ContentControl Content="{Binding FileName}">
+										<i:Interaction.Triggers>
+											<i:EventTrigger EventName="MouseDoubleClick">
+												<i:InvokeCommandAction Command="{Binding DataContext.PlayVideoCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}" CommandParameter="{Binding FilePath}" />
+											</i:EventTrigger>
+										</i:Interaction.Triggers>
+									</ContentControl>
+								</DataTemplate>
+							</ListBox.ItemTemplate>
+						</ListBox>
 
-			<TextBlock Grid.Row="0"
-			           Grid.Column="0"
-			           Text="ビデオフォルダ" />
-			<TextBox Grid.Row="0"
-			         Grid.Column="1"
-			         IsReadOnly="True"
-			         Text="{Binding VideoDir}" />
-			<Button Grid.Row="0"
-			        Grid.Column="2"
-			        Grid.ColumnSpan="2"
-			        Command="{Binding SelectVideoDirCommand}"
-			        Content="参照" />
+						<ToggleButton Grid.Row="1"
+						              Content="再生/一時停止(_P)"
+						              IsChecked="{Binding IsVideoPlaying}"
+						              IsEnabled="{Binding VideoSource,
+						                                  Converter={StaticResource nullConv}}" />
+					</Grid>
+					<WrapPanel DockPanel.Dock="Top" Orientation="Horizontal">
+						<TextBlock Text=" UpdateTime : " />
+						<TextBlock Width="60" Text="{Binding UpdateTime}" />
+						<CheckBox Content="設定モード(_C)" IsChecked="{Binding IsSettingMode}" />
+					</WrapPanel>
+					<Grid Margin="5" DockPanel.Dock="Top">
+						<Grid.RowDefinitions>
+							<RowDefinition Height="Auto" />
+							<RowDefinition Height="Auto" />
+						</Grid.RowDefinitions>
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="Auto" />
+							<ColumnDefinition Width="*" />
+							<ColumnDefinition Width="Auto" />
+							<ColumnDefinition Width="Auto" />
+						</Grid.ColumnDefinitions>
 
-			<TextBlock Grid.Row="1"
-			           Grid.Column="0"
-			           Text="解答音" />
-			<TextBox Grid.Row="1"
-			         Grid.Column="1"
-			         IsReadOnly="True"
-			         Text="{Binding AnserSound.Path}" />
-			<Button Grid.Row="1"
-			        Grid.Column="2"
-			        Command="{Binding SelectAnserSoundCommand}"
-			        Content="参照" />
-			<Button Grid.Row="1"
-			        Grid.Column="3"
-			        Command="{Binding AnserSound.PlayCommand}"
-			        Content="再生" />
-		</Grid>
-		<ListView Margin="5"
-		          DockPanel.Dock="Top"
-		          ItemsSource="{Binding Sounds}"
-		          SelectedItem="{Binding SelectedSound}">
-			<ListView.View>
-				<GridView AllowsColumnReorder="False">
-					<GridView.ColumnHeaderContainerStyle>
-						<Style>
-							<Setter Property="UIElement.Visibility" Value="Collapsed" />
-						</Style>
-					</GridView.ColumnHeaderContainerStyle>
-					<GridViewColumn Width="Auto">
-						<GridViewColumn.CellTemplate>
-							<DataTemplate>
-								<Button Command="{Binding PlayCommand}" Content="再生" />
-							</DataTemplate>
-						</GridViewColumn.CellTemplate>
-					</GridViewColumn>
-					<GridViewColumn Width="Auto">
-						<GridViewColumn.CellTemplate>
-							<DataTemplate>
-								<ToggleButton Command="{Binding PauseCommand}" Content="一時停止" />
-							</DataTemplate>
-						</GridViewColumn.CellTemplate>
-					</GridViewColumn>
-					<GridViewColumn Width="Auto">
-						<GridViewColumn.CellTemplate>
-							<DataTemplate>
-								<Button Command="{Binding StopCommand}" Content="停止" />
-							</DataTemplate>
-						</GridViewColumn.CellTemplate>
-					</GridViewColumn>
-					<GridViewColumn Width="Auto" DisplayMemberBinding="{Binding Path}" />
-				</GridView>
-			</ListView.View>
-		</ListView>
-		<!--
-			<ScrollViewer Height="100" DockPanel.Dock="Bottom">
-			<TextBox Text="{Binding Log}" x:Name="log" AcceptsReturn="True" IsReadOnly="True" />
-			</ScrollViewer>
-		-->
-		<ListView ItemsSource="{Binding Items}"
-		          SelectedItem="{Binding SelectedPanel}"
-		          SelectionMode="Single">
-			<ListView.View>
-				<GridView>
-					<GridViewColumn DisplayMemberBinding="{Binding Rank}" Header="順位" />
-					<GridViewColumn DisplayMemberBinding="{Binding Data.Key}" Header="キー" />
-					<GridViewColumn Header="解答可能">
-						<GridViewColumn.CellTemplate>
-							<DataTemplate>
-								<CheckBox IsChecked="{Binding CanAnswer}" />
-							</DataTemplate>
-						</GridViewColumn.CellTemplate>
-					</GridViewColumn>
-					<GridViewColumn Header="名前">
-						<GridViewColumn.CellTemplate>
-							<DataTemplate>
-								<TextBox MinWidth="100" Text="{Binding Data.Name}" />
-							</DataTemplate>
-						</GridViewColumn.CellTemplate>
-					</GridViewColumn>
-					<GridViewColumn Width="80" Header="色">
-						<GridViewColumn.CellTemplate>
-							<DataTemplate>
-								<xctk:ColorPicker SelectedColor="{Binding Data.PanelColor}" />
-							</DataTemplate>
-						</GridViewColumn.CellTemplate>
-					</GridViewColumn>
-					<GridViewColumn DisplayMemberBinding="{Binding Data.DeviceGuid}" Header="デバイス" />
-				</GridView>
-			</ListView.View>
-		</ListView>
-	</DockPanel>
+						<TextBlock Grid.Row="0"
+						           Grid.Column="0"
+						           Text="ビデオフォルダ" />
+						<TextBox Grid.Row="0"
+						         Grid.Column="1"
+						         IsReadOnly="True"
+						         Text="{Binding VideoDir}" />
+						<Button Grid.Row="0"
+						        Grid.Column="2"
+						        Grid.ColumnSpan="2"
+						        Command="{Binding SelectVideoDirCommand}"
+						        Content="参照" />
+
+						<TextBlock Grid.Row="1"
+						           Grid.Column="0"
+						           Text="解答音" />
+						<TextBox Grid.Row="1"
+						         Grid.Column="1"
+						         IsReadOnly="True"
+						         Text="{Binding AnserSound.Path}" />
+						<Button Grid.Row="1"
+						        Grid.Column="2"
+						        Command="{Binding SelectAnserSoundCommand}"
+						        Content="参照" />
+						<Button Grid.Row="1"
+						        Grid.Column="3"
+						        Command="{Binding AnserSound.PlayCommand}"
+						        Content="再生" />
+					</Grid>
+					<ListView Margin="5"
+					          DockPanel.Dock="Top"
+					          ItemsSource="{Binding Sounds}"
+					          SelectedItem="{Binding SelectedSound}">
+						<ListView.View>
+							<GridView AllowsColumnReorder="False">
+								<GridView.ColumnHeaderContainerStyle>
+									<Style>
+										<Setter Property="UIElement.Visibility" Value="Collapsed" />
+									</Style>
+								</GridView.ColumnHeaderContainerStyle>
+								<GridViewColumn Width="Auto">
+									<GridViewColumn.CellTemplate>
+										<DataTemplate>
+											<Button Command="{Binding PlayCommand}" Content="再生" />
+										</DataTemplate>
+									</GridViewColumn.CellTemplate>
+								</GridViewColumn>
+								<GridViewColumn Width="Auto">
+									<GridViewColumn.CellTemplate>
+										<DataTemplate>
+											<ToggleButton Command="{Binding PauseCommand}" Content="一時停止" />
+										</DataTemplate>
+									</GridViewColumn.CellTemplate>
+								</GridViewColumn>
+								<GridViewColumn Width="Auto">
+									<GridViewColumn.CellTemplate>
+										<DataTemplate>
+											<Button Command="{Binding StopCommand}" Content="停止" />
+										</DataTemplate>
+									</GridViewColumn.CellTemplate>
+								</GridViewColumn>
+								<GridViewColumn Width="Auto" DisplayMemberBinding="{Binding Path}" />
+							</GridView>
+						</ListView.View>
+					</ListView>
+					<ListView ItemsSource="{Binding Members}"
+					          SelectedItem="{Binding SelectedMember}"
+					          SelectionMode="Single">
+						<ListView.View>
+							<GridView>
+								<GridViewColumn DisplayMemberBinding="{Binding Rank}" Header="順位" />
+								<GridViewColumn Header="解答可能">
+									<GridViewColumn.CellTemplate>
+										<DataTemplate>
+											<CheckBox IsChecked="{Binding CanAnswer}" />
+										</DataTemplate>
+									</GridViewColumn.CellTemplate>
+								</GridViewColumn>
+								<GridViewColumn Header="チーム名">
+									<GridViewColumn.CellTemplate>
+										<DataTemplate>
+											<TextBlock Text="{Binding Parent.Model.TeamName}" />
+										</DataTemplate>
+									</GridViewColumn.CellTemplate>
+								</GridViewColumn>
+								<GridViewColumn Header="名前">
+									<GridViewColumn.CellTemplate>
+										<DataTemplate>
+											<TextBox MinWidth="100" Text="{Binding Model.Name}" />
+										</DataTemplate>
+									</GridViewColumn.CellTemplate>
+								</GridViewColumn>
+								<GridViewColumn DisplayMemberBinding="{Binding Model.Key}" Header="キー" />
+								<GridViewColumn DisplayMemberBinding="{Binding Model.DeviceGuid}" Header="デバイス" />
+							</GridView>
+						</ListView.View>
+					</ListView>
+				</DockPanel>
+			</TabItem>
+			<TabItem Header="設定専用" IsEnabled="{Binding IsSettingMode}">
+				<Grid DataContext="{Binding SettingOnlyVM}">
+					<Grid.RowDefinitions>
+						<RowDefinition Height="Auto" />
+						<RowDefinition Height="*" />
+					</Grid.RowDefinitions>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="*" />
+						<ColumnDefinition Width="Auto" />
+						<ColumnDefinition Width="3*" />
+					</Grid.ColumnDefinitions>
+
+					<GridSplitter Grid.RowSpan="2"
+					              Grid.Column="1"
+					              Height="3"
+					              HorizontalAlignment="Center"
+					              VerticalAlignment="Stretch"
+					              ResizeDirection="Columns"
+					              ShowsPreview="True" />
+
+					<Menu Grid.Row="0" Grid.Column="0">
+						<MenuItem Command="{Binding SearchCommand}" Header="検索" />
+					</Menu>
+					<Menu Grid.Row="0" Grid.Column="2">
+						<MenuItem Command="{Binding AddTeamCommand}" Header="追加" />
+						<MenuItem Command="{Binding DelTeamCommand}" Header="削除" />
+					</Menu>
+
+					<ListBox Grid.Row="1"
+					         Grid.Column="0"
+					         ItemsSource="{Binding Devices}" />
+
+					<ListView Grid.Row="1"
+					          Grid.Column="2"
+					          ItemsSource="{Binding Teams}"
+					          SelectedItem="{Binding SelectedTeam}"
+					          SelectionMode="Single">
+						<ListView.View>
+							<GridView>
+								<GridViewColumn Header="チーム名">
+									<GridViewColumn.CellTemplate>
+										<DataTemplate>
+											<TextBox MinWidth="100" Text="{Binding Model.TeamName}" />
+										</DataTemplate>
+									</GridViewColumn.CellTemplate>
+								</GridViewColumn>
+								<GridViewColumn Width="80" Header="チームカラー">
+									<GridViewColumn.CellTemplate>
+										<DataTemplate>
+											<xctk:ColorPicker SelectedColor="{Binding Model.TeamColor}" />
+										</DataTemplate>
+									</GridViewColumn.CellTemplate>
+								</GridViewColumn>
+							</GridView>
+						</ListView.View>
+					</ListView>
+
+				</Grid>
+			</TabItem>
+		</TabControl>
+
+	</Grid>
 </Window>
