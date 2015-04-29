@@ -176,38 +176,43 @@
 							</GridView>
 						</ListView.View>
 					</ListView>
-					<ListView ItemsSource="{Binding Members}"
+					<DataGrid AutoGenerateColumns="False"
+					          CanUserAddRows="False"
+					          CanUserDeleteRows="False"
+					          ItemsSource="{Binding Members}"
+					          RowHeaderWidth="0"
 					          SelectedItem="{Binding SelectedMember}"
 					          SelectionMode="Single">
-						<ListView.View>
-							<GridView>
-								<GridViewColumn DisplayMemberBinding="{Binding Rank}" Header="順位" />
-								<GridViewColumn Header="解答可能">
-									<GridViewColumn.CellTemplate>
-										<DataTemplate>
-											<CheckBox IsChecked="{Binding CanAnswer}" />
-										</DataTemplate>
-									</GridViewColumn.CellTemplate>
-								</GridViewColumn>
-								<GridViewColumn Header="チーム名">
-									<GridViewColumn.CellTemplate>
-										<DataTemplate>
-											<TextBlock Text="{Binding Parent.Model.TeamName}" />
-										</DataTemplate>
-									</GridViewColumn.CellTemplate>
-								</GridViewColumn>
-								<GridViewColumn Header="名前">
-									<GridViewColumn.CellTemplate>
-										<DataTemplate>
-											<TextBox MinWidth="100" Text="{Binding Model.Name}" />
-										</DataTemplate>
-									</GridViewColumn.CellTemplate>
-								</GridViewColumn>
-								<GridViewColumn DisplayMemberBinding="{Binding Model.Key}" Header="キー" />
-								<GridViewColumn DisplayMemberBinding="{Binding Model.DeviceGuid}" Header="デバイス" />
-							</GridView>
-						</ListView.View>
-					</ListView>
+						<DataGrid.Columns>
+							<DataGridTextColumn Binding="{Binding Rank}"
+							                    Header="順位"
+							                    IsReadOnly="True" />
+							<DataGridTemplateColumn Header="解答権" IsReadOnly="True">
+								<DataGridTemplateColumn.CellTemplate>
+									<DataTemplate>
+										<CheckBox HorizontalAlignment="Center"
+										          VerticalAlignment="Center"
+										          IsChecked="{Binding CanAnswer,
+										                              UpdateSourceTrigger=PropertyChanged}" />
+									</DataTemplate>
+								</DataGridTemplateColumn.CellTemplate>
+							</DataGridTemplateColumn>
+							<DataGridTextColumn MinWidth="100"
+							                    Binding="{Binding Model.Name}"
+							                    Header="名前" />
+							<DataGridTextColumn Binding="{Binding Parent.Model.TeamName}"
+							                    Header="チーム名"
+							                    IsReadOnly="True" />
+							<DataGridTextColumn Header="キー" IsReadOnly="True">
+								<DataGridTextColumn.Binding>
+									<MultiBinding StringFormat="{}{0} : {1}">
+										<Binding Path="Model.Key" />
+										<Binding Path="Model.DeviceGuid" />
+									</MultiBinding>
+								</DataGridTextColumn.Binding>
+							</DataGridTextColumn>
+						</DataGrid.Columns>
+					</DataGrid>
 				</DockPanel>
 			</TabItem>
 			<TabItem Header="設定専用" IsEnabled="{Binding IsSettingMode}">

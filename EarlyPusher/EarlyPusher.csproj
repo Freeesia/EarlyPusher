@@ -76,6 +76,7 @@
     <Compile Include="Models\SettingData.cs" />
     <Compile Include="Models\TeamData.cs" />
     <Compile Include="ViewModels\MemberVM.cs" />
+    <Compile Include="ViewModels\PlayViewModel.cs" />
     <Compile Include="ViewModels\SettingOnlyVM.cs" />
     <Compile Include="ViewModels\SettingVM.cs" />
     <Page Include="Views\PlayWindow.xaml">

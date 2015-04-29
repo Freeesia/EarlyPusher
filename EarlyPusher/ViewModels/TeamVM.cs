@@ -10,10 +10,10 @@ namespace EarlyPusher.ViewModels
 {
 	public class TeamVM : ViewModelBase<TeamData>
 	{
-		private ObservableHashCollection<MemberVM> members = new ObservableHashCollection<MemberVM>();
+		private ObservableHashVMCollection<MemberVM> members = new ObservableHashVMCollection<MemberVM>();
 		private ViewModelsAdapter<MemberVM,MemberData> adapter;
 
-		public ObservableHashCollection<MemberVM> Members
+		public ObservableHashVMCollection<MemberVM> Members
 		{
 			get { return this.members; }
 		}

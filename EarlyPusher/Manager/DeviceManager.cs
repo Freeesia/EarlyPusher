@@ -75,11 +75,6 @@ namespace EarlyPusher.Manager
 						case DeviceType.Joystick:
 							device = new Joystick( input, di.InstanceGuid );
 							break;
-						case DeviceType.Keyboard:
-#if DEBUG
-							device = new Keyboard( input );
-#endif
-							break;
 						default:
 							break;
 					}

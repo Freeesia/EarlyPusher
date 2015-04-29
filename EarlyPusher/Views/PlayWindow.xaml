@@ -35,38 +35,52 @@
 				</ei:DataTrigger>
 			</i:Interaction.Triggers>
 		</MediaElement>
-		<ctrl:ScaleFitControl Visibility="{Binding IsVideoPlaying, Converter={StaticResource f2vConv}}">
-			<ItemsControl ItemsSource="{Binding Items}">
+		<Viewbox Visibility="{Binding IsVideoPlaying, Converter={StaticResource f2vConv}}">
+			<ItemsControl ItemsSource="{Binding Teams}">
 				<ItemsControl.ItemsPanel>
 					<ItemsPanelTemplate>
-						<ctrl:FixedWrapPanel Orientation="Horizontal" WrapCount="{Binding WrapCount}" />
+						<StackPanel Orientation="Horizontal" />
 					</ItemsPanelTemplate>
 				</ItemsControl.ItemsPanel>
 				<ItemsControl.ItemTemplate>
 					<DataTemplate>
-						<StackPanel Margin="5 0 5 15" Orientation="Vertical">
-							<Border Grid.Row="0"
-							        Width="100"
-							        Height="100"
-							        Background="{Binding Data.PanelColor,
-							                             Converter={StaticResource c2bConv}}"
-							        BorderThickness="5"
-							        CornerRadius="10"
-							        Opacity="{Binding Opacity}">
-								<Grid>
-									<TextBlock HorizontalAlignment="Center"
-									           VerticalAlignment="Center"
-									           FontSize="72"
-									           Text="{Binding Rank}" />
-								</Grid>
-							</Border>
-							<TextBlock Grid.Row="1"
-							           HorizontalAlignment="Center"
-							           Text="{Binding Data.Name}" />
+						<StackPanel>
+							<Label HorizontalContentAlignment="Center" Content="{Binding Model.TeamName}" />
+							<ItemsControl ItemsSource="{Binding Members}">
+								<ItemsControl.ItemsPanel>
+									<ItemsPanelTemplate>
+										<StackPanel Orientation="Vertical" />
+									</ItemsPanelTemplate>
+								</ItemsControl.ItemsPanel>
+								<ItemsControl.ItemTemplate>
+									<DataTemplate>
+										<StackPanel Margin="5 0 5 15" Orientation="Vertical">
+											<Border Grid.Row="0"
+											        Width="100"
+											        Height="100"
+											        Background="{Binding Parent.Model.TeamColor,
+											                             Converter={StaticResource c2bConv}}"
+											        BorderThickness="5"
+											        CornerRadius="10"
+											        Opacity="{Binding Opacity}">
+												<Grid>
+													<TextBlock HorizontalAlignment="Center"
+													           VerticalAlignment="Center"
+													           FontSize="72"
+													           Text="{Binding Rank}" />
+												</Grid>
+											</Border>
+											<TextBlock Grid.Row="1"
+											           HorizontalAlignment="Center"
+											           Text="{Binding Model.Name}" />
+										</StackPanel>
+									</DataTemplate>
+								</ItemsControl.ItemTemplate>
+							</ItemsControl>
 						</StackPanel>
 					</DataTemplate>
 				</ItemsControl.ItemTemplate>
 			</ItemsControl>
-		</ctrl:ScaleFitControl>
+		</Viewbox>
 	</Grid>
 </Window>

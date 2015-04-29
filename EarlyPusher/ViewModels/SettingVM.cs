@@ -186,7 +186,7 @@ namespace EarlyPusher.ViewModels
 			else
 			{
 				this.window = new PlayWindow();
-				this.window.DataContext = this;
+				this.window.DataContext = new PlayViewModel( this.SettingOnlyVM.Teams );
 				this.window.Show();
 			}
 			this.WindowMaxCommand.RaiseCanExecuteChanged();

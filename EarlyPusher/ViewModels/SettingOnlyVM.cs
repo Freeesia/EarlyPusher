@@ -17,7 +17,7 @@ namespace EarlyPusher.ViewModels
 
 		private SettingVM parentVM;
 		private ObservableHashCollection<string> devices = new ObservableHashCollection<string>();
-		private ObservableHashCollection<TeamVM> teams = new ObservableHashCollection<TeamVM>();
+		private ObservableHashVMCollection<TeamVM> teams = new ObservableHashVMCollection<TeamVM>();
 		private TeamVM selectedTeam;
 
 		private ViewModelsAdapter<TeamVM,TeamData> teamAdapter;
