@@ -14,16 +14,10 @@ namespace EarlyPusher.Models
 		private ObservableHashCollection<TeamData> teamList;
 		private string videoDir;
 		private string anserSoundPath;
-		private List<string> soundPaths;
 
 		public ObservableHashCollection<TeamData> TeamList
 		{
 			get { return teamList; }
-		}
-
-		public List<string> SoundPaths
-		{
-			get { return soundPaths; }
 		}
 
 		public string VideoDir
@@ -41,7 +35,6 @@ namespace EarlyPusher.Models
 		public SettingData()
 		{
 			this.teamList = new ObservableHashCollection<TeamData>();
-			this.soundPaths = new List<string>();
 		}
 
 	}

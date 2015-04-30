@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,6 +23,8 @@ namespace EarlyPusher.ViewModels
 
 		private ViewModelsAdapter<TeamVM,TeamData> teamAdapter;
 
+		private long updateTime;
+
 		#endregion
 
 		#region プロパティ
@@ -32,6 +35,12 @@ namespace EarlyPusher.ViewModels
 			{
 				return this.devices;
 			}
+		}
+
+		public long UpdateTime
+		{
+			get { return updateTime; }
+			set { SetProperty( ref updateTime, value ); }
 		}
 
 		public ObservableHashCollection<TeamVM> Teams
@@ -65,6 +74,7 @@ namespace EarlyPusher.ViewModels
 			this.parentVM = parent;
 
 			this.parentVM.Manager.Devices.CollectionChanged += Devices_CollectionChanged;
+			this.parentVM.Manager.PropertyChanged += Manager_PropertyChanged;
 
 			this.teamAdapter = new ViewModelsAdapter<TeamVM, TeamData>( CreateTeamVM, DeleteTeamVM );
 			this.teamAdapter.Adapt( this.Teams, this.Model.TeamList );
@@ -80,6 +90,14 @@ namespace EarlyPusher.ViewModels
 		private void DeleteTeamVM( TeamVM vm )
 		{
 			vm.Members.CollectionChanged -= Members_CollectionChanged;
+		}
+
+		private void Manager_PropertyChanged( object sender, PropertyChangedEventArgs e )
+		{
+			if( e.PropertyName == "UpdateTime" )
+			{
+				this.UpdateTime = this.parentVM.Manager.UpdateTime;
+			}
 		}
 
 		private void Members_CollectionChanged( object sender, NotifyCollectionChangedEventArgs e )

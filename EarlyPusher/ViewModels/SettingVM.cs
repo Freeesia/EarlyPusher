@@ -31,17 +31,13 @@ namespace EarlyPusher.ViewModels
 		private Dispatcher dispatcher = Dispatcher.CurrentDispatcher;
 		private DeviceManager manager;
 		private ObservableHashCollection<MemberVM> members = new ObservableHashCollection<MemberVM>();
-		private ObservableHashCollection<SoundVM> sounds = new ObservableHashCollection<SoundVM>();
 		private ObservableHashCollection<VideoVM> videos = new ObservableHashCollection<VideoVM>();
-
-		private long updateTime;
 		private bool isSettingMode = true;
 		private int rank = 0;
 		private string videoDir;
 
 		private SoundVM anserSound;
 		private MemberVM selectedMember;
-		private SoundVM selectedSound;
 		private PlayWindow window;
 
 		private Uri videoSource;
@@ -59,9 +55,6 @@ namespace EarlyPusher.ViewModels
 		public DelegateCommand ResetCommand { get; private set; }
 		public DelegateCommand WindowCommand { get; private set; }
 		public DelegateCommand WindowMaxCommand { get; private set; }
-
-		public DelegateCommand AddSoundCommand { get; private set; }
-		public DelegateCommand DelSoundCommand { get; private set; }
 
 		public DelegateCommand SelectVideoDirCommand { get; private set; }
 		public DelegateCommand SelectAnserSoundCommand { get; private set; }
@@ -101,12 +94,6 @@ namespace EarlyPusher.ViewModels
 			set { SetProperty( ref selectedMember, value, SelectedPanelChanged ); }
 		}
 
-		public long UpdateTime
-		{
-			get { return updateTime; }
-			set { SetProperty( ref updateTime, value ); }
-		}
-
 		public bool IsSettingMode
 		{
 			get { return isSettingMode; }
@@ -123,17 +110,6 @@ namespace EarlyPusher.ViewModels
 		{
 			get { return anserSound; }
 			set { SetProperty( ref anserSound, value ); }
-		}
-
-		public ObservableHashCollection<SoundVM> Sounds
-		{
-			get { return this.sounds; }
-		}
-
-		public SoundVM SelectedSound
-		{
-			get { return selectedSound; }
-			set { SetProperty( ref selectedSound, value, SelectedSoundChanged ); }
 		}
 
 		public Uri VideoSource
@@ -163,13 +139,10 @@ namespace EarlyPusher.ViewModels
 			this.WindowMaxCommand = new DelegateCommand( MaximazeWindow, CanMaximaize );
 			this.SelectVideoDirCommand = new DelegateCommand( SelectVideoDir, null );
 			this.SelectAnserSoundCommand = new DelegateCommand( SelectAnser, null );
-			this.AddSoundCommand = new DelegateCommand( AddSound, null );
-			this.DelSoundCommand = new DelegateCommand( DelSound, CanDelSound );
 			this.PlayVideoCommand = new DelegateCommand( PlayVideo );
 
 
 			this.manager = new DeviceManager();
-			this.manager.PropertyChanged += Manager_PropertyChanged;
 			this.manager.KeyPushed += Manager_KeyPushed;
 		}
 
@@ -270,28 +243,6 @@ namespace EarlyPusher.ViewModels
 			}
 		}
 
-		private void AddSound( object obj )
-		{
-			OpenFileDialog dlg = new OpenFileDialog();
-			dlg.InitialDirectory = AppDomain.CurrentDomain.BaseDirectory;
-			dlg.Multiselect = false;
-			if( dlg.ShowDialog() == true )
-			{
-				this.Sounds.Add( new SoundVM() { Path = dlg.FileName } );
-			}
-		}
-
-		private bool CanDelSound( object obj )
-		{
-			return this.SelectedSound != null;
-		}
-
-		private void DelSound( object obj )
-		{
-			this.Sounds.Remove( this.SelectedSound );
-			this.SelectedSound = null;
-		}
-
 		private void Inited( object obj )
 		{
 			LoadData();
@@ -305,10 +256,6 @@ namespace EarlyPusher.ViewModels
 				this.window.Close();
 			}
 
-			foreach( var item in this.Sounds )
-			{
-				item.Dispose();
-			}
 			this.manager.Dispose();
 		}
 
@@ -350,19 +297,6 @@ namespace EarlyPusher.ViewModels
 			}
 		}
 
-		private void Manager_PropertyChanged( object sender, PropertyChangedEventArgs e )
-		{
-			if( e.PropertyName == "UpdateTime" )
-			{
-				this.UpdateTime = this.manager.UpdateTime;
-			}
-		}
-
-		private void SelectedSoundChanged( bool obj )
-		{
-			this.DelSoundCommand.RaiseCanExecuteChanged();
-		}
-
 		private void SelectedPanelChanged( bool obj )
 		{
 			this.DelMemberCommand.RaiseCanExecuteChanged();
@@ -401,10 +335,6 @@ namespace EarlyPusher.ViewModels
 
 			this.SettingOnlyVM = new SettingOnlyVM( this.data, this );
 
-			foreach( var item in this.data.SoundPaths )
-			{
-				this.sounds.Add( new SoundVM() { Path = item } );
-			}
 			this.VideoDir = this.data.VideoDir;
 			this.AnserSound = new SoundVM() { Path = this.data.AnserSoundPath };
 		}
@@ -414,11 +344,6 @@ namespace EarlyPusher.ViewModels
 		/// </summary>
 		public void SaveData()
 		{
-			this.data.SoundPaths.Clear();
-			foreach( var item in this.sounds )
-			{
-				this.data.SoundPaths.Add( item.Path );
-			}
 			this.data.VideoDir = this.VideoDir;
 			this.data.AnserSoundPath = this.AnserSound.Path;
 
