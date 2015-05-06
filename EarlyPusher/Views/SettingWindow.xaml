@@ -35,11 +35,6 @@
 			<RowDefinition Height="*" />
 		</Grid.RowDefinitions>
 		<Menu Grid.Row="0" DockPanel.Dock="Top">
-			<MenuItem Command="{Binding StartCommand}"
-			          Header="スタート(_S)"
-			          IsEnabled="{Binding IsSettingMode,
-			                              Converter={StaticResource brConv}}" />
-			<MenuItem Command="{Binding ResetCommand}" Header="休みリセット(_R)" />
 			<MenuItem Header="プレイウィンドウ">
 				<MenuItem Command="{Binding WindowCommand}" Header="ウィンドウ表示/非表示(_W)" />
 				<MenuItem Command="{Binding WindowMaxCommand}" Header="ウィンドウ最大化(_M)" />
@@ -51,6 +46,7 @@
 				<Grid>
 					<Grid.ColumnDefinitions>
 						<ColumnDefinition Width="*" />
+						<ColumnDefinition Width="Auto" />
 						<ColumnDefinition Width="2*" />
 					</Grid.ColumnDefinitions>
 					<Grid Grid.Column="0">
@@ -59,18 +55,19 @@
 							<RowDefinition Height="Auto" />
 						</Grid.RowDefinitions>
 						<Grid.ColumnDefinitions>
-							<ColumnDefinition Width="*" />
-							<ColumnDefinition Width="*" />
+							<ColumnDefinition />
+							<ColumnDefinition />
 						</Grid.ColumnDefinitions>
 						<ListBox Grid.Row="0"
 						         Grid.ColumnSpan="2"
-						         ItemsSource="{Binding Videos}">
+						         ItemsSource="{Binding Medias}"
+						         SelectedItem="{Binding SelectedMedia}">
 							<ListBox.ItemTemplate>
 								<DataTemplate>
 									<ContentControl Content="{Binding FileName}">
 										<i:Interaction.Triggers>
 											<i:EventTrigger EventName="MouseDoubleClick">
-												<i:InvokeCommandAction Command="{Binding DataContext.PlayVideoCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}" CommandParameter="{Binding FilePath}" />
+												<i:InvokeCommandAction Command="{Binding PlayOrPauseCommand}" />
 											</i:EventTrigger>
 										</i:Interaction.Triggers>
 									</ContentControl>
@@ -80,18 +77,39 @@
 
 						<ToggleButton Grid.Row="1"
 						              Grid.Column="0"
+						              Command="{Binding SelectedMedia.PlayOrPauseCommand}"
 						              Content="再生/一時停止(_P)"
-						              IsChecked="{Binding IsVideoPlaying}"
-						              IsEnabled="{Binding VideoSource,
+						              IsChecked="{Binding SelectedMedia.IsPlaying,
+						                                  Mode=OneWay}"
+						              IsEnabled="{Binding SelectedMedia,
 						                                  Converter={StaticResource nullConv}}" />
 						<Button Grid.Row="1"
 						        Grid.Column="1"
-						        Content="停止" />
+						        Command="{Binding SelectedMedia.StopCommand}"
+						        Content="停止"
+						        IsEnabled="{Binding SelectedMedia,
+						                            Converter={StaticResource nullConv}}" />
 					</Grid>
-					<DockPanel Grid.Column="1">
-						<Grid Margin="5" DockPanel.Dock="Top">
+
+					<GridSplitter Grid.Column="1"
+					              Width="3"
+					              ResizeBehavior="PreviousAndNext" />
+
+					<DockPanel Grid.Column="2">
+						<Menu DockPanel.Dock="Top">
+							<MenuItem Command="{Binding StartCommand}"
+							          Header="スタート(_S)"
+							          IsEnabled="{Binding IsSettingMode,
+							                              Converter={StaticResource brConv}}" />
+							<MenuItem Command="{Binding ResetCommand}" Header="休みリセット(_R)" />
+						</Menu>
+						<CheckBox Content="設定モード(_C)"
+						          DockPanel.Dock="Top"
+						          IsChecked="{Binding IsSettingMode}" />
+						<Grid Margin="5"
+						      DockPanel.Dock="Top"
+						      IsEnabled="{Binding IsSettingMode}">
 							<Grid.RowDefinitions>
-								<RowDefinition Height="Auto" />
 								<RowDefinition Height="Auto" />
 								<RowDefinition Height="Auto" />
 							</Grid.RowDefinitions>
@@ -102,36 +120,33 @@
 								<ColumnDefinition Width="Auto" />
 							</Grid.ColumnDefinitions>
 
-							<CheckBox Grid.Row="0"
-							          Content="設定モード(_C)"
-							          IsChecked="{Binding IsSettingMode}" />
-							<TextBlock Grid.Row="1"
+							<TextBlock Grid.Row="0"
 							           Grid.Column="0"
 							           Text="ビデオ/BGM フォルダ" />
-							<TextBox Grid.Row="1"
+							<TextBox Grid.Row="0"
 							         Grid.Column="1"
 							         IsReadOnly="True"
 							         Text="{Binding VideoDir}" />
-							<Button Grid.Row="1"
+							<Button Grid.Row="0"
 							        Grid.Column="2"
 							        Grid.ColumnSpan="2"
 							        Command="{Binding SelectVideoDirCommand}"
 							        Content="参照" />
 
-							<TextBlock Grid.Row="2"
+							<TextBlock Grid.Row="1"
 							           Grid.Column="0"
 							           Text="解答音" />
-							<TextBox Grid.Row="2"
+							<TextBox Grid.Row="1"
 							         Grid.Column="1"
 							         IsReadOnly="True"
-							         Text="{Binding AnserSound.Path}" />
-							<Button Grid.Row="2"
+							         Text="{Binding AnswerSound.FilePath}" />
+							<Button Grid.Row="1"
 							        Grid.Column="2"
-							        Command="{Binding SelectAnserSoundCommand}"
+							        Command="{Binding SelectAnswerSoundCommand}"
 							        Content="参照" />
-							<Button Grid.Row="2"
+							<Button Grid.Row="1"
 							        Grid.Column="3"
-							        Command="{Binding AnserSound.PlayCommand}"
+							        Command="{Binding AnswerSound.PlayCommand}"
 							        Content="再生" />
 						</Grid>
 						<DataGrid AutoGenerateColumns="False"
@@ -206,11 +221,8 @@
 
 					<GridSplitter Grid.RowSpan="2"
 					              Grid.Column="1"
-					              Height="3"
-					              HorizontalAlignment="Center"
-					              VerticalAlignment="Stretch"
-					              ResizeDirection="Columns"
-					              ShowsPreview="True" />
+					              Width="3"
+					              ResizeBehavior="PreviousAndNext" />
 
 					<Menu Grid.Row="0" Grid.Column="0">
 						<MenuItem Command="{Binding SearchCommand}" Header="検索" />

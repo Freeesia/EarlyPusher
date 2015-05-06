@@ -13,7 +13,7 @@ namespace EarlyPusher.Models
 		public const string FileName = "conf.xml";
 		private ObservableHashCollection<TeamData> teamList;
 		private string videoDir;
-		private string anserSoundPath;
+		private string answerSoundPath;
 
 		public ObservableHashCollection<TeamData> TeamList
 		{
@@ -26,10 +26,10 @@ namespace EarlyPusher.Models
 			set { SetProperty( ref videoDir, value ); }
 		}
 
-		public string AnserSoundPath
+		public string AnswerSoundPath
 		{
-			get { return anserSoundPath; }
-			set { SetProperty( ref anserSoundPath, value ); }
+			get { return answerSoundPath; }
+			set { SetProperty( ref answerSoundPath, value ); }
 		}
 
 		public SettingData()

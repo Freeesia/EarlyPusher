@@ -181,12 +181,9 @@ namespace EarlyPusher.ViewModels
 
 		#endregion
 
-		private void SeletedTeamChanged( bool obj )
+		private void SeletedTeamChanged()
 		{
-			if( obj )
-			{
-				this.DelTeamCommand.RaiseCanExecuteChanged();
-			}
+			this.DelTeamCommand.RaiseCanExecuteChanged();
 		}
 	}
 }

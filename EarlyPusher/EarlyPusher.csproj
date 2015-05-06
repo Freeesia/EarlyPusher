@@ -76,7 +76,6 @@
     <Compile Include="Models\SettingData.cs" />
     <Compile Include="Models\TeamData.cs" />
     <Compile Include="ViewModels\MemberVM.cs" />
-    <Compile Include="ViewModels\PlayViewModel.cs" />
     <Compile Include="ViewModels\SettingOnlyVM.cs" />
     <Compile Include="ViewModels\SettingVM.cs" />
     <Page Include="Views\PlayWindow.xaml">
@@ -91,9 +90,8 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ViewModels\SoundVM.cs" />
     <Compile Include="ViewModels\TeamVM.cs" />
-    <Compile Include="ViewModels\VideoVM.cs" />
+    <Compile Include="ViewModels\MediaVM.cs" />
     <Compile Include="Views\PlayWindow.xaml.cs">
       <DependentUpon>PlayWindow.xaml</DependentUpon>
     </Compile>

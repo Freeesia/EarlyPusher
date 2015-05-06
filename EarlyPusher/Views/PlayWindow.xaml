@@ -20,23 +20,24 @@
 		<c:BoolToVisibilityConverter x:Key="t2vConv"
 		                             False="Collapsed"
 		                             True="Visible" />
+		<c:BoolAndMultiConverter x:Key="bmConv" UnsetValue="False" />
+		<c:BoolReverseConverter x:Key="brConv" />
 	</Window.Resources>
 	<Grid>
-		<MediaElement LoadedBehavior="Manual"
-		              Source="{Binding VideoSource}"
-		              Visibility="{Binding IsVideoPlaying,
-		                                   Converter={StaticResource t2vConv}}">
-			<i:Interaction.Triggers>
-				<ei:DataTrigger Binding="{Binding IsVideoPlaying}" Value="True">
-					<ei:CallMethodAction MethodName="Play" />
-				</ei:DataTrigger>
-				<ei:DataTrigger Binding="{Binding IsVideoPlaying}" Value="False">
-					<ei:CallMethodAction MethodName="Pause" />
-				</ei:DataTrigger>
-			</i:Interaction.Triggers>
-		</MediaElement>
-		<Viewbox Visibility="{Binding IsVideoPlaying, Converter={StaticResource f2vConv}}">
-			<ItemsControl ItemsSource="{Binding Teams}">
+		<ContentPresenter Content="{Binding SelectedMedia.Media}" />
+		<Viewbox>
+			<Viewbox.Visibility>
+				<MultiBinding>
+					<MultiBinding.Converter>
+						<c:JoinMultiConverter Converter="{StaticResource f2vConv}" MultriConverter="{StaticResource bmConv}" />
+					</MultiBinding.Converter>
+					<MultiBinding.Bindings>
+						<Binding Path="SelectedMedia.IsPlaying" />
+						<Binding Path="SelectedMedia.HasVideo" />
+					</MultiBinding.Bindings>
+				</MultiBinding>
+			</Viewbox.Visibility>
+			<ItemsControl ItemsSource="{Binding SettingOnlyVM.Teams}">
 				<ItemsControl.ItemsPanel>
 					<ItemsPanelTemplate>
 						<StackPanel Orientation="Horizontal" />

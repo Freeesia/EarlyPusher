@@ -31,17 +31,15 @@ namespace EarlyPusher.ViewModels
 		private Dispatcher dispatcher = Dispatcher.CurrentDispatcher;
 		private DeviceManager manager;
 		private ObservableHashCollection<MemberVM> members = new ObservableHashCollection<MemberVM>();
-		private ObservableHashCollection<VideoVM> videos = new ObservableHashCollection<VideoVM>();
+		private ObservableHashCollection<MediaVM> medias = new ObservableHashCollection<MediaVM>();
 		private bool isSettingMode = true;
 		private int rank = 0;
 		private string videoDir;
 
-		private SoundVM anserSound;
+		private MediaVM answerSound;
 		private MemberVM selectedMember;
+		private MediaVM selectedMedia;
 		private PlayWindow window;
-
-		private Uri videoSource;
-		private bool isVideoPlaying;
 
 		#region プロパティ
 
@@ -57,9 +55,7 @@ namespace EarlyPusher.ViewModels
 		public DelegateCommand WindowMaxCommand { get; private set; }
 
 		public DelegateCommand SelectVideoDirCommand { get; private set; }
-		public DelegateCommand SelectAnserSoundCommand { get; private set; }
-
-		public DelegateCommand PlayVideoCommand { get; private set; }
+		public DelegateCommand SelectAnswerSoundCommand { get; private set; }
 
 		public DeviceManager Manager
 		{
@@ -80,20 +76,26 @@ namespace EarlyPusher.ViewModels
 			}
 		}
 
-		public ObservableHashCollection<VideoVM> Videos
+		public ObservableHashCollection<MediaVM> Medias
 		{
 			get
 			{
-				return this.videos;
+				return this.medias;
 			}
 		}
 		
 		public MemberVM SelectedMember
 		{
 			get { return selectedMember; }
-			set { SetProperty( ref selectedMember, value, SelectedPanelChanged ); }
+			set { SetProperty( ref selectedMember, value, SelectedMemberChanged ); }
 		}
 
+		public MediaVM SelectedMedia
+		{
+			get { return this.selectedMedia; }
+			set { SetProperty( ref this.selectedMedia, value, null, SelectedMediaChanging ); }
+		}
+		
 		public bool IsSettingMode
 		{
 			get { return isSettingMode; }
@@ -106,24 +108,11 @@ namespace EarlyPusher.ViewModels
 			set { SetProperty( ref videoDir, value, LoadVideos ); }
 		}
 
-		public SoundVM AnserSound
+		public MediaVM AnswerSound
 		{
-			get { return anserSound; }
-			set { SetProperty( ref anserSound, value ); }
+			get { return answerSound; }
+			set { SetProperty( ref answerSound, value ); }
 		}
-
-		public Uri VideoSource
-		{
-			get { return videoSource; }
-			set { SetProperty( ref videoSource, value ); }
-		}
-
-		public bool IsVideoPlaying
-		{
-			get { return isVideoPlaying; }
-			set { SetProperty( ref isVideoPlaying, value ); }
-		}
-
 
 		#endregion
 
@@ -138,9 +127,7 @@ namespace EarlyPusher.ViewModels
 			this.WindowCommand = new DelegateCommand( ShowCloseWindow, null );
 			this.WindowMaxCommand = new DelegateCommand( MaximazeWindow, CanMaximaize );
 			this.SelectVideoDirCommand = new DelegateCommand( SelectVideoDir, null );
-			this.SelectAnserSoundCommand = new DelegateCommand( SelectAnser, null );
-			this.PlayVideoCommand = new DelegateCommand( PlayVideo );
-
+			this.SelectAnswerSoundCommand = new DelegateCommand( SelectAnwser, null );
 
 			this.manager = new DeviceManager();
 			this.manager.KeyPushed += Manager_KeyPushed;
@@ -159,7 +146,7 @@ namespace EarlyPusher.ViewModels
 			else
 			{
 				this.window = new PlayWindow();
-				this.window.DataContext = new PlayViewModel( this.SettingOnlyVM.Teams );
+				this.window.DataContext = this;
 				this.window.Show();
 			}
 			this.WindowMaxCommand.RaiseCanExecuteChanged();
@@ -232,14 +219,14 @@ namespace EarlyPusher.ViewModels
 			}
 		}
 
-		private void SelectAnser( object obj )
+		private void SelectAnwser( object obj )
 		{
 			OpenFileDialog dlg = new OpenFileDialog();
 			dlg.InitialDirectory = AppDomain.CurrentDomain.BaseDirectory;
 			dlg.Multiselect = false;
 			if( dlg.ShowDialog() == true )
 			{
-				this.AnserSound = new SoundVM() { Path = dlg.FileName };
+				this.AnswerSound = new MediaVM() { FilePath = dlg.FileName };
 			}
 		}
 
@@ -257,13 +244,6 @@ namespace EarlyPusher.ViewModels
 			}
 
 			this.manager.Dispose();
-		}
-
-		private void PlayVideo( object obj )
-		{
-			Contract.Assert( obj is string );
-			this.IsVideoPlaying = false;
-			this.VideoSource = new Uri( obj as string );
 		}
 
 		#endregion
@@ -288,18 +268,49 @@ namespace EarlyPusher.ViewModels
 				{
 					rank++;
 					item.Rank = rank.ToString();
-					if( rank == 1 && this.AnserSound.PlayCommand.CanExecute( null ) )
+					if( !this.AnswerSound.IsPlaying )
 					{
-						this.AnserSound.PlayCommand.Execute( null );
+						this.AnswerSound.Play();
 					}
-					this.IsVideoPlaying = false;
+					if( this.SelectedMedia != null )
+					{
+						this.SelectedMedia.Pause();
+					}
 				}
 			}
 		}
 
-		private void SelectedPanelChanged( bool obj )
+		private void SelectedMemberChanged()
 		{
 			this.DelMemberCommand.RaiseCanExecuteChanged();
+		}
+
+
+		private void SelectedMediaChanging()
+		{
+			if( this.SelectedMedia != null )
+			{
+				this.SelectedMedia.Stop();
+			}
+		}
+
+		private void SettingChanged()
+		{
+			rank = 0;
+			this.SelectedMember = null;
+			InitRank();
+		}
+
+		private void LoadVideos()
+		{
+			if( !string.IsNullOrEmpty( this.VideoDir ) )
+			{
+				this.Medias.Clear();
+				foreach( string path in Directory.EnumerateFiles( this.VideoDir, "*", SearchOption.AllDirectories ) )
+				{
+					this.Medias.Add( new MediaVM() { FilePath = path } );
+				}
+			}
 		}
 
 		#endregion
@@ -336,7 +347,7 @@ namespace EarlyPusher.ViewModels
 			this.SettingOnlyVM = new SettingOnlyVM( this.data, this );
 
 			this.VideoDir = this.data.VideoDir;
-			this.AnserSound = new SoundVM() { Path = this.data.AnserSoundPath };
+			this.AnswerSound = new MediaVM() { FilePath = this.data.AnswerSoundPath };
 		}
 
 		/// <summary>
@@ -345,7 +356,7 @@ namespace EarlyPusher.ViewModels
 		public void SaveData()
 		{
 			this.data.VideoDir = this.VideoDir;
-			this.data.AnserSoundPath = this.AnserSound.Path;
+			this.data.AnswerSoundPath = this.AnswerSound.FilePath;
 
 			using( Stream file = new FileStream( SettingData.FileName, FileMode.Create ) )
 			{
@@ -355,25 +366,6 @@ namespace EarlyPusher.ViewModels
 		}
 
 		#endregion
-
-		private void SettingChanged( bool isSucceed )
-		{
-			rank = 0;
-			this.SelectedMember = null;
-			InitRank();
-		}
-
-		private void LoadVideos( bool isSucceed )
-		{
-			if( isSucceed && !string.IsNullOrEmpty( this.VideoDir ) )
-			{
-				this.Videos.Clear();
-				foreach( string path in Directory.EnumerateFiles( this.VideoDir, "*", SearchOption.AllDirectories ) )
-				{
-					this.Videos.Add( new VideoVM() { FilePath = path } );
-				}
-			}
-		}
 
 		private void InitRank()
 		{
