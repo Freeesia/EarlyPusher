@@ -30,6 +30,5 @@ namespace EarlyPusher.Models
 		{
 			get { return this.members; }
 		}
-
 	}
 }

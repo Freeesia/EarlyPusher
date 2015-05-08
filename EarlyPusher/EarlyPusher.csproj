@@ -47,6 +47,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
@@ -76,8 +77,16 @@
     <Compile Include="Models\SettingData.cs" />
     <Compile Include="Models\TeamData.cs" />
     <Compile Include="ViewModels\MemberVM.cs" />
-    <Compile Include="ViewModels\SettingOnlyVM.cs" />
+    <Compile Include="Basis\PlayMode.cs" />
     <Compile Include="ViewModels\SettingVM.cs" />
+    <Page Include="Views\Choice4ModeView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\EarlyModeView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\PlayWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -92,6 +101,13 @@
     </Compile>
     <Compile Include="ViewModels\TeamVM.cs" />
     <Compile Include="ViewModels\MediaVM.cs" />
+    <Compile Include="Views\Choice4ModeView.xaml.cs">
+      <DependentUpon>Choice4ModeView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\EarlyModeView.xaml.cs">
+      <DependentUpon>EarlyModeView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PlayViewSelecter.cs" />
     <Compile Include="Views\PlayWindow.xaml.cs">
       <DependentUpon>PlayWindow.xaml</DependentUpon>
     </Compile>
@@ -132,6 +148,11 @@
       <Project>{14e72138-8fd3-45dd-8df4-35b85cab50ae}</Project>
       <Name>StFrCore</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\81aeb44b.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

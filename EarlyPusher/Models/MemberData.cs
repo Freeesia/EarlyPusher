@@ -11,6 +11,7 @@ namespace EarlyPusher.Models
 	{
 		private Guid deviceGuid;
 		private int key;
+		private string name;
 
 		public Guid DeviceGuid
 		{
@@ -23,8 +24,6 @@ namespace EarlyPusher.Models
 			get { return key; }
 			set { SetProperty( ref key, value ); }
 		}
-
-		private string name;
 
 		public string Name
 		{

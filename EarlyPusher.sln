@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EarlyPusher", "EarlyPusher\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StFrCore", "StFrCore\StFrCore.csproj", "{14E72138-8FD3-45DD-8DF4-35B85CAB50AE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebCamTest", "WebCamTest\WebCamTest.csproj", "{CD589B7B-DB3A-4867-884C-687D51E80C38}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{14E72138-8FD3-45DD-8DF4-35B85CAB50AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{14E72138-8FD3-45DD-8DF4-35B85CAB50AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{14E72138-8FD3-45DD-8DF4-35B85CAB50AE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CD589B7B-DB3A-4867-884C-687D51E80C38}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CD589B7B-DB3A-4867-884C-687D51E80C38}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CD589B7B-DB3A-4867-884C-687D51E80C38}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CD589B7B-DB3A-4867-884C-687D51E80C38}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

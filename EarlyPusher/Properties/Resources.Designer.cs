@@ -59,5 +59,15 @@ namespace EarlyPusher.Properties {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
+        /// </summary>
+        internal static System.Drawing.Bitmap _81aeb44b {
+            get {
+                object obj = ResourceManager.GetObject("_81aeb44b", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
     }
 }

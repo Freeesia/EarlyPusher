@@ -1,0 +1,55 @@
+﻿<UserControl x:Class="EarlyPusher.Views.Choice4ModeView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:c="clr-namespace:StFrLibs.Core.Converter;assembly=StFrCore"
+             xmlns:ctrl="clr-namespace:EarlyPusher.Controls"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d">
+	<UserControl.Resources>
+		<c:ColorToBrushConverter x:Key="c2bConv" />
+	</UserControl.Resources>
+	<Grid>
+		<Image Source="/アーリーぷっしゃー！;component/Resources/81aeb44b.jpg" />
+		<Viewbox>
+			<ContentControl Width="1600" Height="900">
+				<ItemsControl Margin="140,95,290,35" ItemsSource="{Binding Choices}">
+					<ItemsControl.ItemsPanel>
+						<ItemsPanelTemplate>
+							<ctrl:FixedWrapPanel ItemHeight="385"
+							                     ItemWidth="585"
+							                     Orientation="Horizontal"
+							                     WrapCount="2" />
+						</ItemsPanelTemplate>
+					</ItemsControl.ItemsPanel>
+					<ItemsControl.ItemTemplate>
+						<DataTemplate>
+							<ItemsControl Margin="15"
+							              HorizontalAlignment="Right"
+							              VerticalAlignment="Bottom"
+							              ItemsSource="{Binding }">
+								<ItemsControl.ItemsPanel>
+									<ItemsPanelTemplate>
+										<StackPanel Orientation="Horizontal" />
+									</ItemsPanelTemplate>
+								</ItemsControl.ItemsPanel>
+								<ItemsControl.ItemTemplate>
+									<DataTemplate>
+										<Border Width="80"
+										        Height="80"
+										        Background="{Binding Parent.Model.TeamColor,
+										                             Converter={StaticResource c2bConv}}"
+										        BorderBrush="LightGray"
+										        BorderThickness="3"
+										        CornerRadius="10"
+										        Opacity="{Binding Opacity}" />
+									</DataTemplate>
+								</ItemsControl.ItemTemplate>
+							</ItemsControl>
+						</DataTemplate>
+					</ItemsControl.ItemTemplate>
+				</ItemsControl>
+			</ContentControl>
+		</Viewbox>
+	</Grid>
+</UserControl>

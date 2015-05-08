@@ -1,0 +1,79 @@
+﻿<UserControl x:Class="EarlyPusher.Views.EarlyModeView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:c="clr-namespace:StFrLibs.Core.Converter;assembly=StFrCore"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             d:DesignHeight="300"
+             d:DesignWidth="300"
+             mc:Ignorable="d">
+	<UserControl.Resources>
+		<c:ColorToBrushConverter x:Key="c2bConv" />
+		<c:BoolToVisibilityConverter x:Key="f2vConv"
+		                             False="Visible"
+		                             True="Collapsed" />
+		<c:BoolToVisibilityConverter x:Key="t2vConv"
+		                             False="Collapsed"
+		                             True="Visible" />
+		<c:BoolAndMultiConverter x:Key="bmConv" UnsetValue="False" />
+		<c:BoolReverseConverter x:Key="brConv" />
+	</UserControl.Resources>
+	<Viewbox>
+		<Viewbox.Visibility>
+			<MultiBinding>
+				<MultiBinding.Converter>
+					<c:JoinMultiConverter Converter="{StaticResource f2vConv}" MultriConverter="{StaticResource bmConv}" />
+				</MultiBinding.Converter>
+				<MultiBinding.Bindings>
+					<Binding Path="SelectedMedia.IsPlaying" />
+					<Binding Path="SelectedMedia.HasVideo" />
+				</MultiBinding.Bindings>
+			</MultiBinding>
+		</Viewbox.Visibility>
+		<ItemsControl ItemsSource="{Binding Teams}">
+			<ItemsControl.ItemsPanel>
+				<ItemsPanelTemplate>
+					<StackPanel Orientation="Horizontal" />
+				</ItemsPanelTemplate>
+			</ItemsControl.ItemsPanel>
+			<ItemsControl.ItemTemplate>
+				<DataTemplate>
+					<StackPanel>
+						<Label HorizontalContentAlignment="Center" Content="{Binding Model.TeamName}" />
+						<ItemsControl ItemsSource="{Binding Members}">
+							<ItemsControl.ItemsPanel>
+								<ItemsPanelTemplate>
+									<StackPanel Orientation="Vertical" />
+								</ItemsPanelTemplate>
+							</ItemsControl.ItemsPanel>
+							<ItemsControl.ItemTemplate>
+								<DataTemplate>
+									<StackPanel Margin="5 0 5 15" Orientation="Vertical">
+										<Border Grid.Row="0"
+										        Width="100"
+										        Height="100"
+										        Background="{Binding Parent.Model.TeamColor,
+										                             Converter={StaticResource c2bConv}}"
+										        BorderThickness="5"
+										        CornerRadius="10"
+										        Opacity="{Binding Opacity}">
+											<Grid>
+												<TextBlock HorizontalAlignment="Center"
+												           VerticalAlignment="Center"
+												           FontSize="72"
+												           Text="{Binding Rank}" />
+											</Grid>
+										</Border>
+										<TextBlock Grid.Row="1"
+										           HorizontalAlignment="Center"
+										           Text="{Binding Model.Name}" />
+									</StackPanel>
+								</DataTemplate>
+							</ItemsControl.ItemTemplate>
+						</ItemsControl>
+					</StackPanel>
+				</DataTemplate>
+			</ItemsControl.ItemTemplate>
+		</ItemsControl>
+	</Viewbox>
+</UserControl>
