@@ -3,17 +3,25 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:c="clr-namespace:StFrLibs.Core.Converter;assembly=StFrCore"
              xmlns:ctrl="clr-namespace:EarlyPusher.Controls"
+             xmlns:cvtr="clr-namespace:EarlyPusher.Converters"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d">
 	<UserControl.Resources>
 		<c:ColorToBrushConverter x:Key="c2bConv" />
+		<c:BoolToVisibilityConverter x:Key="t2vConv"
+		                             False="Hidden"
+		                             True="Visible" />
+		<cvtr:RankVisibilityConverter x:Key="r2vConv" />
 	</UserControl.Resources>
 	<Grid>
 		<Image Source="/アーリーぷっしゃー！;component/Resources/81aeb44b.jpg" />
 		<Viewbox>
 			<ContentControl Width="1600" Height="900">
-				<ItemsControl Margin="140,95,290,35" ItemsSource="{Binding Choices}">
+				<ItemsControl Margin="140,95,290,35"
+				              ItemsSource="{Binding Choices}"
+				              Visibility="{Binding IsChoiceVisible,
+				                                   Converter={StaticResource t2vConv}}">
 					<ItemsControl.ItemsPanel>
 						<ItemsPanelTemplate>
 							<ctrl:FixedWrapPanel ItemHeight="385"
@@ -42,7 +50,8 @@
 										        BorderBrush="LightGray"
 										        BorderThickness="3"
 										        CornerRadius="10"
-										        Opacity="{Binding Opacity}" />
+										        Visibility="{Binding Rank,
+										                             Converter={StaticResource r2vConv}}" />
 									</DataTemplate>
 								</ItemsControl.ItemTemplate>
 							</ItemsControl>

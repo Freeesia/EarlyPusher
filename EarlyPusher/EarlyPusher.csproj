@@ -70,6 +70,7 @@
     </ApplicationDefinition>
     <Compile Include="Controls\FixedWrapPanel.cs" />
     <Compile Include="Controls\ScaleFitControl.cs" />
+    <Compile Include="Converters\RankVisibilityConverter.cs" />
     <Compile Include="Extensions\ListExtension.cs" />
     <Compile Include="Manager\DeviceKeyEventArgs.cs" />
     <Compile Include="Manager\DeviceManager.cs" />

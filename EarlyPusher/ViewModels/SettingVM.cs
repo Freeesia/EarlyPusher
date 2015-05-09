@@ -44,10 +44,16 @@ namespace EarlyPusher.ViewModels
 		private MediaVM selectedMedia;
 		private PlayWindow window;
 
+		private Dictionary<TeamVM,MemberVM> choicePanels = new Dictionary<TeamVM, MemberVM>();
+		private bool isChoiceVisible;
+
+
 		#region プロパティ
 
 		public DelegateCommand LoadedCommand { get; private set; }
 		public DelegateCommand ClosingCommand { get; private set; }
+		public DelegateCommand WindowCommand { get; private set; }
+		public DelegateCommand WindowMaxCommand { get; private set; }
 
 		public DelegateCommand AddMemberCommand { get; private set; }
 		public DelegateCommand DelMemberCommand { get; private set; }
@@ -56,8 +62,7 @@ namespace EarlyPusher.ViewModels
 
 		public DelegateCommand StartCommand { get; private set; }
 		public DelegateCommand ResetCommand { get; private set; }
-		public DelegateCommand WindowCommand { get; private set; }
-		public DelegateCommand WindowMaxCommand { get; private set; }
+		public DelegateCommand OpenCommand { get; private set; }
 
 		public DelegateCommand SearchCommand { get; private set; }
 		public DelegateCommand AddTeamCommand { get; private set; }
@@ -162,7 +167,7 @@ namespace EarlyPusher.ViewModels
 		public PlayMode Mode
 		{
 			get { return this.mode; }
-			set { SetProperty( ref this.mode, value ); }
+			set { SetProperty( ref this.mode, value, ModeChanged ); }
 		}
 
 		/// <summary>
@@ -181,6 +186,15 @@ namespace EarlyPusher.ViewModels
 		{
 			get { return answerSound; }
 			set { SetProperty( ref answerSound, value ); }
+		}
+
+		/// <summary>
+		/// 選択を表示する。
+		/// </summary>
+		public bool IsChoiceVisible
+		{
+			get { return this.isChoiceVisible; }
+			set { SetProperty( ref this.isChoiceVisible, value ); }
 		}
 
 		/// <summary>
@@ -204,12 +218,14 @@ namespace EarlyPusher.ViewModels
 			this.WindowCommand = new DelegateCommand( ShowCloseWindow, null );
 			this.WindowMaxCommand = new DelegateCommand( MaximazeWindow, CanMaximaize );
 	
-			this.StartCommand = new DelegateCommand( Start, null );
-			this.ResetCommand = new DelegateCommand( Reset, null );
 			this.SelectVideoDirCommand = new DelegateCommand( SelectVideoDir, null );
 			this.SelectAnswerSoundCommand = new DelegateCommand( SelectAnwser, null );
 			this.AddMemberCommand = new DelegateCommand( AddMember, null );
 			this.DelMemberCommand = new DelegateCommand( DelMember, CanDelMember );
+
+			this.StartCommand = new DelegateCommand( Start, null );
+			this.ResetCommand = new DelegateCommand( Reset, null );
+			this.OpenCommand = new DelegateCommand( Open, CanOpen );
 
 			this.SearchCommand = new DelegateCommand( SearchDevice, null );
 			this.AddTeamCommand = new DelegateCommand( AddTeam );
@@ -305,7 +321,7 @@ namespace EarlyPusher.ViewModels
 		/// <param name="obj"></param>
 		private void Start( object obj )
 		{
-			rank = 0;
+			InitChoice();
 			InitRank();
 		}
 
@@ -319,6 +335,16 @@ namespace EarlyPusher.ViewModels
 			{
 				item.CanAnswer = true;
 			}
+		}
+
+		private bool CanOpen( object obj )
+		{
+			return this.Mode == PlayMode.Choice4;
+		}
+
+		private void Open( object obj )
+		{
+			this.IsChoiceVisible = true;
 		}
 
 		/// <summary>
@@ -443,28 +469,20 @@ namespace EarlyPusher.ViewModels
 		{
 			if( this.IsSettingMode )
 			{
-				if( this.SelectedMember != null )
-				{
-					Contract.Assert( this.SelectedMember.Model != null );
-					this.SelectedMember.Model.DeviceGuid = e.InstanceID;
-					this.SelectedMember.Model.Key = e.Key;
-				}
+				SetKeySettingMode( e );
 			}
 			else
 			{
-				var item = this.Members.FirstOrDefault( i => i.Model.DeviceGuid == e.InstanceID && i.Model.Key == e.Key );
-				if( item != null && string.IsNullOrEmpty( item.Rank ) && item.CanAnswer )
+				switch( this.Mode )
 				{
-					rank++;
-					item.Rank = rank.ToString();
-					if( !this.AnswerSound.IsPlaying )
-					{
-						this.AnswerSound.Play();
-					}
-					if( this.SelectedMedia != null )
-					{
-						this.SelectedMedia.Pause();
-					}
+					case PlayMode.Early:
+						SetKeyEarlyMode( e );
+						break;
+					case PlayMode.Choice4:
+						SetKeyChoiceMode( e );
+						break;
+					default:
+						break;
 				}
 			}
 		}
@@ -562,6 +580,11 @@ namespace EarlyPusher.ViewModels
 			rank = 0;
 			this.SelectedMember = null;
 			InitRank();
+		}
+
+		private void ModeChanged()
+		{
+			this.OpenCommand.RaiseCanExecuteChanged();
 		}
 
 		/// <summary>
@@ -669,10 +692,62 @@ namespace EarlyPusher.ViewModels
 		/// </summary>
 		private void InitRank()
 		{
+			this.rank = 0;
 			foreach( var i in this.Members )
 			{
 				i.Rank = string.Empty;
 			}
+		}
+
+		private void InitChoice()
+		{
+			this.choicePanels.Clear();
+			this.IsChoiceVisible = false;
+		}
+
+		private void SetKeySettingMode( DeviceKeyEventArgs e )
+		{
+			if( this.SelectedMember != null )
+			{
+				Contract.Assert( this.SelectedMember.Model != null );
+				this.SelectedMember.Model.DeviceGuid = e.InstanceID;
+				this.SelectedMember.Model.Key = e.Key;
+			}
+		}
+
+		private void SetKeyEarlyMode( DeviceKeyEventArgs e )
+		{
+			var item = this.Members.FirstOrDefault( i => i.Model.DeviceGuid == e.InstanceID && i.Model.Key == e.Key );
+			if( item != null && string.IsNullOrEmpty( item.Rank ) && item.CanAnswer )
+			{
+				rank++;
+				item.Rank = rank.ToString();
+				if( !this.AnswerSound.IsPlaying )
+				{
+					this.AnswerSound.Play();
+				}
+				if( this.SelectedMedia != null )
+				{
+					this.SelectedMedia.Pause();
+				}
+			}
+		}
+
+		private void SetKeyChoiceMode( DeviceKeyEventArgs e )
+		{
+			var item = this.Members.FirstOrDefault( i => i.Model.DeviceGuid == e.InstanceID && i.Model.Key == e.Key );
+			if( item == null )
+			{
+				return;
+			}
+
+			if( this.choicePanels.ContainsKey(item.Parent) )
+			{
+				this.choicePanels[item.Parent].Rank = string.Empty;
+			}
+
+			item.Rank = string.Format( "{0}", item.Parent.Members.IndexOf( item ) + 1 );
+			this.choicePanels[item.Parent] = item;
 		}
 	}
 }

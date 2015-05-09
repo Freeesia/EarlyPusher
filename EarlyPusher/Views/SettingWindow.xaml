@@ -107,10 +107,14 @@
 					<DockPanel Grid.Column="2">
 						<Menu DockPanel.Dock="Top">
 							<MenuItem Command="{Binding StartCommand}"
-							          Header="スタート(_S)"
+							          Header="リセット(_R)"
 							          IsEnabled="{Binding IsSettingMode,
 							                              Converter={StaticResource brConv}}" />
-							<MenuItem Command="{Binding ResetCommand}" Header="休みリセット(_R)" />
+							<MenuItem Command="{Binding ResetCommand}" Header="解答権復活(_A)" />
+							<MenuItem Command="{Binding OpenCommand}"
+							          Header="オープン(_O)"
+							          IsEnabled="{Binding IsSettingMode,
+							                              Converter={StaticResource brConv}}" />
 						</Menu>
 						<CheckBox Content="設定モード(_C)"
 						          DockPanel.Dock="Top"
