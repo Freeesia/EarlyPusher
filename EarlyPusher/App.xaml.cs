@@ -17,7 +17,7 @@ namespace EarlyPusher
 		protected override void OnStartup( StartupEventArgs e )
 		{
 			this.MainWindow = new SettingWindow();
-			this.MainWindow.DataContext = new SettingVM();
+			this.MainWindow.DataContext = new MainVM();
 			this.MainWindow.Show();
 		}
 	}

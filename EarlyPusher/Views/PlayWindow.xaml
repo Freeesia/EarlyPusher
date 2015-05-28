@@ -1,6 +1,7 @@
 ﻿<Window x:Class="EarlyPusher.Views.PlayWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:c="clr-namespace:StFrLibs.Core.Converter;assembly=StFrCore"
         xmlns:v="clr-namespace:EarlyPusher.Views"
         Title="PlayWindow"
         Width="300"
@@ -10,19 +11,18 @@
         ResizeMode="CanResizeWithGrip"
         WindowStyle="None">
 	<Window.Resources>
-		<DataTemplate x:Key="earlyModeTemplate">
-			<v:EarlyModeView />
-		</DataTemplate>
-		<DataTemplate x:Key="choice4ModeTemplate">
-			<v:Choice4ModeView />
-		</DataTemplate>
+		<c:BoolToVisibilityConverter x:Key="t2vConv"
+		                             False="Hidden"
+		                             True="Visible" />
 	</Window.Resources>
 	<Grid>
-		<ContentPresenter Content="{Binding SelectedMedia.Media}" />
 		<ContentPresenter Content="{Binding }">
-			<ContentPresenter.ContentTemplateSelector>
-				<v:PlayViewSelecter />
-			</ContentPresenter.ContentTemplateSelector>
+			<ContentPresenter.ContentTemplate>
+				<DataTemplate>
+					<ContentPresenter Content="{Binding PlayView}" />
+				</DataTemplate>
+			</ContentPresenter.ContentTemplate>
 		</ContentPresenter>
+		<ContentPresenter Content="{Binding SelectedMedia.Media}" Visibility="{Binding SelectedMedia.IsPlaying, Converter={StaticResource t2vConv}}" />
 	</Grid>
 </Window>

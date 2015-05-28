@@ -48,6 +48,7 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
@@ -77,18 +78,33 @@
     <Compile Include="Models\MemberData.cs" />
     <Compile Include="Models\SettingData.cs" />
     <Compile Include="Models\TeamData.cs" />
+    <Compile Include="Modules\ChoiceTab\ViewModels\OperateChoiceVM.cs" />
+    <Compile Include="Modules\EarlyTab\ViewModels\OperateEarlyVM.cs" />
+    <Compile Include="ViewModels\MainVM.cs" />
     <Compile Include="ViewModels\MemberVM.cs" />
     <Compile Include="Basis\PlayMode.cs" />
-    <Compile Include="ViewModels\SettingVM.cs" />
-    <Page Include="Views\Choice4ModeView.xaml">
+    <Compile Include="ViewModels\OperateTabVMBase.cs" />
+    <Page Include="Modules\ChoiceTab\Views\PlayChoiceView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\EarlyModeView.xaml">
+    <Page Include="Modules\EarlyTab\Views\PlayEarlyView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\PlayWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Modules\ChoiceTab\Views\OperateChoiceView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Modules\EarlyTab\Views\OperateEarlyView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Modules\SettingTab\Views\OperateSettingView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -100,17 +116,26 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Modules\SettingTab\ViewModels\OperateSettingVM.cs" />
     <Compile Include="ViewModels\TeamVM.cs" />
     <Compile Include="ViewModels\MediaVM.cs" />
-    <Compile Include="Views\Choice4ModeView.xaml.cs">
-      <DependentUpon>Choice4ModeView.xaml</DependentUpon>
+    <Compile Include="Modules\ChoiceTab\Views\PlayChoiceView.xaml.cs">
+      <DependentUpon>PlayChoiceView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\EarlyModeView.xaml.cs">
-      <DependentUpon>EarlyModeView.xaml</DependentUpon>
+    <Compile Include="Modules\EarlyTab\Views\PlayEarlyView.xaml.cs">
+      <DependentUpon>PlayEarlyView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\PlayViewSelecter.cs" />
     <Compile Include="Views\PlayWindow.xaml.cs">
       <DependentUpon>PlayWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\ChoiceTab\Views\OperateChoiceView.xaml.cs">
+      <DependentUpon>OperateChoiceView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\EarlyTab\Views\OperateEarlyView.xaml.cs">
+      <DependentUpon>OperateEarlyView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\SettingTab\Views\OperateSettingView.xaml.cs">
+      <DependentUpon>OperateSettingView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SettingWindow.xaml.cs">
       <DependentUpon>SettingWindow.xaml</DependentUpon>
@@ -155,6 +180,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

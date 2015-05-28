@@ -1,0 +1,132 @@
+﻿<UserControl x:Class="EarlyPusher.Modules.EarlyTab.Views.OperateEarlyView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:c="clr-namespace:StFrLibs.Core.Converter;assembly=StFrCore"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             d:DesignHeight="400"
+             d:DesignWidth="600"
+             mc:Ignorable="d">
+	<UserControl.Resources>
+		<c:BoolReverseConverter x:Key="brConv" />
+		<c:IsNullConverter x:Key="nullConv" IsNull="False" />
+	</UserControl.Resources>
+	<Grid>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="*" />
+			<ColumnDefinition Width="Auto" />
+			<ColumnDefinition Width="2*" />
+		</Grid.ColumnDefinitions>
+		<Grid Grid.Column="0">
+			<Grid.RowDefinitions>
+				<RowDefinition Height="*" />
+				<RowDefinition Height="Auto" />
+			</Grid.RowDefinitions>
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition />
+				<ColumnDefinition />
+			</Grid.ColumnDefinitions>
+			<ListBox Grid.Row="0"
+			         Grid.ColumnSpan="2"
+			         ItemsSource="{Binding Medias}"
+			         SelectedItem="{Binding SelectedMedia}">
+				<ListBox.ItemTemplate>
+					<DataTemplate>
+						<ContentControl Content="{Binding FileName}">
+							<i:Interaction.Triggers>
+								<i:EventTrigger EventName="MouseDoubleClick">
+									<i:InvokeCommandAction Command="{Binding PlayOrPauseCommand}" />
+								</i:EventTrigger>
+							</i:Interaction.Triggers>
+						</ContentControl>
+					</DataTemplate>
+				</ListBox.ItemTemplate>
+			</ListBox>
+
+			<ToggleButton Grid.Row="1"
+			              Grid.Column="0"
+			              Command="{Binding SelectedMedia.PlayOrPauseCommand}"
+			              Content="再生/一時停止(_P)"
+			              IsChecked="{Binding SelectedMedia.IsPlaying,
+			                                  Mode=OneWay}"
+			              IsEnabled="{Binding SelectedMedia,
+			                                  Converter={StaticResource nullConv}}" />
+			<Button Grid.Row="1"
+			        Grid.Column="1"
+			        Command="{Binding SelectedMedia.StopCommand}"
+			        Content="停止"
+			        IsEnabled="{Binding SelectedMedia,
+			                            Converter={StaticResource nullConv}}" />
+		</Grid>
+
+		<GridSplitter Grid.Column="1"
+		              Width="3"
+		              ResizeBehavior="PreviousAndNext" />
+
+		<DockPanel Grid.Column="2">
+			<Menu DockPanel.Dock="Top">
+				<MenuItem Command="{Binding StartCommand}"
+				          Header="リセット(_R)"
+				          IsEnabled="{Binding IsSettingMode,
+				                              Converter={StaticResource brConv}}" />
+				<MenuItem Command="{Binding ResetCommand}" Header="解答権復活(_A)" />
+			</Menu>
+			<DataGrid AutoGenerateColumns="False"
+			          CanUserAddRows="False"
+			          CanUserDeleteRows="False"
+			          ItemsSource="{Binding Members}"
+			          RowHeaderWidth="0"
+			          SelectedItem="{Binding SelectedMember}"
+			          SelectionMode="Single">
+				<DataGrid.ContextMenu>
+					<ContextMenu>
+						<MenuItem Header="メンバー追加"
+						          IsEnabled="{Binding IsSettingMode}"
+						          ItemsSource="{Binding SettingOnlyVM.Teams}">
+							<MenuItem.ItemContainerStyle>
+								<Style TargetType="MenuItem">
+									<Setter Property="Header" Value="{Binding Model.TeamName}" />
+									<Setter Property="Command" Value="{Binding DataContext.AddMemberCommand, RelativeSource={RelativeSource AncestorType=Window, Mode=FindAncestor}}" />
+									<Setter Property="CommandParameter" Value="{Binding Model}" />
+								</Style>
+							</MenuItem.ItemContainerStyle>
+						</MenuItem>
+						<MenuItem Command="{Binding DelMemberCommand}"
+						          Header="メンバー削除"
+						          IsEnabled="{Binding IsSettingMode}" />
+					</ContextMenu>
+				</DataGrid.ContextMenu>
+				<DataGrid.Columns>
+					<DataGridTextColumn Binding="{Binding Rank}"
+					                    Header="順位"
+					                    IsReadOnly="True" />
+					<DataGridTemplateColumn Header="解答権" IsReadOnly="True">
+						<DataGridTemplateColumn.CellTemplate>
+							<DataTemplate>
+								<CheckBox HorizontalAlignment="Center"
+								          VerticalAlignment="Center"
+								          IsChecked="{Binding CanAnswer,
+								                              UpdateSourceTrigger=PropertyChanged}" />
+							</DataTemplate>
+						</DataGridTemplateColumn.CellTemplate>
+					</DataGridTemplateColumn>
+					<DataGridTextColumn MinWidth="100"
+					                    Binding="{Binding Model.Name}"
+					                    Header="名前" />
+					<DataGridTextColumn Binding="{Binding Parent.Model.TeamName}"
+					                    Header="チーム名"
+					                    IsReadOnly="True" />
+					<DataGridTextColumn Header="キー" IsReadOnly="True">
+						<DataGridTextColumn.Binding>
+							<MultiBinding StringFormat="{}{0} : {1}">
+								<Binding Path="Model.Key" />
+								<Binding Path="Model.DeviceGuid" />
+							</MultiBinding>
+						</DataGridTextColumn.Binding>
+					</DataGridTextColumn>
+				</DataGrid.Columns>
+			</DataGrid>
+		</DockPanel>
+	</Grid>
+</UserControl>
