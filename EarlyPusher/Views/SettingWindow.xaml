@@ -41,7 +41,7 @@
 			<TabItem DataContext="{Binding OperateSetting}" Header="設定専用">
 				<sv:OperateSettingView />
 			</TabItem>
-			<TabItem DataContext="{Binding OperateChoice}" Header="4択">
+			<TabItem DataContext="{Binding OperateChoice}" Header="選択">
 				<cv:OperateChoiceView />
 			</TabItem>
 			<TabItem DataContext="{Binding OperateEarly}" Header="早押し">

@@ -12,53 +12,46 @@
 		<c:BoolToVisibilityConverter x:Key="t2vConv"
 		                             False="Hidden"
 		                             True="Visible" />
-		<cvtr:RankVisibilityConverter x:Key="r2vConv" />
 	</UserControl.Resources>
 	<Grid>
 		<Image Source="/アーリーぷっしゃー！;component/Resources/81aeb44b.jpg" />
 		<Viewbox>
-			<ContentControl Width="1600" Height="900">
-				<ItemsControl Margin="140,95,290,35"
-				              ItemsSource="{Binding Choices}"
-				              Visibility="{Binding IsChoiceVisible,
-				                                   Converter={StaticResource t2vConv}}">
-					<ItemsControl.ItemsPanel>
-						<ItemsPanelTemplate>
-							<ctrl:FixedWrapPanel ItemHeight="385"
-							                     ItemWidth="585"
-							                     Orientation="Horizontal"
-							                     WrapCount="2" />
-						</ItemsPanelTemplate>
-					</ItemsControl.ItemsPanel>
-					<ItemsControl.ItemTemplate>
-						<DataTemplate>
-							<ItemsControl Margin="15"
-							              HorizontalAlignment="Right"
-							              VerticalAlignment="Bottom"
-							              ItemsSource="{Binding }">
-								<ItemsControl.ItemsPanel>
-									<ItemsPanelTemplate>
-										<StackPanel Orientation="Horizontal" />
-									</ItemsPanelTemplate>
-								</ItemsControl.ItemsPanel>
-								<ItemsControl.ItemTemplate>
-									<DataTemplate>
-										<Border Width="80"
-										        Height="80"
-										        Background="{Binding Parent.Model.TeamColor,
-										                             Converter={StaticResource c2bConv}}"
-										        BorderBrush="LightGray"
-										        BorderThickness="3"
-										        CornerRadius="10"
-										        Visibility="{Binding Rank,
-										                             Converter={StaticResource r2vConv}}" />
-									</DataTemplate>
-								</ItemsControl.ItemTemplate>
-							</ItemsControl>
-						</DataTemplate>
-					</ItemsControl.ItemTemplate>
-				</ItemsControl>
-			</ContentControl>
+			<ItemsControl ItemsSource="{Binding SelectableItems}" Visibility="{Binding IsChoiceVisible, Converter={StaticResource t2vConv}}">
+				<ItemsControl.ItemsPanel>
+					<ItemsPanelTemplate>
+						<Canvas Width="1920" Height="1080" />
+					</ItemsPanelTemplate>
+				</ItemsControl.ItemsPanel>
+				<ItemsControl.ItemContainerStyle>
+					<Style>
+						<Setter Property="Canvas.Top" Value="{Binding Top}" />
+						<Setter Property="Canvas.Left" Value="{Binding Left}" />
+					</Style>
+				</ItemsControl.ItemContainerStyle>
+				<ItemsControl.ItemTemplate>
+					<DataTemplate>
+						<ItemsControl ItemsSource="{Binding SelectableItems}">
+							<ItemsControl.ItemsPanel>
+								<ItemsPanelTemplate>
+									<StackPanel Orientation="Horizontal" />
+								</ItemsPanelTemplate>
+							</ItemsControl.ItemsPanel>
+							<ItemsControl.ItemTemplate>
+								<DataTemplate>
+									<Border Width="100"
+									        Height="100"
+									        Background="{Binding Parent.Model.TeamColor,
+									                             Converter={StaticResource c2bConv}}"
+									        BorderThickness="5"
+									        CornerRadius="10"
+									        Visibility="{Binding IsSelected,
+									                             Converter={StaticResource t2vConv}}" />
+								</DataTemplate>
+							</ItemsControl.ItemTemplate>
+						</ItemsControl>
+					</DataTemplate>
+				</ItemsControl.ItemTemplate>
+			</ItemsControl>
 		</Viewbox>
 	</Grid>
 </UserControl>
