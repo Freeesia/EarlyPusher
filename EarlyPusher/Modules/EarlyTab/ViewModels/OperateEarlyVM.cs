@@ -18,9 +18,9 @@ namespace EarlyPusher.Modules.EarlyTab.ViewModels
 	public class OperateEarlyVM : OperateTabVMBase
 	{
 		private ObservableHashVMCollection<MediaVM> medias = new ObservableHashVMCollection<MediaVM>();
-		private ObservableHashVMCollection<TeamVM> teams = new ObservableHashVMCollection<TeamVM>();
-		private ObservableHashVMCollection<MemberVM> members = new ObservableHashVMCollection<MemberVM>();
-		private ViewModelsAdapter<TeamVM,TeamData> teamAdapter;
+		private ObservableHashVMCollection<TeamEarlyVM> teams = new ObservableHashVMCollection<TeamEarlyVM>();
+		private ObservableHashVMCollection<MemberEarlyVM> members = new ObservableHashVMCollection<MemberEarlyVM>();
+		private ViewModelsAdapter<TeamEarlyVM,TeamData> teamAdapter;
 
 		private PlayEarlyView view = new PlayEarlyView();
 
@@ -36,7 +36,7 @@ namespace EarlyPusher.Modules.EarlyTab.ViewModels
 		/// <summary>
 		/// チームのリスト
 		/// </summary>
-		public ObservableHashCollection<TeamVM> Teams
+		public ObservableHashCollection<TeamEarlyVM> Teams
 		{
 			get { return this.teams; }
 		}
@@ -44,7 +44,7 @@ namespace EarlyPusher.Modules.EarlyTab.ViewModels
 		/// <summary>
 		/// メンバーのリスト
 		/// </summary>
-		public ObservableHashVMCollection<MemberVM> Members
+		public ObservableHashVMCollection<MemberEarlyVM> Members
 		{
 			get { return this.members; }
 		}
@@ -91,7 +91,7 @@ namespace EarlyPusher.Modules.EarlyTab.ViewModels
 
 			this.Parent.Data.PropertyChanged += Data_PropertyChanged;
 
-			this.teamAdapter = new ViewModelsAdapter<TeamVM, TeamData>( CreateTeamVM, DeleteTeamVM );
+			this.teamAdapter = new ViewModelsAdapter<TeamEarlyVM, TeamData>( CreateTeamVM, DeleteTeamVM );
 			this.teamAdapter.Adapt( this.Teams, this.Parent.Data.TeamList );
 
 			LoadVideos();
@@ -102,9 +102,9 @@ namespace EarlyPusher.Modules.EarlyTab.ViewModels
 		/// </summary>
 		/// <param name="data">モデル</param>
 		/// <returns>VM</returns>
-		private TeamVM CreateTeamVM( TeamData data )
+		private TeamEarlyVM CreateTeamVM( TeamData data )
 		{
-			var vm = new TeamVM( data );
+			var vm = new TeamEarlyVM( data );
 			vm.Members.CollectionChanged += Members_CollectionChanged;
 			return vm;
 		}
@@ -113,7 +113,7 @@ namespace EarlyPusher.Modules.EarlyTab.ViewModels
 		/// VMが削除されたときの処理
 		/// </summary>
 		/// <param name="vm"></param>
-		private void DeleteTeamVM( TeamVM vm )
+		private void DeleteTeamVM( TeamEarlyVM vm )
 		{
 			vm.Members.CollectionChanged -= Members_CollectionChanged;
 		}
@@ -145,7 +145,7 @@ namespace EarlyPusher.Modules.EarlyTab.ViewModels
 		{
 			if( e.OldItems != null )
 			{
-				foreach( MemberVM member in e.OldItems )
+				foreach( MemberEarlyVM member in e.OldItems )
 				{
 					this.Members.Remove( member );
 				}
@@ -153,7 +153,7 @@ namespace EarlyPusher.Modules.EarlyTab.ViewModels
 
 			if( e.NewItems != null )
 			{
-				foreach( MemberVM member in e.NewItems )
+				foreach( MemberEarlyVM member in e.NewItems )
 				{
 					this.Members.Add( member );
 				}

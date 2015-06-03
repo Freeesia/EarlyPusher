@@ -8,21 +8,21 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media;
 
-namespace EarlyPusher.ViewModels
+namespace EarlyPusher.Modules.EarlyTab.ViewModels
 {
-	public class MemberVM : ViewModelBase<MemberData>
+	public class MemberEarlyVM : ViewModelBase<MemberData>
 	{
-		private TeamVM parent;
+		private TeamEarlyVM parent;
 		private string rank = string.Empty;
 		private bool canAnswer = true;
 
-		public MemberVM( TeamVM parent, MemberData data )
+		public MemberEarlyVM( TeamEarlyVM parent, MemberData data )
 			: base( data )
 		{
 			this.parent = parent;
 		}
 
-		public TeamVM Parent
+		public TeamEarlyVM Parent
 		{
 			get { return this.parent; }
 		}
