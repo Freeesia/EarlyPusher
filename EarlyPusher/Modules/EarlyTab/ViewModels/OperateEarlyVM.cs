@@ -10,6 +10,7 @@ using System.Windows;
 using EarlyPusher.Models;
 using EarlyPusher.Modules.EarlyTab.Views;
 using EarlyPusher.ViewModels;
+using StFrLibs.Core.Adapters;
 using StFrLibs.Core.Basis;
 using StFrLibs.Core.Commands;
 

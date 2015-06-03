@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using EarlyPusher.Models;
+using StFrLibs.Core.Adapters;
 using StFrLibs.Core.Basis;
 
 namespace EarlyPusher.Modules.EarlyTab.ViewModels

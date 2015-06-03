@@ -13,6 +13,7 @@ using EarlyPusher.ViewModels;
 using Microsoft.Win32;
 using Ookii.Dialogs.Wpf;
 using SlimDX.DirectInput;
+using StFrLibs.Core.Adapters;
 using StFrLibs.Core.Basis;
 using StFrLibs.Core.Commands;
 
