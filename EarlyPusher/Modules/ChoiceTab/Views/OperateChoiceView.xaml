@@ -8,6 +8,9 @@
              d:DesignHeight="400"
              d:DesignWidth="600"
              mc:Ignorable="d">
+	<UserControl.Resources>
+		<c:IsNullConverter x:Key="nullConv" IsNull="False" />
+	</UserControl.Resources>
 	<Grid>
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="*" />
@@ -40,7 +43,7 @@
 				</ListBox.ItemTemplate>
 			</ListBox>
 
-			<!--<ToggleButton Grid.Row="1"
+			<ToggleButton Grid.Row="1"
 			              Grid.Column="0"
 			              Command="{Binding SelectedMedia.PlayOrPauseCommand}"
 			              Content="再生/一時停止(_P)"
@@ -53,7 +56,7 @@
 			        Command="{Binding SelectedMedia.StopCommand}"
 			        Content="停止"
 			        IsEnabled="{Binding SelectedMedia,
-			                            Converter={StaticResource nullConv}}" />-->
+			                            Converter={StaticResource nullConv}}" />
 		</Grid>
 
 		<GridSplitter Grid.Column="1"

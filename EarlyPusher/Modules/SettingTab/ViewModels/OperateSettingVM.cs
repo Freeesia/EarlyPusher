@@ -25,7 +25,8 @@ namespace EarlyPusher.Modules.SettingTab.ViewModels
 		private ObservableHashCollection<string> devices = new ObservableHashCollection<string>();
 		private ViewModelsAdapter<TeamVM,TeamData> teamAdapter;
 
-		private string videoDir;
+		private string earlyVideoDir;
+		private string choiceVideoDir;
 		private long updateTime;
 
 		private TeamVM selectedTeam;
@@ -35,19 +36,26 @@ namespace EarlyPusher.Modules.SettingTab.ViewModels
 
 		public DelegateCommand AddMemberCommand { get; private set; }
 		public DelegateCommand DelMemberCommand { get; private set; }
-		public DelegateCommand SelectVideoDirCommand { get; private set; }
+		public DelegateCommand SelectEarlyVideoDirCommand { get; private set; }
+		public DelegateCommand SelectChoiceVideoDirCommand { get; private set; }
 		public DelegateCommand SelectAnswerSoundCommand { get; private set; }
 
 		public DelegateCommand SearchCommand { get; private set; }
 		public DelegateCommand AddTeamCommand { get; private set; }
 		public DelegateCommand DelTeamCommand { get; private set; }
 
-		public string VideoDir
+		public string EarlyVideoDir
 		{
-			get { return this.videoDir; }
-			set { SetProperty( ref this.videoDir, value ); }
+			get { return this.earlyVideoDir; }
+			set { SetProperty( ref this.earlyVideoDir, value ); }
 		}
-		
+
+		public string ChoiceVideoDir
+		{
+			get { return this.choiceVideoDir; }
+			set { SetProperty( ref this.choiceVideoDir, value ); }
+		}
+				
 		/// <summary>
 		/// チームのリスト
 		/// </summary>
@@ -107,7 +115,8 @@ namespace EarlyPusher.Modules.SettingTab.ViewModels
 		public OperateSettingVM( MainVM parent )
 			: base( parent )
 		{
-			this.SelectVideoDirCommand = new DelegateCommand( SelectVideoDir, null );
+			this.SelectEarlyVideoDirCommand = new DelegateCommand( SelectEarlyVideoDir, null );
+			this.SelectChoiceVideoDirCommand = new DelegateCommand( SelectChoiceVideoDir, null );
 			this.SelectAnswerSoundCommand = new DelegateCommand( SelectAnwser, null );
 			this.AddMemberCommand = new DelegateCommand( AddMember, null );
 			this.DelMemberCommand = new DelegateCommand( DelMember, CanDelMember );
@@ -131,7 +140,8 @@ namespace EarlyPusher.Modules.SettingTab.ViewModels
 		{
 			base.LoadData();
 
-			this.VideoDir = this.Parent.Data.VideoDir;
+			this.EarlyVideoDir = this.Parent.Data.EarlyVideoDir;
+			this.ChoiceVideoDir = this.Parent.Data.ChoiceVideoDir;
 
 			this.teamAdapter = new ViewModelsAdapter<TeamVM, TeamData>( CreateTeamVM, DeleteTeamVM );
 			this.teamAdapter.Adapt( this.Teams, this.Parent.Data.TeamList );
@@ -288,21 +298,43 @@ namespace EarlyPusher.Modules.SettingTab.ViewModels
 		/// メディアフォルダの選択
 		/// </summary>
 		/// <param name="obj"></param>
-		private void SelectVideoDir( object obj )
+		private void SelectEarlyVideoDir( object obj )
 		{
 			VistaFolderBrowserDialog dlg = new VistaFolderBrowserDialog();
-			if( string.IsNullOrEmpty( this.Parent.Data.VideoDir ) )
+			if( string.IsNullOrEmpty( this.Parent.Data.EarlyVideoDir ) )
 			{
 				dlg.SelectedPath = AppDomain.CurrentDomain.BaseDirectory;
 			}
 			else
 			{
-				dlg.SelectedPath = this.Parent.Data.VideoDir;
+				dlg.SelectedPath = this.Parent.Data.EarlyVideoDir;
 			}
 			if( dlg.ShowDialog() == true )
 			{
-				this.Parent.Data.VideoDir = dlg.SelectedPath;
-				this.VideoDir = this.Parent.Data.VideoDir;
+				this.Parent.Data.EarlyVideoDir = dlg.SelectedPath;
+				this.EarlyVideoDir = this.Parent.Data.EarlyVideoDir;
+			}
+		}
+
+		/// <summary>
+		/// メディアフォルダの選択
+		/// </summary>
+		/// <param name="obj"></param>
+		private void SelectChoiceVideoDir( object obj )
+		{
+			VistaFolderBrowserDialog dlg = new VistaFolderBrowserDialog();
+			if( string.IsNullOrEmpty( this.Parent.Data.ChoiceVideoDir ) )
+			{
+				dlg.SelectedPath = AppDomain.CurrentDomain.BaseDirectory;
+			}
+			else
+			{
+				dlg.SelectedPath = this.Parent.Data.ChoiceVideoDir;
+			}
+			if( dlg.ShowDialog() == true )
+			{
+				this.Parent.Data.ChoiceVideoDir = dlg.SelectedPath;
+				this.ChoiceVideoDir = this.Parent.Data.ChoiceVideoDir;
 			}
 		}
 

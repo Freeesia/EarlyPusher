@@ -15,14 +15,11 @@
 		                             False="Hidden"
 		                             True="Visible" />
 	</Window.Resources>
-	<Grid>
-		<ContentPresenter Content="{Binding }">
-			<ContentPresenter.ContentTemplate>
-				<DataTemplate>
-					<ContentPresenter Content="{Binding PlayView}" />
-				</DataTemplate>
-			</ContentPresenter.ContentTemplate>
-		</ContentPresenter>
-		<ContentPresenter Content="{Binding SelectedMedia.Media}" Visibility="{Binding SelectedMedia.IsPlaying, Converter={StaticResource t2vConv}}" />
-	</Grid>
+	<ContentPresenter Content="{Binding }">
+		<ContentPresenter.ContentTemplate>
+			<DataTemplate>
+				<ContentPresenter Content="{Binding PlayView}" />
+			</DataTemplate>
+		</ContentPresenter.ContentTemplate>
+	</ContentPresenter>
 </Window>

@@ -18,57 +18,60 @@
 		<c:BoolAndMultiConverter x:Key="bmConv" UnsetValue="False" />
 		<c:BoolReverseConverter x:Key="brConv" />
 	</UserControl.Resources>
-	<Viewbox>
-		<Viewbox.Visibility>
-			<MultiBinding>
-				<MultiBinding.Converter>
-					<c:JoinMultiConverter Converter="{StaticResource f2vConv}" MultriConverter="{StaticResource bmConv}" />
-				</MultiBinding.Converter>
-				<MultiBinding.Bindings>
-					<Binding Path="SelectedMedia.IsPlaying" />
-					<Binding Path="SelectedMedia.HasVideo" />
-				</MultiBinding.Bindings>
-			</MultiBinding>
-		</Viewbox.Visibility>
-		<ItemsControl ItemsSource="{Binding Teams}">
-			<ItemsControl.ItemsPanel>
-				<ItemsPanelTemplate>
-					<StackPanel Orientation="Horizontal" />
-				</ItemsPanelTemplate>
-			</ItemsControl.ItemsPanel>
-			<ItemsControl.ItemTemplate>
-				<DataTemplate>
-					<StackPanel>
-						<Label HorizontalContentAlignment="Center" Content="{Binding Model.TeamName}" />
-						<ItemsControl ItemsSource="{Binding Members}">
-							<ItemsControl.ItemsPanel>
-								<ItemsPanelTemplate>
-									<StackPanel Orientation="Vertical" />
-								</ItemsPanelTemplate>
-							</ItemsControl.ItemsPanel>
-							<ItemsControl.ItemTemplate>
-								<DataTemplate>
-									<StackPanel Margin="5 0 5 15" Orientation="Vertical">
-										<Border Width="100"
-										        Height="100"
-										        Background="{Binding Parent.Model.TeamColor,
-										                             Converter={StaticResource c2bConv}}"
-										        BorderThickness="5"
-										        CornerRadius="10"
-										        Opacity="{Binding Opacity}">
-											<TextBlock HorizontalAlignment="Center"
-											           VerticalAlignment="Center"
-											           FontSize="72"
-											           Text="{Binding Rank}" />
-										</Border>
-										<TextBlock HorizontalAlignment="Center" Text="{Binding Model.Name}" />
-									</StackPanel>
-								</DataTemplate>
-							</ItemsControl.ItemTemplate>
-						</ItemsControl>
-					</StackPanel>
-				</DataTemplate>
-			</ItemsControl.ItemTemplate>
-		</ItemsControl>
-	</Viewbox>
+	<Grid>
+		<ContentPresenter Content="{Binding SelectedMedia.Media}" Visibility="{Binding SelectedMedia.IsPlaying, Converter={StaticResource t2vConv}}" />
+		<Viewbox>
+			<Viewbox.Visibility>
+				<MultiBinding>
+					<MultiBinding.Converter>
+						<c:JoinMultiConverter Converter="{StaticResource f2vConv}" MultriConverter="{StaticResource bmConv}" />
+					</MultiBinding.Converter>
+					<MultiBinding.Bindings>
+						<Binding Path="SelectedMedia.IsPlaying" />
+						<Binding Path="SelectedMedia.HasVideo" />
+					</MultiBinding.Bindings>
+				</MultiBinding>
+			</Viewbox.Visibility>
+			<ItemsControl ItemsSource="{Binding Teams}">
+				<ItemsControl.ItemsPanel>
+					<ItemsPanelTemplate>
+						<StackPanel Orientation="Horizontal" />
+					</ItemsPanelTemplate>
+				</ItemsControl.ItemsPanel>
+				<ItemsControl.ItemTemplate>
+					<DataTemplate>
+						<StackPanel>
+							<Label HorizontalContentAlignment="Center" Content="{Binding Model.TeamName}" />
+							<ItemsControl ItemsSource="{Binding Members}">
+								<ItemsControl.ItemsPanel>
+									<ItemsPanelTemplate>
+										<StackPanel Orientation="Vertical" />
+									</ItemsPanelTemplate>
+								</ItemsControl.ItemsPanel>
+								<ItemsControl.ItemTemplate>
+									<DataTemplate>
+										<StackPanel Margin="5 0 5 15" Orientation="Vertical">
+											<Border Width="100"
+											        Height="100"
+											        Background="{Binding Parent.Model.TeamColor,
+											                             Converter={StaticResource c2bConv}}"
+											        BorderThickness="5"
+											        CornerRadius="10"
+											        Opacity="{Binding Opacity}">
+												<TextBlock HorizontalAlignment="Center"
+												           VerticalAlignment="Center"
+												           FontSize="72"
+												           Text="{Binding Rank}" />
+											</Border>
+											<TextBlock HorizontalAlignment="Center" Text="{Binding Model.Name}" />
+										</StackPanel>
+									</DataTemplate>
+								</ItemsControl.ItemTemplate>
+							</ItemsControl>
+						</StackPanel>
+					</DataTemplate>
+				</ItemsControl.ItemTemplate>
+			</ItemsControl>
+		</Viewbox>
+	</Grid>
 </UserControl>

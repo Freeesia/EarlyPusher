@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.IO;
 using System.Linq;
 using System.Windows;
 using EarlyPusher.Manager;
@@ -16,7 +17,9 @@ namespace EarlyPusher.Modules.ChoiceTab.ViewModels
 		private PlayChoiceView view = new PlayChoiceView();
 
 		private ObservableHashVMCollection<TeamChoiceVM> teams = new ObservableHashVMCollection<TeamChoiceVM>();
+		private ObservableHashVMCollection<MediaVM> medias = new ObservableHashVMCollection<MediaVM>();
 		private ViewModelsAdapter<TeamChoiceVM,TeamData> teamAdapter;
+		private MediaVM selectedMedia;
 		private bool isChoiceVisible;
 
 		#region プロパティ
@@ -49,6 +52,26 @@ namespace EarlyPusher.Modules.ChoiceTab.ViewModels
 		}
 
 		/// <summary>
+		/// 選択しているメディア
+		/// </summary>
+		public MediaVM SelectedMedia
+		{
+			get { return this.selectedMedia; }
+			set { SetProperty( ref this.selectedMedia, value, null, SelectedMediaChanging ); }
+		}
+
+		/// <summary>
+		/// メディアのリスト
+		/// </summary>
+		public ObservableHashVMCollection<MediaVM> Medias
+		{
+			get
+			{
+				return this.medias;
+			}
+		}
+
+		/// <summary>
 		/// 選択を表示する。
 		/// </summary>
 		public bool IsChoiceVisible
@@ -75,6 +98,8 @@ namespace EarlyPusher.Modules.ChoiceTab.ViewModels
 
 			this.teamAdapter = new ViewModelsAdapter<TeamChoiceVM, TeamData>( CreateTeamVM );
 			this.teamAdapter.Adapt( this.Teams, this.Parent.Data.TeamList );
+
+			LoadVideos();
 		}
 
 		/// <summary>
@@ -122,13 +147,43 @@ namespace EarlyPusher.Modules.ChoiceTab.ViewModels
 
 		#endregion
 
+		#region イベント
+
 		private void Manager_KeyPushed( object sender, DeviceKeyEventArgs e )
 		{
 			foreach( var team in this.Teams )
 			{
-				if( team.ExistSelectedItem(e.InstanceID, e.Key) )
+				if( team.ExistSelectedItem( e.InstanceID, e.Key ) )
 				{
 					return;
+				}
+			}
+		}
+
+		/// <summary>
+		/// 選択しているメディアが変わるとき、以前のメディアを停止します。
+		/// </summary>
+		private void SelectedMediaChanging()
+		{
+			if( this.SelectedMedia != null )
+			{
+				this.SelectedMedia.Stop();
+			}
+		}
+
+		#endregion
+
+		/// <summary>
+		/// メディアフォルダが変更されたとき、メディア一覧を更新します。
+		/// </summary>
+		private void LoadVideos()
+		{
+			if( !string.IsNullOrEmpty( this.Parent.Data.ChoiceVideoDir ) )
+			{
+				this.Medias.Clear();
+				foreach( string path in Directory.EnumerateFiles( this.Parent.Data.ChoiceVideoDir, "*", SearchOption.AllDirectories ) )
+				{
+					this.Medias.Add( new MediaVM() { FilePath = path } );
 				}
 			}
 		}
