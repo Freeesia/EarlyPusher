@@ -80,9 +80,10 @@
 			          SelectedItem="{Binding SelectedMember}"
 			          SelectionMode="Single">
 				<DataGrid.Columns>
-					<DataGridTextColumn Binding="{Binding Rank}"
+					<DataGridTextColumn Binding="{Binding RankStr}"
 					                    Header="順位"
-					                    IsReadOnly="True" />
+					                    IsReadOnly="True"
+					                    SortMemberPath="Rank" />
 					<DataGridTemplateColumn Header="解答権" IsReadOnly="True">
 						<DataGridTemplateColumn.CellTemplate>
 							<DataTemplate>

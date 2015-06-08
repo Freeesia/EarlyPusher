@@ -176,10 +176,10 @@ namespace EarlyPusher.Modules.EarlyTab.ViewModels
 		private void Manager_KeyPushed( object sender, Manager.DeviceKeyEventArgs e )
 		{
 			var item = this.Members.FirstOrDefault( i => i.Model.DeviceGuid == e.InstanceID && i.Model.Key == e.Key );
-			if( item != null && string.IsNullOrEmpty( item.Rank ) && item.CanAnswer )
+			if( item != null && item.Rank == 100 && item.CanAnswer )
 			{
 				rank++;
-				item.Rank = rank.ToString();
+				item.Rank = rank;
 				if( !this.AnswerSound.IsPlaying )
 				{
 					this.AnswerSound.Play();
@@ -252,7 +252,7 @@ namespace EarlyPusher.Modules.EarlyTab.ViewModels
 			this.rank = 0;
 			foreach( var i in this.Members )
 			{
-				i.Rank = string.Empty;
+				i.Rank = 100;
 			}
 		}
 	}
