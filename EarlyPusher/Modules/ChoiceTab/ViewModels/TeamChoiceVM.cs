@@ -66,6 +66,11 @@ namespace EarlyPusher.Modules.ChoiceTab.ViewModels
 
 		public bool ExistSelectedItem( Guid device, int key )
 		{
+			if( this.SelectedIndex != null )
+			{
+				return false;
+			}
+
 			var item = this.KeyList.FirstOrDefault( i => i.Device == device && i.Key == key );
 			if( item == null )
 			{
