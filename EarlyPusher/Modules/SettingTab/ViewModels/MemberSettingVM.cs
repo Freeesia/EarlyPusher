@@ -12,6 +12,14 @@ namespace EarlyPusher.Modules.SettingTab.ViewModels
 	{
 		private TeamSettingVM parent;
 
+		private bool isKeyLock = true;
+
+		public bool IsKeyLock
+		{
+			get { return this.isKeyLock; }
+			set { SetProperty( ref this.isKeyLock, value ); }
+		}
+		
 		public MemberSettingVM( TeamSettingVM parent, MemberData data )
 			: base( data )
 		{

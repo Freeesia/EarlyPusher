@@ -108,6 +108,10 @@
 				</MenuItem.ItemContainerStyle>
 			</MenuItem>
 			<MenuItem Command="{Binding DelMemberCommand}" Header="メンバー削除" />
+			<MenuItem Header="キーロック">
+				<MenuItem Command="{Binding AllKeyLockCommand}" Header="全ロック" />
+				<MenuItem Command="{Binding AllKeyReleaseCommand}" Header="全解除" />
+			</MenuItem>
 		</Menu>
 
 		<DataGrid Grid.Row="3"
@@ -157,6 +161,16 @@
 				<DataGridTextColumn Binding="{Binding Parent.Model.TeamName}"
 				                    Header="チーム名"
 				                    IsReadOnly="True" />
+				<DataGridTemplateColumn Header="キーロック" IsReadOnly="True">
+					<DataGridTemplateColumn.CellTemplate>
+						<DataTemplate>
+							<CheckBox HorizontalAlignment="Center"
+							          VerticalAlignment="Center"
+							          IsChecked="{Binding IsKeyLock,
+							                              UpdateSourceTrigger=PropertyChanged}" />
+						</DataTemplate>
+					</DataGridTemplateColumn.CellTemplate>
+				</DataGridTemplateColumn>
 				<DataGridTextColumn Header="キー" IsReadOnly="True">
 					<DataGridTextColumn.Binding>
 						<MultiBinding StringFormat="{}{0} : {1}">

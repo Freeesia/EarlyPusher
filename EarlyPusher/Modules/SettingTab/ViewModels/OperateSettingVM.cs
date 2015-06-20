@@ -17,6 +17,7 @@ using SlimDX.DirectInput;
 using StFrLibs.Core.Adapters;
 using StFrLibs.Core.Basis;
 using StFrLibs.Core.Commands;
+using StFrLibs.Core.Extensions;
 
 namespace EarlyPusher.Modules.SettingTab.ViewModels
 {
@@ -38,6 +39,9 @@ namespace EarlyPusher.Modules.SettingTab.ViewModels
 
 		public DelegateCommand AddMemberCommand { get; private set; }
 		public DelegateCommand DelMemberCommand { get; private set; }
+		public DelegateCommand AllKeyLockCommand { get; private set; }
+		public DelegateCommand AllKeyReleaseCommand { get; private set; }
+
 		public DelegateCommand SelectEarlyVideoDirCommand { get; private set; }
 		public DelegateCommand SelectChoiceVideoDirCommand { get; private set; }
 		public DelegateCommand SelectAnswerSoundCommand { get; private set; }
@@ -120,8 +124,12 @@ namespace EarlyPusher.Modules.SettingTab.ViewModels
 			this.SelectEarlyVideoDirCommand = new DelegateCommand( SelectEarlyVideoDir, null );
 			this.SelectChoiceVideoDirCommand = new DelegateCommand( SelectChoiceVideoDir, null );
 			this.SelectAnswerSoundCommand = new DelegateCommand( SelectAnwser, null );
+
 			this.AddMemberCommand = new DelegateCommand( AddMember, null );
 			this.DelMemberCommand = new DelegateCommand( DelMember, CanDelMember );
+
+			this.AllKeyLockCommand = new DelegateCommand( AllKeyLock );
+			this.AllKeyReleaseCommand = new DelegateCommand( AllKeyRelease );
 
 			this.SearchCommand = new DelegateCommand( SearchDevice, null );
 			this.AddTeamCommand = new DelegateCommand( AddTeam );
@@ -129,6 +137,16 @@ namespace EarlyPusher.Modules.SettingTab.ViewModels
 
 			this.Parent.Manager.Devices.CollectionChanged += Devices_CollectionChanged;
 			this.Parent.Manager.PropertyChanged += Manager_PropertyChanged;
+		}
+
+		private void AllKeyLock( object obj )
+		{
+			this.Members.ForEach( m => m.IsKeyLock = true );
+		}
+
+		private void AllKeyRelease( object obj )
+		{
+			this.Members.ForEach( m => m.IsKeyLock = false );
 		}
 
 		public override UIElement PlayView
@@ -250,7 +268,7 @@ namespace EarlyPusher.Modules.SettingTab.ViewModels
 		/// <param name="e"></param>
 		private void Manager_KeyPushed( object sender, DeviceKeyEventArgs e )
 		{
-			if( this.SelectedMember != null )
+			if( this.SelectedMember != null && !this.SelectedMember.IsKeyLock )
 			{
 				this.SelectedMember.Model.DeviceGuid = e.InstanceID;
 				this.SelectedMember.Model.Key = e.Key;
