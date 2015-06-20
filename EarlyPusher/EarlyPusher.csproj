@@ -86,6 +86,13 @@
     <Compile Include="Modules\EarlyTab\ViewModels\TeamEarlyVM.cs" />
     <Compile Include="Modules\SettingTab\ViewModels\MemberSettingVM.cs" />
     <Compile Include="Modules\SettingTab\ViewModels\TeamSettingVM.cs" />
+    <Compile Include="Modules\SortTab\ViewModels\OperateSortVM.cs" />
+    <Compile Include="Modules\SortTab\Views\OperateSortView.xaml.cs">
+      <DependentUpon>OperateSortView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\SortTab\Views\PlaySortView.xaml.cs">
+      <DependentUpon>PlaySortView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModels\MainVM.cs" />
     <Compile Include="Modules\EarlyTab\ViewModels\MemberEarlyVM.cs" />
     <Compile Include="Basis\PlayMode.cs" />
@@ -95,6 +102,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Modules\EarlyTab\Views\PlayEarlyView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Modules\SortTab\Views\OperateSortView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Modules\SortTab\Views\PlaySortView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

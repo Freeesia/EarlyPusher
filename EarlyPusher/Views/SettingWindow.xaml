@@ -10,6 +10,7 @@
         xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
         xmlns:ev="clr-namespace:EarlyPusher.Modules.EarlyTab.Views"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:sbv="clr-namespace:EarlyPusher.Modules.SortTab.Views"
         xmlns:sv="clr-namespace:EarlyPusher.Modules.SettingTab.Views"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         Title="SettingWindow"
@@ -41,11 +42,14 @@
 			<TabItem DataContext="{Binding OperateSetting}" Header="設定専用">
 				<sv:OperateSettingView />
 			</TabItem>
+			<TabItem DataContext="{Binding OperateEarly}" Header="早押し">
+				<ev:OperateEarlyView />
+			</TabItem>
 			<TabItem DataContext="{Binding OperateChoice}" Header="選択">
 				<cv:OperateChoiceView />
 			</TabItem>
-			<TabItem DataContext="{Binding OperateEarly}" Header="早押し">
-				<ev:OperateEarlyView />
+			<TabItem DataContext="{Binding OperateSort}" Header="並べ替え">
+				<sbv:OperateSortView />
 			</TabItem>
 		</TabControl>
 
