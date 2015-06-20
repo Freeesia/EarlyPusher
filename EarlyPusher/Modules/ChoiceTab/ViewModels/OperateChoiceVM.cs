@@ -86,7 +86,6 @@ namespace EarlyPusher.Modules.ChoiceTab.ViewModels
 		public OperateChoiceVM( MainVM parent )
 			: base( parent )
 		{
-
 			this.OpenCommand = new DelegateCommand( Open );
 			this.ResetCommand = new DelegateCommand( Reset );
 		}
@@ -96,6 +95,8 @@ namespace EarlyPusher.Modules.ChoiceTab.ViewModels
 		public override void LoadData()
 		{
 			base.LoadData();
+
+			this.Parent.Data.PropertyChanged += Data_PropertyChanged;
 
 			this.teamAdapter = new ViewModelsAdapter<TeamChoiceVM, TeamData>( CreateTeamVM );
 			this.teamAdapter.Adapt( this.Teams, this.Parent.Data.TeamList );
@@ -150,6 +151,14 @@ namespace EarlyPusher.Modules.ChoiceTab.ViewModels
 
 		#region イベント
 
+		private void Data_PropertyChanged( object sender, System.ComponentModel.PropertyChangedEventArgs e )
+		{
+			if( e.PropertyName == "ChoiceVideoDir" )
+			{
+				LoadVideos();
+			}
+		}
+
 		private void Manager_KeyPushed( object sender, DeviceKeyEventArgs e )
 		{
 			foreach( var team in this.Teams )
@@ -179,9 +188,9 @@ namespace EarlyPusher.Modules.ChoiceTab.ViewModels
 		/// </summary>
 		private void LoadVideos()
 		{
+			this.Medias.Clear();
 			if( !string.IsNullOrEmpty( this.Parent.Data.ChoiceVideoDir ) )
 			{
-				this.Medias.Clear();
 				foreach( string path in Directory.EnumerateFiles( this.Parent.Data.ChoiceVideoDir, "*", SearchOption.AllDirectories ) )
 				{
 					this.Medias.Add( new MediaVM() { FilePath = path } );

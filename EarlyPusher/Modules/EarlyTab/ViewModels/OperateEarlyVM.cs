@@ -159,7 +159,7 @@ namespace EarlyPusher.Modules.EarlyTab.ViewModels
 		{
 			switch( e.PropertyName )
 			{
-				case "VideoDir":
+				case "EarlyVideoDir":
 					LoadVideos();
 					break;
 				default:
