@@ -14,6 +14,7 @@ namespace EarlyPusher.Modules.EarlyTab.ViewModels
 	{
 		private TeamEarlyVM parent;
 		private string rankStr = string.Empty;
+		private int sort = -1;
 		private int rank = 100;
 		private bool canAnswer = true;
 
@@ -21,11 +22,28 @@ namespace EarlyPusher.Modules.EarlyTab.ViewModels
 			: base( data )
 		{
 			this.parent = parent;
+
+			var t = this.parent;
+			var s = t.Parent;
+
+			var mID = t.Members.IndexOf( this );
+			var tID = s.Teams.IndexOf( t );
+
+			this.sort = tID * 10 + mID;
+
 		}
 
 		public TeamEarlyVM Parent
 		{
 			get { return this.parent; }
+		}
+
+		public int Sort
+		{
+			get
+			{
+				return this.sort;
+			}
 		}
 
 		public int Rank

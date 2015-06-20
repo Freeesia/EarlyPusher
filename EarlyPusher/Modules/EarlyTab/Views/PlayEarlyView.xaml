@@ -61,7 +61,7 @@
 												<TextBlock HorizontalAlignment="Center"
 												           VerticalAlignment="Center"
 												           FontSize="72"
-												           Text="{Binding Rank}" />
+												           Text="{Binding RankStr}" />
 											</Border>
 											<TextBlock HorizontalAlignment="Center" Text="{Binding Model.Name}" />
 										</StackPanel>

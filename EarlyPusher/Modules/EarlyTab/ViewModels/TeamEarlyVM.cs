@@ -19,9 +19,13 @@ namespace EarlyPusher.Modules.EarlyTab.ViewModels
 			get { return this.members; }
 		}
 
-		public TeamEarlyVM( TeamData data )
+		public OperateEarlyVM Parent { get; private set; }
+
+		public TeamEarlyVM( OperateEarlyVM parent, TeamData data )
 			: base( data )
 		{
+			this.Parent = parent;
+
 			this.adapter = new ViewModelsAdapter<MemberEarlyVM, MemberData>( CreateMemberVM );
 		}
 

@@ -97,10 +97,12 @@
 					<DataGridTextColumn MinWidth="100"
 					                    Binding="{Binding Model.Name}"
 					                    Header="名前"
-					                    IsReadOnly="True" />
-					<DataGridTextColumn Binding="{Binding Parent.Model.TeamName}"
+					                    IsReadOnly="True"
+					                    SortMemberPath="Sort" />
+					<DataGridTextColumn Binding="{Binding Model.Parent.TeamName}"
 					                    Header="チーム名"
-					                    IsReadOnly="True" />
+					                    IsReadOnly="True"
+					                    SortMemberPath="Sort" />
 					<DataGridTextColumn Header="キー" IsReadOnly="True">
 						<DataGridTextColumn.Binding>
 							<MultiBinding StringFormat="{}{0} : {1}">

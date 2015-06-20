@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media;
+using System.Xml.Serialization;
 using StFrLibs.Core.Basis;
 
 namespace EarlyPusher.Models
@@ -14,30 +15,7 @@ namespace EarlyPusher.Models
 		private string teamName;
 		private Color teamColor;
 		private ObservableHashCollection<MemberData> members = new ObservableHashCollection<MemberData>();
-
-		public TeamData()
-		{
-			this.Members.CollectionChanged += Members_CollectionChanged;
-		}
-
-		private void Members_CollectionChanged( object sender, NotifyCollectionChangedEventArgs e )
-		{
-			if( e.OldItems != null )
-			{
-				foreach( MemberData mamber in e.OldItems )
-				{
-					mamber.Parent = null;
-				}
-			}
-			if( e.NewItems != null )
-			{
-				foreach( MemberData mamber in e.NewItems )
-				{
-					mamber.Parent = this;
-				}
-			}
-		}
-
+		
 		public string TeamName
 		{
 			get { return this.teamName; }

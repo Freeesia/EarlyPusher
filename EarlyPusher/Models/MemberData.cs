@@ -10,17 +10,9 @@ namespace EarlyPusher.Models
 {
 	public class MemberData : ObservableObject
 	{
-		private TeamData parent;
 		private Guid deviceGuid;
 		private int key;
 		private string name;
-
-		[XmlIgnore]
-		public TeamData Parent
-		{
-			get { return this.parent; }
-			set { SetProperty( ref this.parent, value ); }
-		}
 		
 		public Guid DeviceGuid
 		{
@@ -39,6 +31,5 @@ namespace EarlyPusher.Models
 			get { return name; }
 			set { SetProperty( ref name, value ); }
 		}
-
 	}
 }

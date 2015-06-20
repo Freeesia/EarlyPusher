@@ -11,7 +11,7 @@ namespace EarlyPusher.Models
 	public class SettingData : ObservableObject
 	{
 		public const string FileName = "conf.xml";
-		private ObservableHashCollection<TeamData> teamList;
+		private ObservableHashCollection<TeamData> teamList = new ObservableHashCollection<TeamData>();
 		private string earlyVideoDir;
 		private string choiceVideoDir;
 		private string answerSoundPath;
@@ -38,11 +38,5 @@ namespace EarlyPusher.Models
 			get { return answerSoundPath; }
 			set { SetProperty( ref answerSoundPath, value ); }
 		}
-
-		public SettingData()
-		{
-			this.teamList = new ObservableHashCollection<TeamData>();
-		}
-
 	}
 }

@@ -82,6 +82,7 @@
     <Compile Include="Modules\ChoiceTab\ViewModels\SelectableItemVM.cs" />
     <Compile Include="Modules\ChoiceTab\ViewModels\TeamChoiceVM.cs" />
     <Compile Include="Modules\EarlyTab\ViewModels\OperateEarlyVM.cs" />
+    <Compile Include="Modules\EarlyTab\ViewModels\TeamEarlyVM.cs" />
     <Compile Include="Modules\SettingTab\ViewModels\MemberSettingVM.cs" />
     <Compile Include="Modules\SettingTab\ViewModels\TeamSettingVM.cs" />
     <Compile Include="ViewModels\MainVM.cs" />
@@ -121,7 +122,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Modules\SettingTab\ViewModels\OperateSettingVM.cs" />
-    <Compile Include="Modules\EarlyTab\ViewModels\TeamEarlyVM.cs" />
     <Compile Include="ViewModels\MediaVM.cs" />
     <Compile Include="Modules\ChoiceTab\Views\PlayChoiceView.xaml.cs">
       <DependentUpon>PlayChoiceView.xaml</DependentUpon>
