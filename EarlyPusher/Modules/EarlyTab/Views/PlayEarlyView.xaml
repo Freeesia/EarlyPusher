@@ -41,7 +41,7 @@
 				<ItemsControl.ItemTemplate>
 					<DataTemplate>
 						<StackPanel>
-							<Label HorizontalContentAlignment="Center" Content="{Binding Model.TeamName}" />
+							<Label HorizontalContentAlignment="Center" Content="{Binding Parent.Model.TeamName}" />
 							<ItemsControl ItemsSource="{Binding Members}">
 								<ItemsControl.ItemsPanel>
 									<ItemsPanelTemplate>

@@ -11,10 +11,9 @@ namespace EarlyPusher.Modules.EarlyTab.ViewModels
 {
 	public class TeamEarlyVM : ViewModelBase<TeamData>
 	{
-		private ObservableHashVMCollection<MemberEarlyVM> members = new ObservableHashVMCollection<MemberEarlyVM>();
-		private ViewModelsAdapter<MemberEarlyVM,MemberData> adapter;
+		private ObservableVMCollection<MemberData, MemberEarlyVM> members = new ObservableVMCollection<MemberData, MemberEarlyVM>();
 
-		public ObservableHashVMCollection<MemberEarlyVM> Members
+		public ObservableVMCollection<MemberData, MemberEarlyVM> Members
 		{
 			get { return this.members; }
 		}
@@ -25,27 +24,71 @@ namespace EarlyPusher.Modules.EarlyTab.ViewModels
 			: base( data )
 		{
 			this.Parent = parent;
-
-			this.adapter = new ViewModelsAdapter<MemberEarlyVM, MemberData>( CreateMemberVM );
 		}
 
-		private MemberEarlyVM CreateMemberVM( MemberData data )
+		private void CreateVM( MemberData member )
 		{
-			return new MemberEarlyVM( this, data );
+			member.PropertyChanged += MemberData_PropertyChanged;
+			if( !string.IsNullOrEmpty( member.Name ) )
+			{
+				this.Members.Add( new MemberEarlyVM( this, member ) );
+			}
 		}
 
 		public override void AttachModel()
 		{
-			this.adapter.Adapt( this.members, this.Model.Members );
+			this.Model.Members.CollectionChanged += MemberDatas_CollectionChanged;
+			foreach( MemberData member in this.Model.Members )
+			{
+				CreateVM( member );
+			}
 
 			base.AttachModel();
 		}
 
 		public override void DettachModel()
 		{
+			this.Model.Members.CollectionChanged -= MemberDatas_CollectionChanged;
+			foreach( var member in this.Model.Members )
+			{
+				member.PropertyChanged -= MemberData_PropertyChanged;
+			}
 			this.members.Clear();
 
 			base.DettachModel();
+		}
+
+		private void MemberDatas_CollectionChanged( object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e )
+		{
+			if( e.OldItems != null )
+			{
+				foreach( MemberData member in e.OldItems )
+				{
+					member.PropertyChanged -= MemberData_PropertyChanged;
+					this.Members.Remove( member );
+				}
+			}
+
+			if( e.NewItems != null )
+			{
+				foreach( MemberData member in e.NewItems )
+				{
+					CreateVM( member );
+				}
+			}
+		}
+
+		private void MemberData_PropertyChanged( object sender, System.ComponentModel.PropertyChangedEventArgs e )
+		{
+			var member = sender as MemberData;
+			if( string.IsNullOrEmpty( member.Name ) )
+			{
+				this.Members.Remove( member );
+			}
+			else if( !this.Members.Contains( member ) )
+			{
+				this.Members.Add( new MemberEarlyVM( this, member ) );
+			}
 		}
 	}
 }
