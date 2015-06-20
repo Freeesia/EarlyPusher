@@ -370,6 +370,7 @@ namespace EarlyPusher.Modules.SettingTab.ViewModels
 			if( dlg.ShowDialog() == true )
 			{
 				this.AnswerSound = new MediaVM() { FilePath = dlg.FileName };
+				this.AnswerSound.LoadFile();
 				this.Parent.Data.AnswerSoundPath = dlg.FileName;
 			}
 		}

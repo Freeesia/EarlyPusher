@@ -78,6 +78,7 @@
     <Compile Include="Models\MemberData.cs" />
     <Compile Include="Models\SettingData.cs" />
     <Compile Include="Models\TeamData.cs" />
+    <Compile Include="Modules\ChoiceTab\ViewModels\MediaChoiceVM.cs" />
     <Compile Include="Modules\ChoiceTab\ViewModels\OperateChoiceVM.cs" />
     <Compile Include="Modules\ChoiceTab\ViewModels\SelectableItemVM.cs" />
     <Compile Include="Modules\ChoiceTab\ViewModels\TeamChoiceVM.cs" />

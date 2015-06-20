@@ -189,11 +189,12 @@ namespace EarlyPusher.Modules.ChoiceTab.ViewModels
 		private void LoadVideos()
 		{
 			this.Medias.Clear();
-			if( !string.IsNullOrEmpty( this.Parent.Data.ChoiceVideoDir ) )
+			if( !string.IsNullOrEmpty( this.Parent.Data.ChoiceVideoDir ) && Directory.Exists( this.Parent.Data.ChoiceVideoDir ) )
 			{
-				foreach( string path in Directory.EnumerateFiles( this.Parent.Data.ChoiceVideoDir, "*", SearchOption.AllDirectories ) )
+				foreach( string path in Directory.EnumerateDirectories( this.Parent.Data.ChoiceVideoDir, "*", SearchOption.TopDirectoryOnly ) )
 				{
-					this.Medias.Add( new MediaVM() { FilePath = path } );
+					var media = new MediaChoiceVM( path ) { FileName = Path.GetFileName( path ) };
+					this.Medias.Add( media );
 				}
 			}
 		}

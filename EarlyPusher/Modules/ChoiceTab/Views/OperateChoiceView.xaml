@@ -21,6 +21,7 @@
 			<Grid.RowDefinitions>
 				<RowDefinition Height="*" />
 				<RowDefinition Height="Auto" />
+				<RowDefinition Height="Auto" />
 			</Grid.RowDefinitions>
 			<Grid.ColumnDefinitions>
 				<ColumnDefinition />
@@ -43,7 +44,20 @@
 				</ListBox.ItemTemplate>
 			</ListBox>
 
-			<ToggleButton Grid.Row="1"
+			<Button Grid.Row="1"
+			        Grid.Column="0"
+			        Command="{Binding SelectedMedia.PlayQuestionCommand}"
+			        Content="問題再生"
+			        IsEnabled="{Binding SelectedMedia,
+			                            Converter={StaticResource nullConv}}" />
+			<Button Grid.Row="1"
+			        Grid.Column="1"
+			        Command="{Binding SelectedMedia.PlayAnswerCommand}"
+			        Content="解答再生"
+			        IsEnabled="{Binding SelectedMedia,
+			                            Converter={StaticResource nullConv}}" />
+
+			<ToggleButton Grid.Row="2"
 			              Grid.Column="0"
 			              Command="{Binding SelectedMedia.PlayOrPauseCommand}"
 			              Content="再生/一時停止(_P)"
@@ -51,7 +65,7 @@
 			                                  Mode=OneWay}"
 			              IsEnabled="{Binding SelectedMedia,
 			                                  Converter={StaticResource nullConv}}" />
-			<Button Grid.Row="1"
+			<Button Grid.Row="2"
 			        Grid.Column="1"
 			        Command="{Binding SelectedMedia.StopCommand}"
 			        Content="停止"
