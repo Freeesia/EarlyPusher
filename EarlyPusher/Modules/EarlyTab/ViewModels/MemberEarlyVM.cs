@@ -53,12 +53,18 @@ namespace EarlyPusher.Modules.EarlyTab.ViewModels
 			{
 				SetProperty( ref this.rank, value );
 				NotifyPropertyChanged( () => this.RankStr );
+				NotifyPropertyChanged( () => this.RankPlayStr );
 			}
 		}
 
 		public string RankStr
 		{
 			get { return this.rank < 100 ? this.rank.ToString( "D2" ) : string.Empty; }
+		}
+
+		public string RankPlayStr
+		{
+			get { return this.rank < 100 ? this.rank.ToString() : string.Empty; }
 		}
 		
 		public bool CanAnswer

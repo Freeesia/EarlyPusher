@@ -14,7 +14,7 @@
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         Title="SettingWindow"
         Width="800"
-        Height="550">
+        Height="600">
 	<i:Interaction.Triggers>
 		<i:EventTrigger EventName="Loaded">
 			<i:InvokeCommandAction Command="{Binding LoadedCommand}" />

@@ -14,6 +14,7 @@ namespace EarlyPusher.Models
 	{
 		private string teamName;
 		private Color teamColor;
+		private int point;
 		private ObservableHashCollection<MemberData> members = new ObservableHashCollection<MemberData>();
 		
 		public string TeamName
@@ -28,6 +29,12 @@ namespace EarlyPusher.Models
 			set { SetProperty( ref this.teamColor, value ); }
 		}
 
+		public int Point
+		{
+			get { return this.point; }
+			set { SetProperty( ref this.point, value ); }
+		}
+		
 		public ObservableHashCollection<MemberData> Members
 		{
 			get { return this.members; }

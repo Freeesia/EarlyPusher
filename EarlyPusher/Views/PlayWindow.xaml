@@ -10,11 +10,6 @@
         PreviewKeyDown="Window_PreviewKeyDown"
         ResizeMode="CanResizeWithGrip"
         WindowStyle="None">
-	<Window.Resources>
-		<c:BoolToVisibilityConverter x:Key="t2vConv"
-		                             False="Hidden"
-		                             True="Visible" />
-	</Window.Resources>
 	<ContentPresenter Content="{Binding }">
 		<ContentPresenter.ContentTemplate>
 			<DataTemplate>
