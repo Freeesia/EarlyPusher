@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Diagnostics.Contracts;
@@ -23,7 +24,7 @@ namespace EarlyPusher.Modules.SettingTab.ViewModels
 	{
 		private ObservableHashVMCollection<TeamSettingVM> teams = new ObservableHashVMCollection<TeamSettingVM>();
 		private ObservableHashVMCollection<MemberSettingVM> members = new ObservableHashVMCollection<MemberSettingVM>();
-		private ObservableHashCollection<string> devices = new ObservableHashCollection<string>();
+		private ObservableCollection<string> devices = new ObservableCollection<string>();
 		private ViewModelsAdapter<TeamSettingVM,TeamData> teamAdapter;
 
 		private string earlyVideoDir;
@@ -94,7 +95,7 @@ namespace EarlyPusher.Modules.SettingTab.ViewModels
 		/// <summary>
 		/// デバイスのリスト
 		/// </summary>
-		public ObservableHashCollection<string> Devices
+		public ObservableCollection<string> Devices
 		{
 			get
 			{
