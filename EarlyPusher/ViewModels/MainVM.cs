@@ -198,7 +198,7 @@ namespace EarlyPusher.ViewModels
 		/// <param name="obj"></param>
 		private void Closing( object obj )
 		{
-			SaveData();
+			SaveData( SettingData.FileName );
 			if( this.window != null )
 			{
 				this.window.Close();
@@ -257,7 +257,7 @@ namespace EarlyPusher.ViewModels
 		/// <summary>
 		/// 設定を保存します。
 		/// </summary>
-		public void SaveData()
+		public void SaveData( string path )
 		{
 			//各タブのセーブ処理
 			foreach( var vm in this.operateVMs )
@@ -265,7 +265,7 @@ namespace EarlyPusher.ViewModels
 				vm.SaveData();
 			}
 
-			using( Stream file = new FileStream( SettingData.FileName, FileMode.Create ) )
+			using( Stream file = new FileStream( path, FileMode.Create ) )
 			{
 				XmlSerializer xml = new XmlSerializer( typeof( SettingData ) );
 				xml.Serialize( file, this.data );

@@ -20,5 +20,10 @@ namespace EarlyPusher.Modules.SortTab.ViewModels
 			: base( parent )
 		{
 		}
+
+		public override void Activate()
+		{
+			throw new InvalidOperationException();
+		}
 	}
 }
