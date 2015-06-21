@@ -29,6 +29,7 @@ namespace EarlyPusher.Modules.EarlyTab.ViewModels
 		private MediaVM selectedMedia;
 
 		private int rank = 0;
+		private int getPoint = 0;
 
 		#region プロパティ
 
@@ -77,6 +78,12 @@ namespace EarlyPusher.Modules.EarlyTab.ViewModels
 			}
 		}
 
+		public int GetPoint
+		{
+			get { return this.getPoint; }
+			set { SetProperty( ref this.getPoint, value ); }
+		}
+		
 		#endregion
 
 		public OperateEarlyVM( MainVM parent )

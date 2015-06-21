@@ -67,28 +67,57 @@
 		              Width="3"
 		              ResizeBehavior="PreviousAndNext" />
 
-		<DataGrid Grid.Column="2"
-		          AutoGenerateColumns="False"
-		          CanUserAddRows="False"
-		          CanUserDeleteRows="False"
-		          ItemsSource="{Binding Teams}"
-		          RowHeaderWidth="0"
-		          SelectionMode="Single">
-			<DataGrid.Columns>
-				<DataGridTextColumn Binding="{Binding Model.TeamName}"
-				                    Header="チーム"
-				                    IsReadOnly="True" />
-				<DataGridTemplateColumn Width="*"
-				                        Header="得点"
-				                        IsReadOnly="True">
-					<DataGridTemplateColumn.CellTemplate>
-						<DataTemplate>
-							<xctk:IntegerUpDown Increment="10" Value="{Binding Model.Point, UpdateSourceTrigger=PropertyChanged}" />
-						</DataTemplate>
-					</DataGridTemplateColumn.CellTemplate>
-				</DataGridTemplateColumn>
-			</DataGrid.Columns>
-		</DataGrid>
+		<Grid Grid.Column="2">
+			<Grid.RowDefinitions>
+				<RowDefinition Height="Auto" />
+				<RowDefinition Height="*" />
+			</Grid.RowDefinitions>
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="Auto" />
+				<ColumnDefinition Width="*" />
+			</Grid.ColumnDefinitions>
+
+			<TextBlock Grid.Row="0"
+			           Grid.Column="0"
+			           Margin="5"
+			           Text="得点" />
+			<xctk:IntegerUpDown Grid.Row="0"
+			                    Grid.Column="1"
+			                    Margin="5"
+			                    Increment="10"
+			                    Value="{Binding GetPoint}" />
+
+			<DataGrid Grid.Row="1"
+			          Grid.ColumnSpan="2"
+			          AutoGenerateColumns="False"
+			          CanUserAddRows="False"
+			          CanUserDeleteRows="False"
+			          ItemsSource="{Binding Teams}"
+			          RowHeaderWidth="0"
+			          SelectionMode="Single">
+				<DataGrid.Columns>
+					<DataGridTextColumn Binding="{Binding Model.TeamName}"
+					                    Header="チーム"
+					                    IsReadOnly="True" />
+					<DataGridTemplateColumn Width="*"
+					                        Header="得点"
+					                        IsReadOnly="True">
+						<DataGridTemplateColumn.CellTemplate>
+							<DataTemplate>
+								<xctk:IntegerUpDown Increment="10" Value="{Binding Model.Point, UpdateSourceTrigger=PropertyChanged}" />
+							</DataTemplate>
+						</DataGridTemplateColumn.CellTemplate>
+					</DataGridTemplateColumn>
+					<DataGridTemplateColumn Header="得点を追加" IsReadOnly="True">
+						<DataGridTemplateColumn.CellTemplate>
+							<DataTemplate>
+								<Button Command="{Binding AddPointCommand}" Content="追加" />
+							</DataTemplate>
+						</DataGridTemplateColumn.CellTemplate>
+					</DataGridTemplateColumn>
+				</DataGrid.Columns>
+			</DataGrid>
+		</Grid>
 
 		<GridSplitter Grid.Column="3"
 		              Width="3"
