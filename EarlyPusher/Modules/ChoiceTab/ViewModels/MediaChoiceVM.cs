@@ -37,16 +37,18 @@ namespace EarlyPusher.Modules.ChoiceTab.ViewModels
 
 		private void PlayAnswer( object obj )
 		{
+			Stop();
 			this.FilePath = this.aFilePath;
 			LoadFile();
-			this.Play();
+			Play();
 		}
 
 		private void PlayQuestion( object obj )
 		{
+			Stop();
 			this.FilePath = this.qFilePath;
 			LoadFile();
-			this.Play();
+			Play();
 		}
 	}
 }
