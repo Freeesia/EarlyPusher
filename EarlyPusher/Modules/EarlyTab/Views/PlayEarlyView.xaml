@@ -4,7 +4,6 @@
              xmlns:c="clr-namespace:StFrLibs.Core.Converter;assembly=StFrCore"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             Background="Black"
              FontFamily="HGPSoeiKakupoptai"
              d:DesignHeight="300"
              d:DesignWidth="300"
