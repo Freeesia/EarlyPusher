@@ -12,7 +12,7 @@ namespace EarlyPusher.Modules.ChoiceTab.ViewModels
 	public class TeamChoiceVM : ViewModelBase<TeamData>
 	{
 		private List<SelectableItemVM> keyList = new List<SelectableItemVM>();
-		private int? selectedIndex = null;
+		private Choice? selectedChoice;
 
 		#region プロパティ
 
@@ -21,12 +21,12 @@ namespace EarlyPusher.Modules.ChoiceTab.ViewModels
 			get { return this.keyList; }
 		}
 
-		public int? SelectedIndex
+		public Choice? SelectedChoice
 		{
-			get { return this.selectedIndex; }
-			set { SetProperty( ref this.selectedIndex, value ); }
+			get { return this.selectedChoice; }
+			set { SetProperty( ref this.selectedChoice, value ); }
 		}
-
+		
 		#endregion
 
 		public TeamChoiceVM( TeamData data )
@@ -66,7 +66,7 @@ namespace EarlyPusher.Modules.ChoiceTab.ViewModels
 
 		public bool ExistSelectedItem( Guid device, int key )
 		{
-			if( this.SelectedIndex != null )
+			if( this.SelectedChoice != null )
 			{
 				return false;
 			}
@@ -81,7 +81,7 @@ namespace EarlyPusher.Modules.ChoiceTab.ViewModels
 			{
 				i.IsSelected = false;
 			}
-			this.SelectedIndex = this.keyList.IndexOf( item );
+			this.SelectedChoice = (Choice)this.keyList.IndexOf( item );
 			item.IsSelected = true;
 
 			return true;
@@ -94,7 +94,7 @@ namespace EarlyPusher.Modules.ChoiceTab.ViewModels
 				i.IsSelected = false;
 			}
 
-			this.SelectedIndex = null;
+			this.SelectedChoice = null;
 		}
 	}
 }

@@ -86,7 +86,7 @@
 				<ListView.View>
 					<GridView>
 						<GridViewColumn DisplayMemberBinding="{Binding Model.TeamName}" Header="チーム名" />
-						<GridViewColumn DisplayMemberBinding="{Binding SelectedIndex}" Header="選択" />
+						<GridViewColumn DisplayMemberBinding="{Binding SelectedChoice}" Header="選択" />
 					</GridView>
 				</ListView.View>
 			</ListView>
