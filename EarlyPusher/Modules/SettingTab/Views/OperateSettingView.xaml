@@ -37,6 +37,7 @@
 				<RowDefinition Height="Auto" />
 				<RowDefinition Height="Auto" />
 				<RowDefinition Height="Auto" />
+				<RowDefinition Height="Auto" />
 			</Grid.RowDefinitions>
 			<Grid.ColumnDefinitions>
 				<ColumnDefinition Width="Auto" />
@@ -73,16 +74,29 @@
 
 			<TextBlock Grid.Row="2"
 			           Grid.Column="0"
-			           Text="解答音" />
+			           Text="並び替え問題 フォルダ" />
 			<TextBox Grid.Row="2"
 			         Grid.Column="1"
 			         IsReadOnly="True"
-			         Text="{Binding AnswerSound.FilePath}" />
+			         Text="{Binding SortVideoDir}" />
 			<Button Grid.Row="2"
+			        Grid.Column="2"
+			        Grid.ColumnSpan="2"
+			        Command="{Binding SelectSortVideoDirCommand}"
+			        Content="参照" />
+
+			<TextBlock Grid.Row="3"
+			           Grid.Column="0"
+			           Text="解答音" />
+			<TextBox Grid.Row="3"
+			         Grid.Column="1"
+			         IsReadOnly="True"
+			         Text="{Binding AnswerSound.FilePath}" />
+			<Button Grid.Row="3"
 			        Grid.Column="2"
 			        Command="{Binding SelectAnswerSoundCommand}"
 			        Content="参照" />
-			<Button Grid.Row="2"
+			<Button Grid.Row="3"
 			        Grid.Column="3"
 			        Command="{Binding AnswerSound.PlayOrPauseCommand}"
 			        Content="再生" />

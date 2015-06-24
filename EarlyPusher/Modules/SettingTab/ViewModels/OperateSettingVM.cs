@@ -30,6 +30,8 @@ namespace EarlyPusher.Modules.SettingTab.ViewModels
 
 		private string earlyVideoDir;
 		private string choiceVideoDir;
+		private string sortVideoDir;
+
 		private long updateTime;
 
 		private TeamSettingVM selectedTeam;
@@ -44,6 +46,7 @@ namespace EarlyPusher.Modules.SettingTab.ViewModels
 
 		public DelegateCommand SelectEarlyVideoDirCommand { get; private set; }
 		public DelegateCommand SelectChoiceVideoDirCommand { get; private set; }
+		public DelegateCommand SelectSortVideoDirCommand { get; private set; }
 		public DelegateCommand SelectAnswerSoundCommand { get; private set; }
 
 		public DelegateCommand SearchCommand { get; private set; }
@@ -61,7 +64,13 @@ namespace EarlyPusher.Modules.SettingTab.ViewModels
 			get { return this.choiceVideoDir; }
 			set { SetProperty( ref this.choiceVideoDir, value ); }
 		}
-				
+
+		public string SortVideoDir
+		{
+			get { return this.sortVideoDir; }
+			set { SetProperty( ref this.sortVideoDir, value ); }
+		}
+						
 		/// <summary>
 		/// チームのリスト
 		/// </summary>
@@ -123,6 +132,7 @@ namespace EarlyPusher.Modules.SettingTab.ViewModels
 		{
 			this.SelectEarlyVideoDirCommand = new DelegateCommand( SelectEarlyVideoDir, null );
 			this.SelectChoiceVideoDirCommand = new DelegateCommand( SelectChoiceVideoDir, null );
+			this.SelectSortVideoDirCommand = new DelegateCommand( SelectSortVideoDir, null );
 			this.SelectAnswerSoundCommand = new DelegateCommand( SelectAnwser, null );
 
 			this.AddMemberCommand = new DelegateCommand( AddMember, null );
@@ -162,6 +172,7 @@ namespace EarlyPusher.Modules.SettingTab.ViewModels
 
 			this.EarlyVideoDir = this.Parent.Data.EarlyVideoDir;
 			this.ChoiceVideoDir = this.Parent.Data.ChoiceVideoDir;
+			this.SortVideoDir = this.Parent.Data.SortVideoDir;
 
 			this.teamAdapter = new ViewModelsAdapter<TeamSettingVM, TeamData>( CreateTeamVM, DeleteTeamVM );
 			this.teamAdapter.Adapt( this.Teams, this.Parent.Data.TeamList );
@@ -355,6 +366,24 @@ namespace EarlyPusher.Modules.SettingTab.ViewModels
 			{
 				this.Parent.Data.ChoiceVideoDir = dlg.SelectedPath;
 				this.ChoiceVideoDir = this.Parent.Data.ChoiceVideoDir;
+			}
+		}
+
+		private void SelectSortVideoDir( object obj )
+		{
+			VistaFolderBrowserDialog dlg = new VistaFolderBrowserDialog();
+			if( string.IsNullOrEmpty( this.Parent.Data.SortVideoDir ) )
+			{
+				dlg.SelectedPath = AppDomain.CurrentDomain.BaseDirectory;
+			}
+			else
+			{
+				dlg.SelectedPath = this.Parent.Data.SortVideoDir;
+			}
+			if( dlg.ShowDialog() == true )
+			{
+				this.Parent.Data.SortVideoDir = dlg.SelectedPath;
+				this.SortVideoDir = this.Parent.Data.SortVideoDir;
 			}
 		}
 

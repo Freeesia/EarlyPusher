@@ -14,6 +14,7 @@ namespace EarlyPusher.Models
 		private ObservableHashCollection<TeamData> teamList = new ObservableHashCollection<TeamData>();
 		private string earlyVideoDir;
 		private string choiceVideoDir;
+		private string sortVideoDir;
 		private string answerSoundPath;
 
 		public ObservableHashCollection<TeamData> TeamList
@@ -32,7 +33,13 @@ namespace EarlyPusher.Models
 			get { return this.choiceVideoDir; }
 			set { SetProperty( ref this.choiceVideoDir, value ); }
 		}
-		
+
+		public string SortVideoDir
+		{
+			get { return this.sortVideoDir; }
+			set { SetProperty( ref this.sortVideoDir, value ); }
+		}
+				
 		public string AnswerSoundPath
 		{
 			get { return answerSoundPath; }

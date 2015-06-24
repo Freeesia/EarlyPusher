@@ -88,6 +88,8 @@
     <Compile Include="Modules\SettingTab\ViewModels\MemberSettingVM.cs" />
     <Compile Include="Modules\SettingTab\ViewModels\TeamSettingVM.cs" />
     <Compile Include="Modules\SortTab\ViewModels\OperateSortVM.cs" />
+    <Compile Include="Modules\SortTab\ViewModels\SortItemVM.cs" />
+    <Compile Include="Modules\SortTab\ViewModels\TeamSortVM.cs" />
     <Compile Include="Modules\SortTab\Views\OperateSortView.xaml.cs">
       <DependentUpon>OperateSortView.xaml</DependentUpon>
     </Compile>
