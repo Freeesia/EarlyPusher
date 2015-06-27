@@ -5,12 +5,14 @@ using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media;
 using EarlyPusher.Models;
+using EarlyPusher.Modules.SortTab.Interfaces;
 using StFrLibs.Core.Basis;
 
 namespace EarlyPusher.Modules.SortTab.ViewModels
 {
-	public class TeamSortVM : ViewModelBase<TeamData>
+	public class TeamSortVM : ViewModelBase<TeamData>, IBackColorHolder
 	{
 		private ObservableCollection<SortItemVM> sortedList = new ObservableCollection<SortItemVM>();
 		private bool isWinner;
@@ -28,6 +30,11 @@ namespace EarlyPusher.Modules.SortTab.ViewModels
 			get { return this.isWinner; }
 			set { SetProperty( ref this.isWinner, value ); }
 		}
+
+		public Color BackColor
+		{
+			get { return this.Model.TeamColor; }
+		}
 				
 		#endregion
 
@@ -36,7 +43,7 @@ namespace EarlyPusher.Modules.SortTab.ViewModels
 		{
 			for( int i = 0; i < 4; i++ )
 			{
-				this.SortedList.Add( new SortItemVM() );
+				this.SortedList.Add( new SortItemVM( this ) );
 			}
 		}
 
@@ -46,6 +53,7 @@ namespace EarlyPusher.Modules.SortTab.ViewModels
 			foreach( var item in this.SortedList )
 			{
 				item.Choice = null;
+				item.IsVisible = false;
 			}
 		}
 

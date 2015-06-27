@@ -63,9 +63,19 @@ namespace EarlyPusher.Properties {
         /// <summary>
         ///   型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
         /// </summary>
-        internal static System.Drawing.Bitmap _81aeb44b {
+        internal static System.Drawing.Bitmap SortOtherBack {
             get {
-                object obj = ResourceManager.GetObject("_81aeb44b", resourceCulture);
+                object obj = ResourceManager.GetObject("SortOtherBack", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
+        /// </summary>
+        internal static System.Drawing.Bitmap SortWinnerBack {
+            get {
+                object obj = ResourceManager.GetObject("SortWinnerBack", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

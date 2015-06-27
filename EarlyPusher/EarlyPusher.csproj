@@ -87,14 +87,19 @@
     <Compile Include="Modules\EarlyTab\ViewModels\TeamEarlyVM.cs" />
     <Compile Include="Modules\SettingTab\ViewModels\MemberSettingVM.cs" />
     <Compile Include="Modules\SettingTab\ViewModels\TeamSettingVM.cs" />
+    <Compile Include="Modules\SortTab\Interfaces\IBackColorHolder.cs" />
     <Compile Include="Modules\SortTab\ViewModels\OperateSortVM.cs" />
     <Compile Include="Modules\SortTab\ViewModels\SortItemVM.cs" />
+    <Compile Include="Modules\SortTab\ViewModels\SortMediaVM.cs" />
     <Compile Include="Modules\SortTab\ViewModels\TeamSortVM.cs" />
     <Compile Include="Modules\SortTab\Views\OperateSortView.xaml.cs">
       <DependentUpon>OperateSortView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Modules\SortTab\Views\PlaySortView.xaml.cs">
-      <DependentUpon>PlaySortView.xaml</DependentUpon>
+    <Compile Include="Modules\SortTab\Views\PlayOtherSortView.xaml.cs">
+      <DependentUpon>PlayOtherSortView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\SortTab\Views\PlayWinnerSortView.xaml.cs">
+      <DependentUpon>PlayWinnerSortView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\MainVM.cs" />
     <Compile Include="Modules\EarlyTab\ViewModels\MemberEarlyVM.cs" />
@@ -112,7 +117,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Modules\SortTab\Views\PlaySortView.xaml">
+    <Page Include="Modules\SortTab\Views\PlayOtherSortView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Modules\SortTab\Views\PlayWinnerSortView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -199,11 +208,11 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\81aeb44b.jpg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
+    <Resource Include="Resources\SortWinnerBack.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Resources\SortOtherBack.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

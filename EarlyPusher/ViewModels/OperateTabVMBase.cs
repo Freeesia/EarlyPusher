@@ -43,9 +43,10 @@ namespace EarlyPusher.ViewModels
 			set { SetProperty( ref answerSound, value ); }
 		}
 
-		public abstract UIElement PlayView
+		public virtual UIElement PlayView
 		{
 			get;
+			set;
 		}
 		
 		#endregion

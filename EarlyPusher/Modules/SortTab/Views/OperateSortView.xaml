@@ -64,10 +64,60 @@
 		              ResizeBehavior="PreviousAndNext" />
 
 		<DockPanel Grid.Column="2">
+			<StackPanel Margin="10"
+			            HorizontalAlignment="Center"
+			            DockPanel.Dock="Top"
+			            Orientation="Horizontal">
+				<TextBlock Width="100" Text="正答" />
+				<TextBlock Width="30" Text="{Binding SelectedMedia.SortedList[0].Choice}" />
+				<TextBlock Width="30" Text="{Binding SelectedMedia.SortedList[1].Choice}" />
+				<TextBlock Width="30" Text="{Binding SelectedMedia.SortedList[2].Choice}" />
+				<TextBlock Width="30" Text="{Binding SelectedMedia.SortedList[3].Choice}" />
+			</StackPanel>
 			<Menu DockPanel.Dock="Top">
-				<MenuItem Command="{Binding OpenCommand}" Header="解答オープン(_O)" />
 				<MenuItem Command="{Binding ResetCommand}" Header="解答リセット(_R)" />
 			</Menu>
+			<Grid Margin="20" DockPanel.Dock="Bottom">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="*" />
+					<ColumnDefinition Width="*" />
+					<ColumnDefinition Width="*" />
+				</Grid.ColumnDefinitions>
+				<Grid.RowDefinitions>
+					<RowDefinition Height="Auto" />
+					<RowDefinition Height="Auto" />
+					<RowDefinition Height="Auto" />
+				</Grid.RowDefinitions>
+				<Grid.Resources>
+					<Style TargetType="Button">
+						<Setter Property="Margin" Value="5" />
+					</Style>
+				</Grid.Resources>
+
+				<Button Grid.RowSpan="3"
+				        Grid.Column="0"
+				        Command="{Binding OpenWinnerCommand}"
+				        Content="勝者オープン" />
+
+				<Button Grid.RowSpan="3"
+				        Grid.Column="2"
+				        Command="{Binding OpenOtherCommand}"
+				        Content="その他オープン" />
+
+				<Button Grid.Row="0"
+				        Grid.Column="1"
+				        Command="{Binding OpenAnswer1Command}"
+				        Content="正答 1 オープン" />
+				<Button Grid.Row="1"
+				        Grid.Column="1"
+				        Command="{Binding OpenAnswer2Command}"
+				        Content="正答 2 オープン" />
+				<Button Grid.Row="3"
+				        Grid.Column="1"
+				        Command="{Binding OpenAnswerAllCommand}"
+				        Content="正答 全て オープン" />
+
+			</Grid>
 			<DataGrid AutoGenerateColumns="False"
 			          CanUserAddRows="False"
 			          CanUserDeleteRows="False"
@@ -84,7 +134,8 @@
 							<DataTemplate>
 								<RadioButton HorizontalAlignment="Center"
 								             GroupName="Winner"
-								             IsChecked="{Binding IsWinner}" />
+								             IsChecked="{Binding IsWinner,
+								                                 UpdateSourceTrigger=PropertyChanged}" />
 							</DataTemplate>
 						</DataGridTemplateColumn.CellTemplate>
 					</DataGridTemplateColumn>

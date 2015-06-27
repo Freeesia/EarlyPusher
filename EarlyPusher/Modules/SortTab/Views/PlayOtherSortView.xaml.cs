@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace EarlyPusher.Modules.SortTab.Views
 {
 	/// <summary>
-	/// PlaySortView.xaml の相互作用ロジック
+	/// PlayOtherSortView.xaml の相互作用ロジック
 	/// </summary>
-	public partial class PlaySortView : UserControl
+	public partial class PlayOtherSortView : UserControl
 	{
-		public PlaySortView()
+		public PlayOtherSortView()
 		{
 			InitializeComponent();
 		}
