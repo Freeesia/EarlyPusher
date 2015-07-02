@@ -162,6 +162,7 @@ namespace EarlyPusher.Modules.SortTab.ViewModels
 			NotifyPropertyChanged( () => this.OtherTeams );
 			this.PlayView = this.playOtherView;
 			this.OtherTeams.SelectMany( t => t.SortedList ).ForEach( i => i.IsVisible = true );
+			this.OtherTeams.ForEach( t => t.CheckCorrect( this.SelectedMedia ) );
 		}
 
 		private void OpenWinner( object obj )
@@ -169,40 +170,29 @@ namespace EarlyPusher.Modules.SortTab.ViewModels
 			this.IsVisiblePlayView = true;
 			NotifyPropertyChanged( () => this.WinnerTeam );
 			this.PlayView = this.playWinnerView;
-			if( this.WinnerTeam != null )
-			{
-				this.WinnerTeam.SortedList.ForEach( i => i.IsVisible = true );
-			}
+			this.WinnerTeam.SortedList.ForEach( i => i.IsVisible = true );
 		}
 
 		private void OpenAnswer1( object obj )
 		{
 			this.IsVisiblePlayView = true;
 			this.PlayView = this.playWinnerView;
-			if( this.SelectedMedia != null )
-			{
-				this.SelectedMedia.SortedList[0].IsVisible = true;
-			}
+			this.SelectedMedia.SortedList[0].IsVisible = true;
 		}
 
 		private void OpenAnswer2( object obj )
 		{
 			this.IsVisiblePlayView = true;
 			this.PlayView = this.playWinnerView;
-			if( this.SelectedMedia != null )
-			{
-				this.SelectedMedia.SortedList[1].IsVisible = true;
-			}
+			this.SelectedMedia.SortedList[1].IsVisible = true;
 		}
 
 		private void OpenAnswerAll( object obj )
 		{
 			this.IsVisiblePlayView = true;
 			this.PlayView = this.playWinnerView;
-			if( this.SelectedMedia != null )
-			{
-				this.SelectedMedia.SortedList.ForEach( i => i.IsVisible = true );
-			}
+			this.SelectedMedia.SortedList.ForEach( i => i.IsVisible = true );
+			this.WinnerTeam.CheckCorrect( this.SelectedMedia );
 		}
 
 		private void Reset( object obj )

@@ -9,42 +9,7 @@
              d:DesignWidth="300"
              mc:Ignorable="d">
 	<UserControl.Resources>
-		<c:ColorToBrushConverter x:Key="c2bConv" />
-		<c:BoolToVisibilityConverter x:Key="t2vConv"
-		                             False="Hidden"
-		                             True="Visible" />
-		<DataTemplate x:Key="choicePanel">
-			<Border Width="160"
-			        Height="160"
-			        Margin="20"
-			        Background="{Binding BackColor,
-			                             Converter={StaticResource c2bConv}}"
-			        BorderThickness="5"
-			        CornerRadius="80"
-			        Visibility="{Binding IsVisible,
-			                             Converter={StaticResource t2vConv}}">
-
-				<Border.Effect>
-					<DropShadowEffect BlurRadius="20"
-					                  RenderingBias="Quality"
-					                  ShadowDepth="10"
-					                  Color="Black" />
-				</Border.Effect>
-				<TextBlock HorizontalAlignment="Center"
-				           VerticalAlignment="Center"
-				           FontSize="80"
-				           FontWeight="Bold"
-				           Foreground="White"
-				           Text="{Binding Choice}">
-					<TextBlock.Effect>
-						<DropShadowEffect BlurRadius="20"
-						                  RenderingBias="Quality"
-						                  ShadowDepth="0"
-						                  Color="Black" />
-					</TextBlock.Effect>
-				</TextBlock>
-			</Border>
-		</DataTemplate>
+		<ResourceDictionary Source="SortViewResouces.xaml" />
 	</UserControl.Resources>
 	<Grid>
 		<ContentPresenter Content="{Binding SelectedMedia.Media}" Visibility="{Binding SelectedMedia.IsPlaying, Converter={StaticResource t2vConv}}" />
@@ -57,7 +22,7 @@
 				</ItemsControl.ItemsPanel>
 				<ItemsControl.ItemTemplate>
 					<DataTemplate>
-						<Grid Margin="50">
+						<Grid Margin="50" Opacity="{Binding IsCorrect, Converter={StaticResource b2oConv}}">
 							<Image Source="/アーリーぷっしゃー！;component/Resources/SortOtherBack.png" />
 							<TextBlock Width="250"
 							           Height="200"

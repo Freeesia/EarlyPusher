@@ -9,6 +9,7 @@ using System.Windows.Media;
 using EarlyPusher.Models;
 using EarlyPusher.Modules.SortTab.Interfaces;
 using StFrLibs.Core.Basis;
+using StFrLibs.Core.Extensions;
 
 namespace EarlyPusher.Modules.SortTab.ViewModels
 {
@@ -17,6 +18,7 @@ namespace EarlyPusher.Modules.SortTab.ViewModels
 		private ObservableCollection<SortItemVM> sortedList = new ObservableCollection<SortItemVM>();
 		private bool isWinner;
 		private int nextIndex = 0;
+		private bool isCorrect = true;
 
 		#region プロパティ
 
@@ -35,7 +37,13 @@ namespace EarlyPusher.Modules.SortTab.ViewModels
 		{
 			get { return this.Model.TeamColor; }
 		}
-				
+
+		public bool IsCorrect
+		{
+			get { return this.isCorrect; }
+			set { SetProperty( ref this.isCorrect, value ); }
+		}
+						
 		#endregion
 
 		public TeamSortVM( TeamData data )
@@ -55,6 +63,7 @@ namespace EarlyPusher.Modules.SortTab.ViewModels
 				item.Choice = null;
 				item.IsVisible = false;
 			}
+			this.IsCorrect = true;
 		}
 
 		public bool SetKey( Guid device, int key )
@@ -81,6 +90,26 @@ namespace EarlyPusher.Modules.SortTab.ViewModels
 			this.nextIndex++;
 
 			return true;
+		}
+
+		public void CheckCorrect( SortMediaVM media )
+		{
+			if( this.SortedList.Any( i => i.Choice == null ) )
+			{
+				return;
+			}
+
+			this.IsCorrect = this.SortedList.SequenceEqual( media.SortedList, new ComparerFunc<SortItemVM>( SortItemEqual, SortItemGetHash ) );
+		}
+
+		private int SortItemGetHash( SortItemVM arg )
+		{
+			return arg.Choice.GetHashCode();
+		}
+
+		private bool SortItemEqual( SortItemVM arg1, SortItemVM arg2 )
+		{
+			return arg1.Choice == arg2.Choice;
 		}
 	}
 }
