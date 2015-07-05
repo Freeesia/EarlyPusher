@@ -30,6 +30,8 @@ namespace EarlyPusher.Modules.EarlyTab.ViewModels
 
 		private int rank = 0;
 		private int getPoint = 0;
+		private bool isAcceptance = false;
+
 
 		#region プロパティ
 
@@ -83,7 +85,13 @@ namespace EarlyPusher.Modules.EarlyTab.ViewModels
 			get { return this.getPoint; }
 			set { SetProperty( ref this.getPoint, value ); }
 		}
-		
+
+		public bool IsAcceptance
+		{
+			get { return this.isAcceptance; }
+			set { SetProperty( ref this.isAcceptance, value ); }
+		}
+				
 		#endregion
 
 		public OperateEarlyVM( MainVM parent )
@@ -176,6 +184,11 @@ namespace EarlyPusher.Modules.EarlyTab.ViewModels
 
 		private void Manager_KeyPushed( object sender, Manager.DeviceKeyEventArgs e )
 		{
+			if( !this.IsAcceptance )
+			{
+				return;
+			}
+
 			var item = this.Members.FirstOrDefault( i => i.Model.DeviceGuid == e.InstanceID && i.Model.Key == e.Key );
 			if( item != null && item.Rank == 100 && item.CanAnswer )
 			{

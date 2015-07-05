@@ -130,6 +130,19 @@
 				                              Converter={StaticResource brConv}}" />
 				<MenuItem Command="{Binding ResetCommand}" Header="解答権復活(_A)" />
 			</Menu>
+			<StackPanel Margin="10"
+			            HorizontalAlignment="Center"
+			            DockPanel.Dock="Bottom"
+			            Orientation="Horizontal">
+				<StackPanel.Resources>
+					<Style TargetType="ToggleButton">
+						<Setter Property="Margin" Value="10" />
+						<Setter Property="Width" Value="100" />
+						<Setter Property="Height" Value="40" />
+					</Style>
+				</StackPanel.Resources>
+				<ToggleButton Content="解答受付" IsChecked="{Binding IsAcceptance}" />
+			</StackPanel>
 			<DataGrid AutoGenerateColumns="False"
 			          CanUserAddRows="False"
 			          CanUserDeleteRows="False"
