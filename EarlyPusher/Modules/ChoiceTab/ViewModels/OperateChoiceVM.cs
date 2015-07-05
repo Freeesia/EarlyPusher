@@ -41,9 +41,9 @@ namespace EarlyPusher.Modules.ChoiceTab.ViewModels
 			get
 			{
 				yield return new { Top = 0.0, Left = 0.0, SelectableItems = this.Teams.Select( t => t.KeyList[0]) };
-				yield return new { Top = 0.0, Left = 500.0, SelectableItems = this.Teams.Select( t => t.KeyList[1] ) };
-				yield return new { Top = 200.0, Left = 0.0, SelectableItems = this.Teams.Select( t => t.KeyList[2] ) };
-				yield return new { Top = 200.0, Left = 500.0, SelectableItems = this.Teams.Select( t => t.KeyList[3] ) };
+				yield return new { Top = 0.0, Left = 1000.0, SelectableItems = this.Teams.Select( t => t.KeyList[1] ) };
+				yield return new { Top = 500.0, Left = 0.0, SelectableItems = this.Teams.Select( t => t.KeyList[2] ) };
+				yield return new { Top = 500.0, Left = 1000.0, SelectableItems = this.Teams.Select( t => t.KeyList[3] ) };
 			}
 		}
 
