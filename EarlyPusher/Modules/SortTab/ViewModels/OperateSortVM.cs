@@ -66,13 +66,18 @@ namespace EarlyPusher.Modules.SortTab.ViewModels
 			get { return this.Teams.Where( t => !t.IsWinner ); }
 		}
 
+		public bool IsCorrectInOtherTeams
+		{
+			get { return this.OtherTeams.Any( t => t.IsCorrect ); }
+		}
+
 		/// <summary>
 		/// 選択しているメディア
 		/// </summary>
 		public SortMediaVM SelectedMedia
 		{
 			get { return this.selectedMedia; }
-			set { SetProperty( ref this.selectedMedia, value, null, SelectedMediaChanging ); }
+			set { SetProperty( ref this.selectedMedia, value, CommandRaiseCanExecuteChanged, SelectedMediaChanging ); }
 		}
 
 		public bool IsVisiblePlayView
@@ -92,12 +97,12 @@ namespace EarlyPusher.Modules.SortTab.ViewModels
 		public OperateSortVM( MainVM parent )
 			: base( parent )
 		{
-			this.OpenWinnerCommand = new DelegateCommand( OpenWinner );
-			this.OpenOtherCommand = new DelegateCommand( OpenOther );
-			this.OpenAnswer1Command = new DelegateCommand( OpenAnswer1 );
-			this.OpenAnswer2Command = new DelegateCommand( OpenAnswer2 );
-			this.OpenAnswerAllCommand = new DelegateCommand( OpenAnswerAll );
-			this.ResetCommand = new DelegateCommand( Reset );
+			this.OpenWinnerCommand = new DelegateCommand( OpenWinner, CanSelectedMedia );
+			this.OpenOtherCommand = new DelegateCommand( OpenOther, CanSelectedMedia );
+			this.OpenAnswer1Command = new DelegateCommand( OpenAnswer1, CanSelectedMedia );
+			this.OpenAnswer2Command = new DelegateCommand( OpenAnswer2, CanSelectedMedia );
+			this.OpenAnswerAllCommand = new DelegateCommand( OpenAnswerAll, CanSelectedMedia );
+			this.ResetCommand = new DelegateCommand( Reset, CanSelectedMedia );
 
 			this.adapter = new ViewModelsAdapter<TeamSortVM, TeamData>( CreateTeamSortVM );
 
@@ -111,7 +116,7 @@ namespace EarlyPusher.Modules.SortTab.ViewModels
 
 		private TeamSortVM CreateTeamSortVM( TeamData data )
 		{
-			return new TeamSortVM( data );
+			return new TeamSortVM( this, data );
 		}
 
 		public override void LoadData()
@@ -156,13 +161,19 @@ namespace EarlyPusher.Modules.SortTab.ViewModels
 
 		#region コマンド関係
 
+		private bool CanSelectedMedia( object obj )
+		{
+			return this.SelectedMedia != null && this.WinnerTeam != null;
+		}
+
 		private void OpenOther( object obj )
 		{
 			this.IsVisiblePlayView = true;
 			NotifyPropertyChanged( () => this.OtherTeams );
-			this.PlayView = this.playOtherView;
+			NotifyPropertyChanged( () => this.IsCorrectInOtherTeams );
 			this.OtherTeams.SelectMany( t => t.SortedList ).ForEach( i => i.IsVisible = true );
 			this.OtherTeams.ForEach( t => t.CheckCorrect( this.SelectedMedia ) );
+			this.PlayView = this.playOtherView;
 		}
 
 		private void OpenWinner( object obj )
@@ -238,6 +249,16 @@ namespace EarlyPusher.Modules.SortTab.ViewModels
 			{
 				this.SelectedMedia.Stop();
 			}
+		}
+
+		public void CommandRaiseCanExecuteChanged()
+		{
+			this.OpenWinnerCommand.RaiseCanExecuteChanged();
+			this.OpenOtherCommand.RaiseCanExecuteChanged();
+			this.OpenAnswer1Command.RaiseCanExecuteChanged();
+			this.OpenAnswer2Command.RaiseCanExecuteChanged();
+			this.OpenAnswerAllCommand.RaiseCanExecuteChanged();
+			this.ResetCommand.RaiseCanExecuteChanged();
 		}
 
 		#endregion

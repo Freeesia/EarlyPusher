@@ -15,6 +15,7 @@ namespace EarlyPusher.Modules.SortTab.ViewModels
 {
 	public class TeamSortVM : ViewModelBase<TeamData>, IBackColorHolder
 	{
+		private OperateSortVM parent;
 		private ObservableCollection<SortItemVM> sortedList = new ObservableCollection<SortItemVM>();
 		private bool isWinner;
 		private int nextIndex = 0;
@@ -30,7 +31,7 @@ namespace EarlyPusher.Modules.SortTab.ViewModels
 		public bool IsWinner
 		{
 			get { return this.isWinner; }
-			set { SetProperty( ref this.isWinner, value ); }
+			set { SetProperty( ref this.isWinner, value, IsWinnerChanged ); }
 		}
 
 		public Color BackColor
@@ -46,13 +47,19 @@ namespace EarlyPusher.Modules.SortTab.ViewModels
 						
 		#endregion
 
-		public TeamSortVM( TeamData data )
+		public TeamSortVM( OperateSortVM parent, TeamData data )
 			: base( data )
 		{
+			this.parent = parent;
 			for( int i = 0; i < 4; i++ )
 			{
 				this.SortedList.Add( new SortItemVM( this ) );
 			}
+		}
+
+		private void IsWinnerChanged()
+		{
+			this.parent.CommandRaiseCanExecuteChanged();
 		}
 
 		public void Clear()

@@ -5,6 +5,12 @@
 	<c:BoolToVisibilityConverter x:Key="t2vConv"
 	                             False="Hidden"
 	                             True="Visible" />
+	<c:BoolToVisibilityConverter x:Key="t2vcConv"
+	                             False="Collapsed"
+	                             True="Visible" />
+	<c:BoolToVisibilityConverter x:Key="f2vcConv"
+	                             False="Visible"
+	                             True="Collapsed" />
 	<c:BoolToDoubleConverter x:Key="b2oConv"
 	                         False="0.5"
 	                         True="1.0" />

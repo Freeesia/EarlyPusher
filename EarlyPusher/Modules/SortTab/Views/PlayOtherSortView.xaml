@@ -14,46 +14,76 @@
 	<Grid>
 		<ContentPresenter Content="{Binding SelectedMedia.Media}" Visibility="{Binding SelectedMedia.IsPlaying, Converter={StaticResource t2vConv}}" />
 		<Viewbox Margin="10" Visibility="{Binding IsVisiblePlayView, Converter={StaticResource t2vConv}}">
-			<ItemsControl ItemsSource="{Binding OtherTeams}">
-				<ItemsControl.ItemsPanel>
-					<ItemsPanelTemplate>
-						<StackPanel Orientation="Horizontal" />
-					</ItemsPanelTemplate>
-				</ItemsControl.ItemsPanel>
-				<ItemsControl.ItemTemplate>
-					<DataTemplate>
-						<Grid Margin="50" Opacity="{Binding IsCorrect, Converter={StaticResource b2oConv}}">
-							<Image Source="/アーリーぷっしゃー！;component/Resources/SortOtherBack.png" />
-							<TextBlock Width="250"
-							           Height="200"
-							           Margin="75"
-							           HorizontalAlignment="Center"
-							           VerticalAlignment="Top"
-							           FontSize="60"
-							           Foreground="White"
-							           Text="{Binding Model.TeamName}"
-							           TextAlignment="Center"
-							           TextWrapping="Wrap">
-								<TextBlock.Effect>
-									<DropShadowEffect BlurRadius="20"
-									                  RenderingBias="Quality"
-									                  ShadowDepth="0"
-									                  Color="Black" />
-								</TextBlock.Effect>
-							</TextBlock>
-							<ItemsControl VerticalAlignment="Center"
-							              ItemTemplate="{StaticResource choicePanel}"
-							              ItemsSource="{Binding SortedList}">
-								<ItemsControl.ItemsPanel>
-									<ItemsPanelTemplate>
-										<StackPanel Orientation="Vertical" />
-									</ItemsPanelTemplate>
-								</ItemsControl.ItemsPanel>
-							</ItemsControl>
-						</Grid>
-					</DataTemplate>
-				</ItemsControl.ItemTemplate>
-			</ItemsControl>
+			<DockPanel>
+				<Border HorizontalAlignment="Center"
+				        VerticalAlignment="Bottom"
+				        Background="Blue"
+				        BorderBrush="Yellow"
+				        BorderThickness="50"
+				        CornerRadius="50"
+				        DockPanel.Dock="Bottom"
+				        Visibility="{Binding IsCorrectInOtherTeams,
+				                             Converter={StaticResource f2vcConv}}">
+					<TextBlock Margin="25"
+					           FontSize="150"
+					           Foreground="White"
+					           Text="残念！！" />
+				</Border>
+				<Border HorizontalAlignment="Center"
+				        VerticalAlignment="Bottom"
+				        Background="Red"
+				        BorderBrush="Yellow"
+				        BorderThickness="50"
+				        CornerRadius="50"
+				        DockPanel.Dock="Bottom"
+				        Visibility="{Binding IsCorrectInOtherTeams,
+				                             Converter={StaticResource t2vcConv}}">
+					<TextBlock Margin="25"
+					           FontSize="150"
+					           Foreground="White"
+					           Text="正解！！" />
+				</Border>
+				<ItemsControl ItemsSource="{Binding OtherTeams}">
+					<ItemsControl.ItemsPanel>
+						<ItemsPanelTemplate>
+							<StackPanel Orientation="Horizontal" />
+						</ItemsPanelTemplate>
+					</ItemsControl.ItemsPanel>
+					<ItemsControl.ItemTemplate>
+						<DataTemplate>
+							<Grid Margin="50" Opacity="{Binding IsCorrect, Converter={StaticResource b2oConv}}">
+								<Image Source="/アーリーぷっしゃー！;component/Resources/SortOtherBack.png" />
+								<TextBlock Width="250"
+								           Height="200"
+								           Margin="75"
+								           HorizontalAlignment="Center"
+								           VerticalAlignment="Top"
+								           FontSize="60"
+								           Foreground="White"
+								           Text="{Binding Model.TeamName}"
+								           TextAlignment="Center"
+								           TextWrapping="Wrap">
+									<TextBlock.Effect>
+										<DropShadowEffect BlurRadius="20"
+										                  RenderingBias="Quality"
+										                  ShadowDepth="0"
+										                  Color="Black" />
+									</TextBlock.Effect>
+								</TextBlock>
+								<ItemsControl VerticalAlignment="Center"
+								              ItemTemplate="{StaticResource choicePanel}"
+								              ItemsSource="{Binding SortedList}">
+									<ItemsControl.ItemsPanel>
+										<ItemsPanelTemplate>
+											<StackPanel Orientation="Vertical" />
+										</ItemsPanelTemplate>
+									</ItemsControl.ItemsPanel>
+								</ItemsControl>
+							</Grid>
+						</DataTemplate>
+					</ItemsControl.ItemTemplate>
+				</ItemsControl>
+			</DockPanel>
 		</Viewbox>
 	</Grid>
 </UserControl>
