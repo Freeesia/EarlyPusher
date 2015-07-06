@@ -9,25 +9,25 @@ using StFrLibs.Core.Basis;
 
 namespace EarlyPusher.Modules.Setting1Tab.ViewModels
 {
-	public class TeamSettingVM : ViewModelBase<TeamData>
+	public class TeamSetting1VM : ViewModelBase<TeamData>
 	{
-		private ObservableHashVMCollection<MemberSettingVM> members = new ObservableHashVMCollection<MemberSettingVM>();
-		private ViewModelsAdapter<MemberSettingVM,MemberData> adapter;
+		private ObservableHashVMCollection<MemberSetting1VM> members = new ObservableHashVMCollection<MemberSetting1VM>();
+		private ViewModelsAdapter<MemberSetting1VM,MemberData> adapter;
 
-		public ObservableHashVMCollection<MemberSettingVM> Members
+		public ObservableHashVMCollection<MemberSetting1VM> Members
 		{
 			get { return this.members; }
 		}
 
-		public TeamSettingVM( TeamData data )
+		public TeamSetting1VM( TeamData data )
 			: base( data )
 		{
-			this.adapter = new ViewModelsAdapter<MemberSettingVM, MemberData>( CreateMemberVM );
+			this.adapter = new ViewModelsAdapter<MemberSetting1VM, MemberData>( CreateMemberVM );
 		}
 
-		private MemberSettingVM CreateMemberVM( MemberData data )
+		private MemberSetting1VM CreateMemberVM( MemberData data )
 		{
-			return new MemberSettingVM( this, data );
+			return new MemberSetting1VM( this, data );
 		}
 
 		public override void AttachModel()

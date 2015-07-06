@@ -11,7 +11,8 @@
         xmlns:ev="clr-namespace:EarlyPusher.Modules.EarlyTab.Views"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:sbv="clr-namespace:EarlyPusher.Modules.SortTab.Views"
-        xmlns:sv="clr-namespace:EarlyPusher.Modules.Setting1Tab.Views"
+        xmlns:sv1="clr-namespace:EarlyPusher.Modules.Setting1Tab.Views"
+        xmlns:sv2="clr-namespace:EarlyPusher.Modules.Setting2Tab.Views"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         Title="SettingWindow"
         Width="800"
@@ -39,8 +40,11 @@
 		<TabControl Grid.Row="1"
 		            SelectedValue="{Binding SelectedTab}"
 		            SelectedValuePath="DataContext">
-			<TabItem DataContext="{Binding OperateSetting}" Header="設定専用">
-				<sv:OperateSettingView />
+			<TabItem DataContext="{Binding OperateSetting1}" Header="設定専用1">
+				<sv1:OperateSetting1View />
+			</TabItem>
+			<TabItem DataContext="{Binding OperateSetting2}" Header="設定専用2">
+				<sv2:OperateSetting2View />
 			</TabItem>
 			<TabItem DataContext="{Binding OperateEarly}" Header="早押し">
 				<ev:OperateEarlyView />

@@ -11,6 +11,7 @@ using EarlyPusher.Models;
 using EarlyPusher.Modules.ChoiceTab.ViewModels;
 using EarlyPusher.Modules.EarlyTab.ViewModels;
 using EarlyPusher.Modules.Setting1Tab.ViewModels;
+using EarlyPusher.Modules.Setting2Tab.ViewModels;
 using EarlyPusher.Modules.SortTab.ViewModels;
 using EarlyPusher.Views;
 using StFrLibs.Core.Basis;
@@ -29,7 +30,8 @@ namespace EarlyPusher.ViewModels
 
 		private OperateTabVMBase selectedTab;
 
-		private OperateSettingVM operateSetting;
+		private OperateSetting1VM operateSetting1;
+		private OperateSetting2VM operateSetting2;
 		private OperateChoiceVM operateChoice;
 		private OperateEarlyVM operateEarly;
 		private OperateSortVM operateSort;
@@ -61,10 +63,16 @@ namespace EarlyPusher.ViewModels
 			set { SetProperty( ref this.selectedTab, value, SelectedTabChanged, SelectedTabChanging ); }
 		}
 		
-		public OperateSettingVM OperateSetting
+		public OperateSetting1VM OperateSetting1
 		{
-			get { return this.operateSetting; }
-			set { SetProperty( ref this.operateSetting, value ); }
+			get { return this.operateSetting1; }
+			set { SetProperty( ref this.operateSetting1, value ); }
+		}
+
+		public OperateSetting2VM OperateSetting2
+		{
+			get { return this.operateSetting2; }
+			set { SetProperty( ref this.operateSetting2, value ); }
 		}
 
 		public OperateChoiceVM OperateChoice
@@ -97,12 +105,14 @@ namespace EarlyPusher.ViewModels
 
 			this.manager = new DeviceManager();
 
-			this.OperateSetting = new OperateSettingVM( this );
+			this.OperateSetting1 = new OperateSetting1VM( this );
+			this.OperateSetting2 = new OperateSetting2VM( this );
 			this.OperateChoice = new OperateChoiceVM( this );
 			this.OperateEarly = new OperateEarlyVM( this );
 			this.OperateSort = new OperateSortVM( this );
 
-			this.operateVMs.Add( this.OperateSetting );
+			this.operateVMs.Add( this.OperateSetting1 );
+			this.operateVMs.Add( this.OperateSetting2 );
 			this.operateVMs.Add( this.OperateChoice );
 			this.operateVMs.Add( this.OperateEarly );
 			this.operateVMs.Add( this.OperateSort );
@@ -189,7 +199,7 @@ namespace EarlyPusher.ViewModels
 		{
 			LoadData();
 
-			this.SelectedTab = this.OperateSetting;
+			this.SelectedTab = this.OperateSetting1;
 		}
 
 		/// <summary>

@@ -86,8 +86,12 @@
     <Compile Include="Modules\ChoiceTab\ViewModels\TeamChoiceVM.cs" />
     <Compile Include="Modules\EarlyTab\ViewModels\OperateEarlyVM.cs" />
     <Compile Include="Modules\EarlyTab\ViewModels\TeamEarlyVM.cs" />
-    <Compile Include="Modules\Setting1Tab\ViewModels\MemberSettingVM.cs" />
-    <Compile Include="Modules\Setting1Tab\ViewModels\TeamSettingVM.cs" />
+    <Compile Include="Modules\Setting1Tab\ViewModels\MemberSetting1VM.cs" />
+    <Compile Include="Modules\Setting1Tab\ViewModels\TeamSetting1VM.cs" />
+    <Compile Include="Modules\Setting2Tab\ViewModels\OperateSetting2VM.cs" />
+    <Compile Include="Modules\Setting2Tab\Views\OperateSetting2View.xaml.cs">
+      <DependentUpon>OperateSetting2View.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Modules\SortTab\Interfaces\IBackColorHolder.cs" />
     <Compile Include="Modules\SortTab\ViewModels\OperateSortVM.cs" />
     <Compile Include="Modules\SortTab\ViewModels\SortItemVM.cs" />
@@ -111,6 +115,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Modules\EarlyTab\Views\PlayEarlyView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Modules\Setting2Tab\Views\OperateSetting2View.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -142,7 +150,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Modules\Setting1Tab\Views\OperateSettingView.xaml">
+    <Page Include="Modules\Setting1Tab\Views\OperateSetting1View.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -154,7 +162,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Modules\Setting1Tab\ViewModels\OperateSettingVM.cs" />
+    <Compile Include="Modules\Setting1Tab\ViewModels\OperateSetting1VM.cs" />
     <Compile Include="ViewModels\MediaVM.cs" />
     <Compile Include="Modules\ChoiceTab\Views\PlayChoiceView.xaml.cs">
       <DependentUpon>PlayChoiceView.xaml</DependentUpon>
@@ -171,8 +179,8 @@
     <Compile Include="Modules\EarlyTab\Views\OperateEarlyView.xaml.cs">
       <DependentUpon>OperateEarlyView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Modules\Setting1Tab\Views\OperateSettingView.xaml.cs">
-      <DependentUpon>OperateSettingView.xaml</DependentUpon>
+    <Compile Include="Modules\Setting1Tab\Views\OperateSetting1View.xaml.cs">
+      <DependentUpon>OperateSetting1View.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SettingWindow.xaml.cs">
       <DependentUpon>SettingWindow.xaml</DependentUpon>
@@ -218,6 +226,7 @@
   <ItemGroup>
     <Resource Include="Resources\SortOtherBack.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -8,9 +8,9 @@ using StFrLibs.Core.Basis;
 
 namespace EarlyPusher.Modules.Setting1Tab.ViewModels
 {
-	public class MemberSettingVM : ViewModelBase<MemberData>
+	public class MemberSetting1VM : ViewModelBase<MemberData>
 	{
-		private TeamSettingVM parent;
+		private TeamSetting1VM parent;
 
 		private bool isKeyLock = true;
 
@@ -20,13 +20,13 @@ namespace EarlyPusher.Modules.Setting1Tab.ViewModels
 			set { SetProperty( ref this.isKeyLock, value ); }
 		}
 		
-		public MemberSettingVM( TeamSettingVM parent, MemberData data )
+		public MemberSetting1VM( TeamSetting1VM parent, MemberData data )
 			: base( data )
 		{
 			this.parent = parent;
 		}
 
-		public TeamSettingVM Parent
+		public TeamSetting1VM Parent
 		{
 			get { return this.parent; }
 		}

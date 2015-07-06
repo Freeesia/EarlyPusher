@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace EarlyPusher.Modules.Setting1Tab.Views
 {
 	/// <summary>
-	/// OperateSettingView.xaml の相互作用ロジック
+	/// OperateSetting1View.xaml の相互作用ロジック
 	/// </summary>
-	public partial class OperateSettingView : UserControl
+	public partial class OperateSetting1View : UserControl
 	{
-		public OperateSettingView()
+		public OperateSetting1View()
 		{
 			InitializeComponent();
 		}

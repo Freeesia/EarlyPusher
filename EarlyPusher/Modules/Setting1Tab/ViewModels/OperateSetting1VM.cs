@@ -21,12 +21,12 @@ using StFrLibs.Core.Extensions;
 
 namespace EarlyPusher.Modules.Setting1Tab.ViewModels
 {
-	public class OperateSettingVM : OperateTabVMBase
+	public class OperateSetting1VM : OperateTabVMBase
 	{
-		private ObservableHashVMCollection<TeamSettingVM> teams = new ObservableHashVMCollection<TeamSettingVM>();
-		private ObservableHashVMCollection<MemberSettingVM> members = new ObservableHashVMCollection<MemberSettingVM>();
+		private ObservableHashVMCollection<TeamSetting1VM> teams = new ObservableHashVMCollection<TeamSetting1VM>();
+		private ObservableHashVMCollection<MemberSetting1VM> members = new ObservableHashVMCollection<MemberSetting1VM>();
 		private ObservableCollection<string> devices = new ObservableCollection<string>();
-		private ViewModelsAdapter<TeamSettingVM,TeamData> teamAdapter;
+		private ViewModelsAdapter<TeamSetting1VM,TeamData> teamAdapter;
 
 		private string earlyVideoDir;
 		private string choiceVideoDir;
@@ -34,8 +34,8 @@ namespace EarlyPusher.Modules.Setting1Tab.ViewModels
 
 		private long updateTime;
 
-		private TeamSettingVM selectedTeam;
-		private MemberSettingVM selectedMember;
+		private TeamSetting1VM selectedTeam;
+		private MemberSetting1VM selectedMember;
 
 		#region プロパティ
 
@@ -74,7 +74,7 @@ namespace EarlyPusher.Modules.Setting1Tab.ViewModels
 		/// <summary>
 		/// チームのリスト
 		/// </summary>
-		public ObservableHashCollection<TeamSettingVM> Teams
+		public ObservableHashCollection<TeamSetting1VM> Teams
 		{
 			get { return this.teams; }
 		}
@@ -82,7 +82,7 @@ namespace EarlyPusher.Modules.Setting1Tab.ViewModels
 		/// <summary>
 		/// メンバーのリスト
 		/// </summary>
-		public ObservableHashVMCollection<MemberSettingVM> Members
+		public ObservableHashVMCollection<MemberSetting1VM> Members
 		{
 			get { return this.members; }
 		}
@@ -90,7 +90,7 @@ namespace EarlyPusher.Modules.Setting1Tab.ViewModels
 		/// <summary>
 		/// 選択しているチーム
 		/// </summary>
-		public TeamSettingVM SelectedTeam
+		public TeamSetting1VM SelectedTeam
 		{
 			get { return this.selectedTeam; }
 			set { SetProperty( ref this.selectedTeam, value, SeletedTeamChanged ); }
@@ -99,7 +99,7 @@ namespace EarlyPusher.Modules.Setting1Tab.ViewModels
 		/// <summary>
 		/// 選択しているメンバー
 		/// </summary>
-		public MemberSettingVM SelectedMember
+		public MemberSetting1VM SelectedMember
 		{
 			get { return selectedMember; }
 			set { SetProperty( ref selectedMember, value, SelectedMemberChanged ); }
@@ -127,7 +127,7 @@ namespace EarlyPusher.Modules.Setting1Tab.ViewModels
 
 		#endregion
 
-		public OperateSettingVM( MainVM parent )
+		public OperateSetting1VM( MainVM parent )
 			: base( parent )
 		{
 			this.SelectEarlyVideoDirCommand = new DelegateCommand( SelectEarlyVideoDir, null );
@@ -174,7 +174,7 @@ namespace EarlyPusher.Modules.Setting1Tab.ViewModels
 			this.ChoiceVideoDir = this.Parent.Data.ChoiceVideoDir;
 			this.SortVideoDir = this.Parent.Data.SortVideoDir;
 
-			this.teamAdapter = new ViewModelsAdapter<TeamSettingVM, TeamData>( CreateTeamVM, DeleteTeamVM );
+			this.teamAdapter = new ViewModelsAdapter<TeamSetting1VM, TeamData>( CreateTeamVM, DeleteTeamVM );
 			this.teamAdapter.Adapt( this.Teams, this.Parent.Data.TeamList );
 
 		}
@@ -184,9 +184,9 @@ namespace EarlyPusher.Modules.Setting1Tab.ViewModels
 		/// </summary>
 		/// <param name="data">モデル</param>
 		/// <returns>VM</returns>
-		private TeamSettingVM CreateTeamVM( TeamData data )
+		private TeamSetting1VM CreateTeamVM( TeamData data )
 		{
-			var vm = new TeamSettingVM( data );
+			var vm = new TeamSetting1VM( data );
 			vm.Members.CollectionChanged += Members_CollectionChanged;
 			return vm;
 		}
@@ -195,7 +195,7 @@ namespace EarlyPusher.Modules.Setting1Tab.ViewModels
 		/// VMが削除されたときの処理
 		/// </summary>
 		/// <param name="vm"></param>
-		private void DeleteTeamVM( TeamSettingVM vm )
+		private void DeleteTeamVM( TeamSetting1VM vm )
 		{
 			this.Members.RemoveWhere( m => m.Parent == vm );
 			vm.Members.CollectionChanged -= Members_CollectionChanged;
@@ -241,7 +241,7 @@ namespace EarlyPusher.Modules.Setting1Tab.ViewModels
 		{
 			if( e.OldItems != null )
 			{
-				foreach( MemberSettingVM member in e.OldItems )
+				foreach( MemberSetting1VM member in e.OldItems )
 				{
 					this.Members.Remove( member );
 				}
@@ -249,7 +249,7 @@ namespace EarlyPusher.Modules.Setting1Tab.ViewModels
 
 			if( e.NewItems != null )
 			{
-				foreach( MemberSettingVM member in e.NewItems )
+				foreach( MemberSetting1VM member in e.NewItems )
 				{
 					this.Members.Add( member );
 				}
