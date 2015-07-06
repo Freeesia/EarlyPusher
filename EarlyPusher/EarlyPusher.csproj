@@ -78,6 +78,7 @@
     <Compile Include="Models\Choice.cs" />
     <Compile Include="Models\MemberData.cs" />
     <Compile Include="Models\SettingData.cs" />
+    <Compile Include="Models\SortMediaData.cs" />
     <Compile Include="Models\TeamData.cs" />
     <Compile Include="Modules\ChoiceTab\ViewModels\MediaChoiceVM.cs" />
     <Compile Include="Modules\ChoiceTab\ViewModels\OperateChoiceVM.cs" />
@@ -85,8 +86,8 @@
     <Compile Include="Modules\ChoiceTab\ViewModels\TeamChoiceVM.cs" />
     <Compile Include="Modules\EarlyTab\ViewModels\OperateEarlyVM.cs" />
     <Compile Include="Modules\EarlyTab\ViewModels\TeamEarlyVM.cs" />
-    <Compile Include="Modules\SettingTab\ViewModels\MemberSettingVM.cs" />
-    <Compile Include="Modules\SettingTab\ViewModels\TeamSettingVM.cs" />
+    <Compile Include="Modules\Setting1Tab\ViewModels\MemberSettingVM.cs" />
+    <Compile Include="Modules\Setting1Tab\ViewModels\TeamSettingVM.cs" />
     <Compile Include="Modules\SortTab\Interfaces\IBackColorHolder.cs" />
     <Compile Include="Modules\SortTab\ViewModels\OperateSortVM.cs" />
     <Compile Include="Modules\SortTab\ViewModels\SortItemVM.cs" />
@@ -141,7 +142,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Modules\SettingTab\Views\OperateSettingView.xaml">
+    <Page Include="Modules\Setting1Tab\Views\OperateSettingView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -153,7 +154,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Modules\SettingTab\ViewModels\OperateSettingVM.cs" />
+    <Compile Include="Modules\Setting1Tab\ViewModels\OperateSettingVM.cs" />
     <Compile Include="ViewModels\MediaVM.cs" />
     <Compile Include="Modules\ChoiceTab\Views\PlayChoiceView.xaml.cs">
       <DependentUpon>PlayChoiceView.xaml</DependentUpon>
@@ -170,7 +171,7 @@
     <Compile Include="Modules\EarlyTab\Views\OperateEarlyView.xaml.cs">
       <DependentUpon>OperateEarlyView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Modules\SettingTab\Views\OperateSettingView.xaml.cs">
+    <Compile Include="Modules\Setting1Tab\Views\OperateSettingView.xaml.cs">
       <DependentUpon>OperateSettingView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SettingWindow.xaml.cs">

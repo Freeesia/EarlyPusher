@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using EarlyPusher.Models;
 using StFrLibs.Core.Basis;
 
-namespace EarlyPusher.Modules.SettingTab.ViewModels
+namespace EarlyPusher.Modules.Setting1Tab.ViewModels
 {
 	public class MemberSettingVM : ViewModelBase<MemberData>
 	{

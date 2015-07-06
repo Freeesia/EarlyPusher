@@ -19,7 +19,7 @@ using StFrLibs.Core.Basis;
 using StFrLibs.Core.Commands;
 using StFrLibs.Core.Extensions;
 
-namespace EarlyPusher.Modules.SettingTab.ViewModels
+namespace EarlyPusher.Modules.Setting1Tab.ViewModels
 {
 	public class OperateSettingVM : OperateTabVMBase
 	{

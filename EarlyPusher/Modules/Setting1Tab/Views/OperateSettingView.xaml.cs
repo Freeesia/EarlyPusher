@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace EarlyPusher.Modules.SettingTab.Views
+namespace EarlyPusher.Modules.Setting1Tab.Views
 {
 	/// <summary>
 	/// OperateSettingView.xaml の相互作用ロジック

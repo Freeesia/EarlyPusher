@@ -10,7 +10,7 @@ using EarlyPusher.Manager;
 using EarlyPusher.Models;
 using EarlyPusher.Modules.ChoiceTab.ViewModels;
 using EarlyPusher.Modules.EarlyTab.ViewModels;
-using EarlyPusher.Modules.SettingTab.ViewModels;
+using EarlyPusher.Modules.Setting1Tab.ViewModels;
 using EarlyPusher.Modules.SortTab.ViewModels;
 using EarlyPusher.Views;
 using StFrLibs.Core.Basis;

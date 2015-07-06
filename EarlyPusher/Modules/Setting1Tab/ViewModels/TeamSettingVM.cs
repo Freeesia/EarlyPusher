@@ -7,7 +7,7 @@ using EarlyPusher.Models;
 using StFrLibs.Core.Adapters;
 using StFrLibs.Core.Basis;
 
-namespace EarlyPusher.Modules.SettingTab.ViewModels
+namespace EarlyPusher.Modules.Setting1Tab.ViewModels
 {
 	public class TeamSettingVM : ViewModelBase<TeamData>
 	{

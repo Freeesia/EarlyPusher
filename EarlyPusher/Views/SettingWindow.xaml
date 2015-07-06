@@ -11,7 +11,7 @@
         xmlns:ev="clr-namespace:EarlyPusher.Modules.EarlyTab.Views"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:sbv="clr-namespace:EarlyPusher.Modules.SortTab.Views"
-        xmlns:sv="clr-namespace:EarlyPusher.Modules.SettingTab.Views"
+        xmlns:sv="clr-namespace:EarlyPusher.Modules.Setting1Tab.Views"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         Title="SettingWindow"
         Width="800"
