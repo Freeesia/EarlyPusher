@@ -9,15 +9,15 @@ using StFrLibs.Core.Extensions;
 using EarlyPusher.Models;
 using EarlyPusher.ViewModels;
 using System.Windows.Media;
-using EarlyPusher.Modules.SortTab.Interfaces;
+using EarlyPusher.Modules.OrderTab.Interfaces;
 
-namespace EarlyPusher.Modules.SortTab.ViewModels
+namespace EarlyPusher.Modules.OrderTab.ViewModels
 {
-	public class SortMediaVM : MediaVM, IBackColorHolder
+	public class ChoiceOrderMediaVM : MediaVM, IBackColorHolder
 	{
-		private ObservableCollection<SortItemVM> sortedList = new ObservableCollection<SortItemVM>();
+		private ObservableCollection<OrderItemVM> sortedList = new ObservableCollection<OrderItemVM>();
 
-		public ObservableCollection<SortItemVM> SortedList
+		public ObservableCollection<OrderItemVM> SortedList
 		{
 			get { return this.sortedList; }
 		}
@@ -27,12 +27,12 @@ namespace EarlyPusher.Modules.SortTab.ViewModels
 			get { return Colors.White; }
 		}
 
-		public SortMediaVM()
+		public ChoiceOrderMediaVM()
 			: base()
 		{
 			for( int i = 0; i < 4; i++ )
 			{
-				this.SortedList.Add( new SortItemVM( this ) );
+				this.SortedList.Add( new OrderItemVM( this ) );
 			}
 
 			this.PropertyChanged += SortMediaVM_PropertyChanged;

@@ -12,7 +12,7 @@ using EarlyPusher.Modules.ChoiceTab.ViewModels;
 using EarlyPusher.Modules.EarlyTab.ViewModels;
 using EarlyPusher.Modules.Setting1Tab.ViewModels;
 using EarlyPusher.Modules.Setting2Tab.ViewModels;
-using EarlyPusher.Modules.SortTab.ViewModels;
+using EarlyPusher.Modules.OrderTab.ViewModels;
 using EarlyPusher.Views;
 using StFrLibs.Core.Basis;
 using StFrLibs.Core.Commands;
@@ -34,7 +34,7 @@ namespace EarlyPusher.ViewModels
 		private OperateSetting2VM operateSetting2;
 		private OperateChoiceVM operateChoice;
 		private OperateEarlyVM operateEarly;
-		private OperateSortVM operateSort;
+		private OperateOrderVM operateSort;
 
 		#region プロパティ
 
@@ -87,7 +87,7 @@ namespace EarlyPusher.ViewModels
 			set { SetProperty( ref this.operateEarly, value ); }
 		}
 
-		public OperateSortVM OperateSort
+		public OperateOrderVM OperateSort
 		{
 			get { return this.operateSort; }
 			set { SetProperty( ref this.operateSort, value ); }
@@ -109,7 +109,7 @@ namespace EarlyPusher.ViewModels
 			this.OperateSetting2 = new OperateSetting2VM( this );
 			this.OperateChoice = new OperateChoiceVM( this );
 			this.OperateEarly = new OperateEarlyVM( this );
-			this.OperateSort = new OperateSortVM( this );
+			this.OperateSort = new OperateOrderVM( this );
 
 			this.operateVMs.Add( this.OperateSetting1 );
 			this.operateVMs.Add( this.OperateSetting2 );

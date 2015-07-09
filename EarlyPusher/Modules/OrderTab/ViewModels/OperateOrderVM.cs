@@ -8,25 +8,25 @@ using System.Threading.Tasks;
 using System.Windows;
 using EarlyPusher.Manager;
 using EarlyPusher.Models;
-using EarlyPusher.Modules.SortTab.Views;
+using EarlyPusher.Modules.OrderTab.Views;
 using EarlyPusher.ViewModels;
 using StFrLibs.Core.Adapters;
 using StFrLibs.Core.Basis;
 using StFrLibs.Core.Commands;
 using StFrLibs.Core.Extensions;
 
-namespace EarlyPusher.Modules.SortTab.ViewModels
+namespace EarlyPusher.Modules.OrderTab.ViewModels
 {
-	public class OperateSortVM : OperateTabVMBase
+	public class OperateOrderVM : OperateTabVMBase
 	{
-		private ObservableHashVMCollection<SortMediaVM> medias = new ObservableHashVMCollection<SortMediaVM>();
-		private ObservableVMCollection<TeamData,TeamSortVM> teams = new ObservableVMCollection<TeamData, TeamSortVM>();
-		private ViewModelsAdapter<TeamSortVM,TeamData> adapter;
+		private ObservableHashVMCollection<ChoiceOrderMediaVM> medias = new ObservableHashVMCollection<ChoiceOrderMediaVM>();
+		private ObservableVMCollection<TeamData,TeamOrderVM> teams = new ObservableVMCollection<TeamData, TeamOrderVM>();
+		private ViewModelsAdapter<TeamOrderVM,TeamData> adapter;
 
-		private PlayOtherSortView playOtherView;
-		private PlayWinnerSortView playWinnerView;
+		private PlayOtherOrderView playOtherView;
+		private PlayWinnerOrderView playWinnerView;
 
-		private SortMediaVM selectedMedia;
+		private ChoiceOrderMediaVM selectedMedia;
 		private UIElement playView;
 
 		private bool isVisiblePlayView;
@@ -43,7 +43,7 @@ namespace EarlyPusher.Modules.SortTab.ViewModels
 		/// <summary>
 		/// メディアのリスト
 		/// </summary>
-		public ObservableHashVMCollection<SortMediaVM> Medias
+		public ObservableHashVMCollection<ChoiceOrderMediaVM> Medias
 		{
 			get
 			{
@@ -51,17 +51,17 @@ namespace EarlyPusher.Modules.SortTab.ViewModels
 			}
 		}
 
-		public ObservableVMCollection<TeamData, TeamSortVM> Teams
+		public ObservableVMCollection<TeamData, TeamOrderVM> Teams
 		{
 			get { return this.teams; }
 		}
 
-		public TeamSortVM WinnerTeam
+		public TeamOrderVM WinnerTeam
 		{
 			get { return this.Teams.FirstOrDefault( t => t.IsWinner ); }
 		}
 
-		public IEnumerable<TeamSortVM> OtherTeams
+		public IEnumerable<TeamOrderVM> OtherTeams
 		{
 			get { return this.Teams.Where( t => !t.IsWinner ); }
 		}
@@ -74,7 +74,7 @@ namespace EarlyPusher.Modules.SortTab.ViewModels
 		/// <summary>
 		/// 選択しているメディア
 		/// </summary>
-		public SortMediaVM SelectedMedia
+		public ChoiceOrderMediaVM SelectedMedia
 		{
 			get { return this.selectedMedia; }
 			set { SetProperty( ref this.selectedMedia, value, CommandRaiseCanExecuteChanged, SelectedMediaChanging ); }
@@ -94,7 +94,7 @@ namespace EarlyPusher.Modules.SortTab.ViewModels
 
 		#endregion
 
-		public OperateSortVM( MainVM parent )
+		public OperateOrderVM( MainVM parent )
 			: base( parent )
 		{
 			this.OpenWinnerCommand = new DelegateCommand( OpenWinner, CanSelectedMedia );
@@ -104,19 +104,19 @@ namespace EarlyPusher.Modules.SortTab.ViewModels
 			this.OpenAnswerAllCommand = new DelegateCommand( OpenAnswerAll, CanSelectedMedia );
 			this.ResetCommand = new DelegateCommand( Reset, CanSelectedMedia );
 
-			this.adapter = new ViewModelsAdapter<TeamSortVM, TeamData>( CreateTeamSortVM );
+			this.adapter = new ViewModelsAdapter<TeamOrderVM, TeamData>( CreateTeamSortVM );
 
-			this.playOtherView = new PlayOtherSortView() { DataContext = this };
-			this.playWinnerView = new PlayWinnerSortView() { DataContext = this };
+			this.playOtherView = new PlayOtherOrderView() { DataContext = this };
+			this.playWinnerView = new PlayWinnerOrderView() { DataContext = this };
 
 			this.PlayView = this.playWinnerView;
 		}
 
 		#region 構築
 
-		private TeamSortVM CreateTeamSortVM( TeamData data )
+		private TeamOrderVM CreateTeamSortVM( TeamData data )
 		{
-			return new TeamSortVM( this, data );
+			return new TeamOrderVM( this, data );
 		}
 
 		public override void LoadData()
@@ -140,7 +140,7 @@ namespace EarlyPusher.Modules.SortTab.ViewModels
 				this.Medias.Clear();
 				foreach( string path in Directory.EnumerateFiles( this.Parent.Data.SortVideoDir, "*", SearchOption.AllDirectories ) )
 				{
-					var media = new SortMediaVM() { FilePath = path, FileName = Path.GetFileName( path ) };
+					var media = new ChoiceOrderMediaVM() { FilePath = path, FileName = Path.GetFileName( path ) };
 					media.LoadFile();
 					this.Medias.Add( media );
 				}

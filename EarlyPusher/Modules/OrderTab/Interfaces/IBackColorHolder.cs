@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media;
 
-namespace EarlyPusher.Modules.SortTab.Interfaces
+namespace EarlyPusher.Modules.OrderTab.Interfaces
 {
 	public interface IBackColorHolder
 	{

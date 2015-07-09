@@ -7,23 +7,23 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media;
 using EarlyPusher.Models;
-using EarlyPusher.Modules.SortTab.Interfaces;
+using EarlyPusher.Modules.OrderTab.Interfaces;
 using StFrLibs.Core.Basis;
 using StFrLibs.Core.Extensions;
 
-namespace EarlyPusher.Modules.SortTab.ViewModels
+namespace EarlyPusher.Modules.OrderTab.ViewModels
 {
-	public class TeamSortVM : ViewModelBase<TeamData>, IBackColorHolder
+	public class TeamOrderVM : ViewModelBase<TeamData>, IBackColorHolder
 	{
-		private OperateSortVM parent;
-		private ObservableCollection<SortItemVM> sortedList = new ObservableCollection<SortItemVM>();
+		private OperateOrderVM parent;
+		private ObservableCollection<OrderItemVM> sortedList = new ObservableCollection<OrderItemVM>();
 		private bool isWinner;
 		private int nextIndex = 0;
 		private bool isCorrect = true;
 
 		#region プロパティ
 
-		public ObservableCollection<SortItemVM> SortedList
+		public ObservableCollection<OrderItemVM> SortedList
 		{
 			get { return this.sortedList; }
 		}
@@ -47,13 +47,13 @@ namespace EarlyPusher.Modules.SortTab.ViewModels
 						
 		#endregion
 
-		public TeamSortVM( OperateSortVM parent, TeamData data )
+		public TeamOrderVM( OperateOrderVM parent, TeamData data )
 			: base( data )
 		{
 			this.parent = parent;
 			for( int i = 0; i < 4; i++ )
 			{
-				this.SortedList.Add( new SortItemVM( this ) );
+				this.SortedList.Add( new OrderItemVM( this ) );
 			}
 		}
 
@@ -99,22 +99,22 @@ namespace EarlyPusher.Modules.SortTab.ViewModels
 			return true;
 		}
 
-		public void CheckCorrect( SortMediaVM media )
+		public void CheckCorrect( ChoiceOrderMediaVM media )
 		{
 			if( this.SortedList.Any( i => i.Choice == null ) )
 			{
 				return;
 			}
 
-			this.IsCorrect = this.SortedList.SequenceEqual( media.SortedList, new ComparerFunc<SortItemVM>( SortItemEqual, SortItemGetHash ) );
+			this.IsCorrect = this.SortedList.SequenceEqual( media.SortedList, new ComparerFunc<OrderItemVM>( SortItemEqual, SortItemGetHash ) );
 		}
 
-		private int SortItemGetHash( SortItemVM arg )
+		private int SortItemGetHash( OrderItemVM arg )
 		{
 			return arg.Choice.GetHashCode();
 		}
 
-		private bool SortItemEqual( SortItemVM arg1, SortItemVM arg2 )
+		private bool SortItemEqual( OrderItemVM arg1, OrderItemVM arg2 )
 		{
 			return arg1.Choice == arg2.Choice;
 		}

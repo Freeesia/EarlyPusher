@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace EarlyPusher.Modules.SortTab.Views
+namespace EarlyPusher.Modules.OrderTab.Views
 {
 	/// <summary>
-	/// OperateSortView.xaml の相互作用ロジック
+	/// PlayWinnerOrderView.xaml の相互作用ロジック
 	/// </summary>
-	public partial class OperateSortView : UserControl
+	public partial class PlayWinnerOrderView : UserControl
 	{
-		public OperateSortView()
+		public PlayWinnerOrderView()
 		{
 			InitializeComponent();
 		}

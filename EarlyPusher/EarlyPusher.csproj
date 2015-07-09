@@ -78,7 +78,7 @@
     <Compile Include="Models\Choice.cs" />
     <Compile Include="Models\MemberData.cs" />
     <Compile Include="Models\SettingData.cs" />
-    <Compile Include="Models\SortMediaData.cs" />
+    <Compile Include="Models\ChoiceOrderMediaData.cs" />
     <Compile Include="Models\TeamData.cs" />
     <Compile Include="Modules\ChoiceTab\ViewModels\MediaChoiceVM.cs" />
     <Compile Include="Modules\ChoiceTab\ViewModels\OperateChoiceVM.cs" />
@@ -88,23 +88,24 @@
     <Compile Include="Modules\EarlyTab\ViewModels\TeamEarlyVM.cs" />
     <Compile Include="Modules\Setting1Tab\ViewModels\MemberSetting1VM.cs" />
     <Compile Include="Modules\Setting1Tab\ViewModels\TeamSetting1VM.cs" />
+    <Compile Include="Modules\Setting2Tab\ViewModels\MediaSetting2VM.cs" />
     <Compile Include="Modules\Setting2Tab\ViewModels\OperateSetting2VM.cs" />
     <Compile Include="Modules\Setting2Tab\Views\OperateSetting2View.xaml.cs">
       <DependentUpon>OperateSetting2View.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Modules\SortTab\Interfaces\IBackColorHolder.cs" />
-    <Compile Include="Modules\SortTab\ViewModels\OperateSortVM.cs" />
-    <Compile Include="Modules\SortTab\ViewModels\SortItemVM.cs" />
-    <Compile Include="Modules\SortTab\ViewModels\SortMediaVM.cs" />
-    <Compile Include="Modules\SortTab\ViewModels\TeamSortVM.cs" />
-    <Compile Include="Modules\SortTab\Views\OperateSortView.xaml.cs">
-      <DependentUpon>OperateSortView.xaml</DependentUpon>
+    <Compile Include="Modules\OrderTab\Interfaces\IBackColorHolder.cs" />
+    <Compile Include="Modules\OrderTab\ViewModels\OperateOrderVM.cs" />
+    <Compile Include="Modules\OrderTab\ViewModels\OrderItemVM.cs" />
+    <Compile Include="Modules\OrderTab\ViewModels\ChoiceOrderMediaVM.cs" />
+    <Compile Include="Modules\OrderTab\ViewModels\TeamOrderVM.cs" />
+    <Compile Include="Modules\OrderTab\Views\OperateOrderView.xaml.cs">
+      <DependentUpon>OperateOrderView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Modules\SortTab\Views\PlayOtherSortView.xaml.cs">
-      <DependentUpon>PlayOtherSortView.xaml</DependentUpon>
+    <Compile Include="Modules\OrderTab\Views\PlayOtherOrderView.xaml.cs">
+      <DependentUpon>PlayOtherOrderView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Modules\SortTab\Views\PlayWinnerSortView.xaml.cs">
-      <DependentUpon>PlayWinnerSortView.xaml</DependentUpon>
+    <Compile Include="Modules\OrderTab\Views\PlayWinnerOrderView.xaml.cs">
+      <DependentUpon>PlayWinnerOrderView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\MainVM.cs" />
     <Compile Include="Modules\EarlyTab\ViewModels\MemberEarlyVM.cs" />
@@ -122,19 +123,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Modules\SortTab\Views\OperateSortView.xaml">
+    <Page Include="Modules\OrderTab\Views\OperateOrderView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Modules\SortTab\Views\PlayOtherSortView.xaml">
+    <Page Include="Modules\OrderTab\Views\PlayOtherOrderView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Modules\SortTab\Views\PlayWinnerSortView.xaml">
+    <Page Include="Modules\OrderTab\Views\PlayWinnerOrderView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Modules\SortTab\Views\SortViewResouces.xaml">
+    <Page Include="Modules\OrderTab\Views\OrderViewResouces.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

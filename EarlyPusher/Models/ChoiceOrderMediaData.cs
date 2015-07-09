@@ -7,18 +7,31 @@ using StFrLibs.Core.Basis;
 
 namespace EarlyPusher.Models
 {
-	public class SortMediaData : ObservableObject
+	public class ChoiceOrderMediaData : ObservableObject
 	{
-		private List<Choice> sortedList = new List<Choice>( 4 );
+		private List<Choice> choiceOrder = new List<Choice>( 4 );
 		private string mediaPath;
 		private string choiceAImagePath;
 		private string choiceBImagePath;
 		private string choiceCImagePath;
 		private string choiceDImagePath;
 
-		public List<Choice> SortedList
+		private ChoiceOrderMediaData()
 		{
-			get { return this.sortedList; }
+		}
+
+		public ChoiceOrderMediaData( string path )
+		{
+			this.MediaPath = path;
+			this.ChoiceOrder.Add( Choice.A );
+			this.ChoiceOrder.Add( Choice.A );
+			this.ChoiceOrder.Add( Choice.A );
+			this.ChoiceOrder.Add( Choice.A );
+		}
+
+		public List<Choice> ChoiceOrder
+		{
+			get { return this.choiceOrder; }
 		}
 
 		public string MediaPath

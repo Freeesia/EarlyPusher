@@ -5,19 +5,19 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media;
 using EarlyPusher.Models;
-using EarlyPusher.Modules.SortTab.Interfaces;
+using EarlyPusher.Modules.OrderTab.Interfaces;
 using StFrLibs.Core.Basis;
 
-namespace EarlyPusher.Modules.SortTab.ViewModels
+namespace EarlyPusher.Modules.OrderTab.ViewModels
 {
-	public class SortItemVM : ObservableObject, IBackColorHolder
+	public class OrderItemVM : ObservableObject, IBackColorHolder
 	{
 		private Choice? choice = null;
 		private bool isVisible = false;
 
 		private IBackColorHolder parent;
 
-		public SortItemVM( IBackColorHolder parent )
+		public OrderItemVM( IBackColorHolder parent )
 		{
 			this.parent = parent;
 		}
