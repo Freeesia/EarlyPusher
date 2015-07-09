@@ -34,7 +34,7 @@ namespace EarlyPusher.ViewModels
 		private OperateSetting2VM operateSetting2;
 		private OperateChoiceVM operateChoice;
 		private OperateEarlyVM operateEarly;
-		private OperateOrderVM operateSort;
+		private OperateOrderVM operateOrder;
 
 		#region プロパティ
 
@@ -87,10 +87,10 @@ namespace EarlyPusher.ViewModels
 			set { SetProperty( ref this.operateEarly, value ); }
 		}
 
-		public OperateOrderVM OperateSort
+		public OperateOrderVM OperateOrder
 		{
-			get { return this.operateSort; }
-			set { SetProperty( ref this.operateSort, value ); }
+			get { return this.operateOrder; }
+			set { SetProperty( ref this.operateOrder, value ); }
 		}
 		
 		#endregion
@@ -109,13 +109,13 @@ namespace EarlyPusher.ViewModels
 			this.OperateSetting2 = new OperateSetting2VM( this );
 			this.OperateChoice = new OperateChoiceVM( this );
 			this.OperateEarly = new OperateEarlyVM( this );
-			this.OperateSort = new OperateOrderVM( this );
+			this.OperateOrder = new OperateOrderVM( this );
 
 			this.operateVMs.Add( this.OperateSetting1 );
 			this.operateVMs.Add( this.OperateSetting2 );
 			this.operateVMs.Add( this.OperateChoice );
 			this.operateVMs.Add( this.OperateEarly );
-			this.operateVMs.Add( this.OperateSort );
+			this.operateVMs.Add( this.OperateOrder );
 		}
 
 		private void SelectedTabChanging()

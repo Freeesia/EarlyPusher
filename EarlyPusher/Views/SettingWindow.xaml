@@ -52,7 +52,7 @@
 			<TabItem DataContext="{Binding OperateChoice}" Header="選択">
 				<cv:OperateChoiceView />
 			</TabItem>
-			<TabItem DataContext="{Binding OperateSort}" Header="並べ替え">
+			<TabItem DataContext="{Binding OperateOrder}" Header="並べ替え">
 				<sbv:OperateOrderView />
 			</TabItem>
 		</TabControl>
