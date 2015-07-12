@@ -41,7 +41,7 @@
 					<TextBlock Margin="25"
 					           FontSize="150"
 					           Foreground="White"
-					           Text="正解！！" />
+					           Text="大正解！！" />
 				</Border>
 				<ItemsControl ItemsSource="{Binding OtherTeams}">
 					<ItemsControl.ItemsPanel>
@@ -70,7 +70,8 @@
 										                  Color="Black" />
 									</TextBlock.Effect>
 								</TextBlock>
-								<ItemsControl VerticalAlignment="Center"
+								<ItemsControl Margin="0,200,0,0"
+								              VerticalAlignment="Center"
 								              ItemTemplate="{StaticResource choicePanel}"
 								              ItemsSource="{Binding SortedList}">
 									<ItemsControl.ItemsPanel>

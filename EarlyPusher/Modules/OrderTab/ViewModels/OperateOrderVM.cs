@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Media.Imaging;
 using EarlyPusher.Manager;
 using EarlyPusher.Models;
 using EarlyPusher.Modules.OrderTab.Views;
@@ -138,10 +139,9 @@ namespace EarlyPusher.Modules.OrderTab.ViewModels
 			if( !string.IsNullOrEmpty( this.Parent.Data.SortVideoDir ) && Directory.Exists( this.Parent.Data.SortVideoDir ) )
 			{
 				this.Medias.Clear();
-				foreach( string path in Directory.EnumerateFiles( this.Parent.Data.SortVideoDir, "*", SearchOption.AllDirectories ) )
+				foreach( var item in this.Parent.Data.ChoiceOrderMediaList.Where( i => File.Exists( i.MediaPath ) ) )
 				{
-					var media = new ChoiceOrderMediaVM() { FilePath = path, FileName = Path.GetFileName( path ) };
-					media.LoadFile();
+					var media = new ChoiceOrderMediaVM( item );
 					this.Medias.Add( media );
 				}
 			}
@@ -169,11 +169,11 @@ namespace EarlyPusher.Modules.OrderTab.ViewModels
 		private void OpenOther( object obj )
 		{
 			this.IsVisiblePlayView = true;
+			this.PlayView = this.playOtherView;
+
+			this.OtherTeams.ForEach( t => t.CheckCorrect( this.SelectedMedia ) );
 			NotifyPropertyChanged( () => this.OtherTeams );
 			NotifyPropertyChanged( () => this.IsCorrectInOtherTeams );
-			this.OtherTeams.SelectMany( t => t.SortedList ).ForEach( i => i.IsVisible = true );
-			this.OtherTeams.ForEach( t => t.CheckCorrect( this.SelectedMedia ) );
-			this.PlayView = this.playOtherView;
 		}
 
 		private void OpenWinner( object obj )
@@ -181,7 +181,26 @@ namespace EarlyPusher.Modules.OrderTab.ViewModels
 			this.IsVisiblePlayView = true;
 			NotifyPropertyChanged( () => this.WinnerTeam );
 			this.PlayView = this.playWinnerView;
-			this.WinnerTeam.SortedList.ForEach( i => i.IsVisible = true );
+			foreach( var order in this.WinnerTeam.SortedList )
+			{
+				switch( order.Choice )
+				{
+					case Choice.A:
+						order.Image = new BitmapImage( new Uri( this.SelectedMedia.Model.ChoiceAImagePath ) );
+						break;
+					case Choice.B:
+						order.Image = new BitmapImage( new Uri( this.SelectedMedia.Model.ChoiceBImagePath ) );
+						break;
+					case Choice.C:
+						order.Image = new BitmapImage( new Uri( this.SelectedMedia.Model.ChoiceCImagePath ) );
+						break;
+					case Choice.D:
+						order.Image = new BitmapImage( new Uri( this.SelectedMedia.Model.ChoiceDImagePath ) );
+						break;
+					default:
+						break;
+				}
+			}
 		}
 
 		private void OpenAnswer1( object obj )
@@ -189,6 +208,7 @@ namespace EarlyPusher.Modules.OrderTab.ViewModels
 			this.IsVisiblePlayView = true;
 			this.PlayView = this.playWinnerView;
 			this.SelectedMedia.SortedList[0].IsVisible = true;
+			this.WinnerTeam.CheckCorrect( this.SelectedMedia );
 		}
 
 		private void OpenAnswer2( object obj )
@@ -196,6 +216,7 @@ namespace EarlyPusher.Modules.OrderTab.ViewModels
 			this.IsVisiblePlayView = true;
 			this.PlayView = this.playWinnerView;
 			this.SelectedMedia.SortedList[1].IsVisible = true;
+			this.WinnerTeam.CheckCorrect( this.SelectedMedia );
 		}
 
 		private void OpenAnswerAll( object obj )

@@ -5,20 +5,14 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media;
 using EarlyPusher.Models;
-using EarlyPusher.Modules.OrderTab.Interfaces;
 using StFrLibs.Core.Basis;
 
 namespace EarlyPusher.Modules.OrderTab.ViewModels
 {
-	public class OrderItemVM : OrderItemVMBase, IBackColorHolder
+	public class CurrectOrederItemVM : OrderItemVMBase
 	{
-		private IBackColorHolder parent;
 		private ImageSource image;
-
-		public OrderItemVM( IBackColorHolder parent )
-		{
-			this.parent = parent;
-		}
+		private bool isVisible = false;
 
 		public ImageSource Image
 		{
@@ -26,9 +20,10 @@ namespace EarlyPusher.Modules.OrderTab.ViewModels
 			set { SetProperty( ref this.image, value ); }
 		}
 
-		public Color BackColor
+		public bool IsVisible
 		{
-			get { return this.parent.BackColor; }
+			get { return this.isVisible; }
+			set { SetProperty( ref this.isVisible, value ); }
 		}
 	}
 }

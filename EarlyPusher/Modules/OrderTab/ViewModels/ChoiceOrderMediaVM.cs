@@ -10,67 +10,72 @@ using EarlyPusher.Models;
 using EarlyPusher.ViewModels;
 using System.Windows.Media;
 using EarlyPusher.Modules.OrderTab.Interfaces;
+using System.Windows.Media.Imaging;
 
 namespace EarlyPusher.Modules.OrderTab.ViewModels
 {
-	public class ChoiceOrderMediaVM : MediaVM, IBackColorHolder
+	public class ChoiceOrderMediaVM : MediaVM
 	{
-		private ObservableCollection<OrderItemVM> sortedList = new ObservableCollection<OrderItemVM>();
+		private ObservableCollection<CurrectOrederItemVM> sortedList = new ObservableCollection<CurrectOrederItemVM>();
+		private ChoiceOrderMediaData model;
 
-		public ObservableCollection<OrderItemVM> SortedList
+		public ObservableCollection<CurrectOrederItemVM> SortedList
 		{
 			get { return this.sortedList; }
 		}
 
-		public Color BackColor
+		public ChoiceOrderMediaData Model
 		{
-			get { return Colors.White; }
+			get { return this.model; }
 		}
 
-		public ChoiceOrderMediaVM()
-			: base()
+		public ChoiceOrderMediaVM( ChoiceOrderMediaData model ) : base()
 		{
+			this.model = model;
+
 			for( int i = 0; i < 4; i++ )
 			{
-				this.SortedList.Add( new OrderItemVM( this ) );
+				var item = new CurrectOrederItemVM();
+				item.Choice = this.model.ChoiceOrder[i];
+				switch( item.Choice )
+				{
+					case Choice.A:
+						if( !string.IsNullOrEmpty(this.model.ChoiceAImagePath) )
+						{
+							item.Image = new BitmapImage( new Uri( this.model.ChoiceAImagePath ) );
+						}
+						break;
+					case Choice.B:
+						if( !string.IsNullOrEmpty(this.model.ChoiceBImagePath) )
+						{
+							item.Image = new BitmapImage( new Uri( this.model.ChoiceBImagePath ) );
+						}
+						break;
+					case Choice.C:
+						if( !string.IsNullOrEmpty(this.model.ChoiceCImagePath) )
+						{
+							item.Image = new BitmapImage( new Uri( this.model.ChoiceCImagePath ) );
+						}
+						break;
+					case Choice.D:
+						if( !string.IsNullOrEmpty(this.model.ChoiceDImagePath) )
+						{
+							item.Image = new BitmapImage( new Uri( this.model.ChoiceDImagePath ) );
+						}
+						break;
+				}
+
+				this.SortedList.Add( item );
 			}
 
-			this.PropertyChanged += SortMediaVM_PropertyChanged;
+			this.FilePath = this.model.MediaPath;
+			this.FileName = Path.GetFileName( this.FilePath );
+			this.LoadFile();
 		}
 
 		public void Clear()
 		{
 			this.SortedList.ForEach( i => i.IsVisible = false );
-		}
-
-		private void SortMediaVM_PropertyChanged( object sender, System.ComponentModel.PropertyChangedEventArgs e )
-		{
-			if( e.PropertyName == "FilePath" && !string.IsNullOrEmpty( this.FilePath ) )
-			{
-				var fileName = Path.GetFileNameWithoutExtension( this.FilePath );
-				var lstIndex = fileName.LastIndexOf( '_' );
-				if( lstIndex == -1 )
-				{
-					return;
-				}
-
-				var sortStr = fileName.Substring( lstIndex + 1 );
-				if( string.IsNullOrEmpty(sortStr) )
-				{
-					return;
-				}
-
-				for( int i = 0; i < 4; i++ )
-				{
-					Choice c;
-					if( !Enum.TryParse<Choice>( sortStr[i].ToString(), out c ) )
-					{
-						return;
-					}
-					this.SortedList[i].Choice = c;
-				}
-
-			}
 		}
 	}
 }

@@ -17,7 +17,7 @@
 	<DataTemplate x:Key="choicePanel">
 		<Border Width="160"
 		        Height="160"
-		        Margin="20"
+		        Margin="40"
 		        Background="{Binding BackColor,
 		                             Converter={StaticResource c2bConv}}"
 		        BorderThickness="5"

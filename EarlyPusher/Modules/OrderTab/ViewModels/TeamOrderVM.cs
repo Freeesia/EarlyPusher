@@ -68,7 +68,6 @@ namespace EarlyPusher.Modules.OrderTab.ViewModels
 			foreach( var item in this.SortedList )
 			{
 				item.Choice = null;
-				item.IsVisible = false;
 			}
 			this.IsCorrect = true;
 		}
@@ -103,18 +102,19 @@ namespace EarlyPusher.Modules.OrderTab.ViewModels
 		{
 			if( this.SortedList.Any( i => i.Choice == null ) )
 			{
+				this.IsCorrect = false;
 				return;
 			}
 
-			this.IsCorrect = this.SortedList.SequenceEqual( media.SortedList, new ComparerFunc<OrderItemVM>( SortItemEqual, SortItemGetHash ) );
+			this.IsCorrect = this.SortedList.SequenceEqual( media.SortedList, new ComparerFunc<OrderItemVMBase>( SortItemEqual, SortItemGetHash ) );
 		}
 
-		private int SortItemGetHash( OrderItemVM arg )
+		private int SortItemGetHash( OrderItemVMBase arg )
 		{
 			return arg.Choice.GetHashCode();
 		}
 
-		private bool SortItemEqual( OrderItemVM arg1, OrderItemVM arg2 )
+		private bool SortItemEqual( OrderItemVMBase arg1, OrderItemVMBase arg2 )
 		{
 			return arg1.Choice == arg2.Choice;
 		}

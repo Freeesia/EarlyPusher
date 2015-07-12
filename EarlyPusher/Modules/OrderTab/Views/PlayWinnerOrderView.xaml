@@ -13,57 +13,102 @@
 	<Grid>
 		<ContentPresenter Content="{Binding SelectedMedia.Media}" Visibility="{Binding SelectedMedia.IsPlaying, Converter={StaticResource t2vConv}}" />
 		<Viewbox Margin="10" Visibility="{Binding IsVisiblePlayView, Converter={StaticResource t2vConv}}">
-			<StackPanel Orientation="Horizontal">
-				<Grid Opacity="{Binding WinnerTeam.IsCorrect, Converter={StaticResource b2oConv}}">
-					<Image Source="/アーリーぷっしゃー！;component/Resources/SortWinnerBack.png" />
-					<ItemsControl Grid.Row="1"
-					              Grid.Column="0"
-					              VerticalAlignment="Center"
-					              ItemTemplate="{StaticResource choicePanel}"
-					              ItemsSource="{Binding WinnerTeam.SortedList}">
-						<ItemsControl.ItemsPanel>
-							<ItemsPanelTemplate>
-								<StackPanel Orientation="Vertical" />
-							</ItemsPanelTemplate>
-						</ItemsControl.ItemsPanel>
-					</ItemsControl>
-				</Grid>
-				<Grid>
-					<Grid.RowDefinitions>
-						<RowDefinition Height="Auto" />
-						<RowDefinition Height="*" />
-					</Grid.RowDefinitions>
-
-					<Border Grid.RowSpan="2"
-					        Margin="0,200,0,0"
-					        BorderBrush="Yellow"
-					        BorderThickness="50"
-					        CornerRadius="50">
+			<Grid>
+				<StackPanel Orientation="Horizontal">
+					<Grid Opacity="{Binding WinnerTeam.IsCorrect, Converter={StaticResource b2oConv}}">
+						<Image Source="/アーリーぷっしゃー！;component/Resources/SortWinnerBack.png" />
 						<ItemsControl Grid.Row="1"
-						              Grid.Column="1"
+						              Grid.Column="0"
+						              Margin="0,200,0,0"
 						              VerticalAlignment="Center"
 						              ItemTemplate="{StaticResource choicePanel}"
-						              ItemsSource="{Binding SelectedMedia.SortedList}">
+						              ItemsSource="{Binding WinnerTeam.SortedList}">
 							<ItemsControl.ItemsPanel>
 								<ItemsPanelTemplate>
 									<StackPanel Orientation="Vertical" />
 								</ItemsPanelTemplate>
 							</ItemsControl.ItemsPanel>
 						</ItemsControl>
-					</Border>
+					</Grid>
+					<Grid DataContext="{Binding SelectedMedia}" Visibility="{Binding SortedList[0].IsVisible, Converter={StaticResource t2vConv}}">
+						<Grid.RowDefinitions>
+							<RowDefinition Height="Auto" />
+							<RowDefinition Height="*" />
+						</Grid.RowDefinitions>
 
-					<Border Grid.Row="0"
-					        Background="Red"
+						<Border Grid.RowSpan="2"
+						        Margin="0,250,0,0"
+						        HorizontalAlignment="Center"
+						        VerticalAlignment="Top"
+						        BorderBrush="Yellow"
+						        BorderThickness="50"
+						        CornerRadius="50">
+							<ItemsControl Grid.Row="1"
+							              Grid.Column="1"
+							              Margin="0,50,0,0"
+							              VerticalAlignment="Center"
+							              ItemsSource="{Binding SortedList}">
+								<ItemsControl.ItemsPanel>
+									<ItemsPanelTemplate>
+										<StackPanel Orientation="Vertical" />
+									</ItemsPanelTemplate>
+								</ItemsControl.ItemsPanel>
+								<ItemsControl.ItemTemplate>
+									<DataTemplate>
+										<Image Height="240"
+										       Source="{Binding Image}"
+										       Visibility="{Binding IsVisible,
+										                            Converter={StaticResource t2vConv}}" />
+									</DataTemplate>
+								</ItemsControl.ItemTemplate>
+							</ItemsControl>
+						</Border>
+
+						<Border Grid.Row="0"
+						        Margin="0,50,0,0"
+						        HorizontalAlignment="Center"
+						        VerticalAlignment="Center"
+						        Background="Red"
+						        BorderBrush="Yellow"
+						        BorderThickness="50"
+						        CornerRadius="50">
+							<TextBlock Margin="10"
+							           FontSize="150"
+							           Foreground="White"
+							           Text="正解" />
+						</Border>
+					</Grid>
+				</StackPanel>
+				<Grid Visibility="Hidden">
+					<Border HorizontalAlignment="Center"
+					        VerticalAlignment="Bottom"
+					        Background="Blue"
 					        BorderBrush="Yellow"
 					        BorderThickness="50"
-					        CornerRadius="50">
+					        CornerRadius="50"
+					        Visibility="{Binding WinnerTeam.IsCorrect,
+					                             Converter={StaticResource f2vcConv}}">
 						<TextBlock Margin="25"
 						           FontSize="150"
 						           Foreground="White"
-						           Text="正解" />
+						           Text="残念！！" />
 					</Border>
+					<Border HorizontalAlignment="Center"
+					        VerticalAlignment="Bottom"
+					        Background="Red"
+					        BorderBrush="Yellow"
+					        BorderThickness="50"
+					        CornerRadius="50"
+					        Visibility="{Binding WinnerTeam.IsCorrect,
+					                             Converter={StaticResource t2vcConv}}">
+						<TextBlock Margin="25"
+						           FontSize="150"
+						           Foreground="White"
+						           Text="大正解！！" />
+					</Border>
+
 				</Grid>
-			</StackPanel>
+			</Grid>
 		</Viewbox>
 	</Grid>
 </UserControl>

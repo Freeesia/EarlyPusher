@@ -86,6 +86,8 @@
     <Compile Include="Modules\ChoiceTab\ViewModels\TeamChoiceVM.cs" />
     <Compile Include="Modules\EarlyTab\ViewModels\OperateEarlyVM.cs" />
     <Compile Include="Modules\EarlyTab\ViewModels\TeamEarlyVM.cs" />
+    <Compile Include="Modules\OrderTab\ViewModels\CurrectOrederItemVM.cs" />
+    <Compile Include="Modules\OrderTab\ViewModels\OrderItemVMBase.cs" />
     <Compile Include="Modules\Setting1Tab\ViewModels\MemberSetting1VM.cs" />
     <Compile Include="Modules\Setting1Tab\ViewModels\TeamSetting1VM.cs" />
     <Compile Include="Modules\Setting2Tab\ViewModels\MediaSetting2VM.cs" />
