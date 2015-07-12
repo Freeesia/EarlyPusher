@@ -27,6 +27,7 @@ namespace EarlyPusher.Modules.EarlyTab.ViewModels
 		private PlayEarlyView view = new PlayEarlyView();
 
 		private MediaVM selectedMedia;
+		private MediaVM answerSound;
 
 		private int rank = 0;
 		private int getPoint = 0;
@@ -80,6 +81,15 @@ namespace EarlyPusher.Modules.EarlyTab.ViewModels
 			}
 		}
 
+		/// <summary>
+		/// 解答音
+		/// </summary>
+		public MediaVM AnswerSound
+		{
+			get { return answerSound; }
+			set { SetProperty( ref answerSound, value ); }
+		}
+
 		public int GetPoint
 		{
 			get { return this.getPoint; }
@@ -113,6 +123,13 @@ namespace EarlyPusher.Modules.EarlyTab.ViewModels
 			base.LoadData();
 
 			this.Parent.Data.PropertyChanged += Data_PropertyChanged;
+
+			if( !string.IsNullOrEmpty( this.Parent.Data.AnswerSoundPath ) )
+			{
+				this.AnswerSound = new MediaVM();
+				this.AnswerSound.FilePath = this.Parent.Data.AnswerSoundPath;
+				this.AnswerSound.LoadFile();
+			}
 
 			this.adapter = new ViewModelsAdapter<TeamEarlyVM, TeamData>( CreateTeamVM, DeleteTeamVM );
 			this.adapter.Adapt( this.Teams, this.Parent.Data.TeamList );
@@ -176,6 +193,14 @@ namespace EarlyPusher.Modules.EarlyTab.ViewModels
 			{
 				case "EarlyVideoDir":
 					LoadVideos();
+					break;
+				case "AnswerSoundPath":
+					if( !string.IsNullOrEmpty(this.Parent.Data.AnswerSoundPath) )
+					{
+						this.AnswerSound = new MediaVM();
+						this.AnswerSound.FilePath = this.Parent.Data.AnswerSoundPath;
+						this.AnswerSound.LoadFile();
+					}
 					break;
 				default:
 					break;

@@ -36,6 +36,7 @@ namespace EarlyPusher.Modules.Setting1Tab.ViewModels
 
 		private TeamSetting1VM selectedTeam;
 		private MemberSetting1VM selectedMember;
+		private MediaVM answerSound;
 
 		#region プロパティ
 
@@ -125,6 +126,12 @@ namespace EarlyPusher.Modules.Setting1Tab.ViewModels
 			set { SetProperty( ref updateTime, value ); }
 		}
 
+		public MediaVM AnswerSound
+		{
+			get { return answerSound; }
+			set { SetProperty( ref answerSound, value ); }
+		}
+
 		#endregion
 
 		public OperateSetting1VM( MainVM parent )
@@ -177,6 +184,12 @@ namespace EarlyPusher.Modules.Setting1Tab.ViewModels
 			this.teamAdapter = new ViewModelsAdapter<TeamSetting1VM, TeamData>( CreateTeamVM, DeleteTeamVM );
 			this.teamAdapter.Adapt( this.Teams, this.Parent.Data.TeamList );
 
+			if( !string.IsNullOrEmpty( this.Parent.Data.AnswerSoundPath ) )
+			{
+				this.AnswerSound = new MediaVM();
+				this.AnswerSound.FilePath = this.Parent.Data.AnswerSoundPath;
+				this.AnswerSound.LoadFile();
+			}
 		}
 
 		/// <summary>
@@ -398,9 +411,10 @@ namespace EarlyPusher.Modules.Setting1Tab.ViewModels
 			dlg.Multiselect = false;
 			if( dlg.ShowDialog() == true )
 			{
+				this.Parent.Data.AnswerSoundPath = dlg.FileName;
+
 				this.AnswerSound = new MediaVM() { FilePath = dlg.FileName };
 				this.AnswerSound.LoadFile();
-				this.Parent.Data.AnswerSoundPath = dlg.FileName;
 			}
 		}
 

@@ -25,22 +25,12 @@ namespace EarlyPusher.ViewModels
 	{
 		private MainVM parent;
 
-		private MediaVM answerSound;
 
 		#region プロパティ
 
 		public MainVM Parent
 		{
 			get { return this.parent; }
-		}
-
-		/// <summary>
-		/// 解答音
-		/// </summary>
-		public MediaVM AnswerSound
-		{
-			get { return answerSound; }
-			set { SetProperty( ref answerSound, value ); }
 		}
 
 		public virtual UIElement PlayView
@@ -66,7 +56,6 @@ namespace EarlyPusher.ViewModels
 		/// </summary>
 		public virtual void LoadData()
 		{
-			this.AnswerSound = new MediaVM() { FilePath = this.parent.Data.AnswerSoundPath };
 		}
 
 		/// <summary>
