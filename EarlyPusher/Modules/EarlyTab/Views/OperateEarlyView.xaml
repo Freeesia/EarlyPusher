@@ -141,7 +141,8 @@
 						<Setter Property="Height" Value="40" />
 					</Style>
 				</StackPanel.Resources>
-				<ToggleButton Content="解答受付" IsChecked="{Binding IsAcceptance}" />
+				<ToggleButton Content="クイズシュート" IsChecked="{Binding IsAcceptance}" />
+				<ToggleButton Content="解答停止" IsChecked="{Binding IsAcceptance, Converter={StaticResource brConv}}" />
 			</StackPanel>
 			<DataGrid AutoGenerateColumns="False"
 			          CanUserAddRows="False"
