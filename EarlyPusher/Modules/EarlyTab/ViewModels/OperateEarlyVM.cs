@@ -30,7 +30,11 @@ namespace EarlyPusher.Modules.EarlyTab.ViewModels
 		private MediaVM answerSound;
 
 		private int rank = 0;
+
 		private int getPoint = 0;
+		private int initPoint = 0;
+		private int missPoint = 0;
+
 		private bool isAcceptance = false;
 
 
@@ -38,6 +42,7 @@ namespace EarlyPusher.Modules.EarlyTab.ViewModels
 
 		public DelegateCommand StartCommand { get; private set; }
 		public DelegateCommand ResetCommand { get; private set; }
+		public DelegateCommand MissCommand { get; private set; }
 
 		/// <summary>
 		/// チームのリスト
@@ -96,6 +101,18 @@ namespace EarlyPusher.Modules.EarlyTab.ViewModels
 			set { SetProperty( ref this.getPoint, value ); }
 		}
 
+		public int InitPoint
+		{
+			get { return this.initPoint; }
+			set { SetProperty( ref this.initPoint, value ); }
+		}
+
+		public int MissPoint
+		{
+			get { return this.missPoint; }
+			set { SetProperty( ref this.missPoint, value ); }
+		}
+		
 		public bool IsAcceptance
 		{
 			get { return this.isAcceptance; }
@@ -107,8 +124,9 @@ namespace EarlyPusher.Modules.EarlyTab.ViewModels
 		public OperateEarlyVM( MainVM parent )
 			: base( parent )
 		{
-			this.StartCommand = new DelegateCommand( Start, null );
-			this.ResetCommand = new DelegateCommand( Reset, null );
+			this.StartCommand = new DelegateCommand( Start );
+			this.ResetCommand = new DelegateCommand( Reset );
+			this.MissCommand = new DelegateCommand( Miss );
 		}
 
 		public override UIElement PlayView
@@ -264,6 +282,11 @@ namespace EarlyPusher.Modules.EarlyTab.ViewModels
 			{
 				item.CanAnswer = true;
 			}
+		}
+
+		private void Miss( object obj )
+		{
+			this.GetPoint += this.MissPoint;
 		}
 
 		#endregion

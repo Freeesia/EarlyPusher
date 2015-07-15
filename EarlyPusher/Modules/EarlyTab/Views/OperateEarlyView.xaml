@@ -70,6 +70,8 @@
 		<Grid Grid.Column="2">
 			<Grid.RowDefinitions>
 				<RowDefinition Height="Auto" />
+				<RowDefinition Height="Auto" />
+				<RowDefinition Height="Auto" />
 				<RowDefinition Height="*" />
 			</Grid.RowDefinitions>
 			<Grid.ColumnDefinitions>
@@ -87,7 +89,27 @@
 			                    Increment="10"
 			                    Value="{Binding GetPoint}" />
 
-			<DataGrid Grid.Row="1"
+			<TextBlock Grid.Row="1"
+			           Grid.Column="0"
+			           Margin="5"
+			           Text="初期値" />
+			<xctk:IntegerUpDown Grid.Row="1"
+			                    Grid.Column="1"
+			                    Margin="5"
+			                    Increment="10"
+			                    Value="{Binding InitPoint}" />
+
+			<TextBlock Grid.Row="2"
+			           Grid.Column="0"
+			           Margin="5"
+			           Text="ミス加算" />
+			<xctk:IntegerUpDown Grid.Row="2"
+			                    Grid.Column="1"
+			                    Margin="5"
+			                    Increment="10"
+			                    Value="{Binding MissPoint}" />
+
+			<DataGrid Grid.Row="3"
 			          Grid.ColumnSpan="2"
 			          AutoGenerateColumns="False"
 			          CanUserAddRows="False"
@@ -111,7 +133,7 @@
 					<DataGridTemplateColumn Header="得点を追加" IsReadOnly="True">
 						<DataGridTemplateColumn.CellTemplate>
 							<DataTemplate>
-								<Button Command="{Binding AddPointCommand}" Content="追加" />
+								<Button Command="{Binding AddPointCommand}" Content="正解！" />
 							</DataTemplate>
 						</DataGridTemplateColumn.CellTemplate>
 					</DataGridTemplateColumn>
@@ -135,6 +157,11 @@
 			            DockPanel.Dock="Bottom"
 			            Orientation="Horizontal">
 				<StackPanel.Resources>
+					<Style TargetType="Button">
+						<Setter Property="Margin" Value="10" />
+						<Setter Property="Width" Value="100" />
+						<Setter Property="Height" Value="40" />
+					</Style>
 					<Style TargetType="ToggleButton">
 						<Setter Property="Margin" Value="10" />
 						<Setter Property="Width" Value="100" />
@@ -143,6 +170,7 @@
 				</StackPanel.Resources>
 				<ToggleButton Content="クイズシュート" IsChecked="{Binding IsAcceptance}" />
 				<ToggleButton Content="解答停止" IsChecked="{Binding IsAcceptance, Converter={StaticResource brConv}}" />
+				<Button Command="{Binding MissCommand}" Content="不正解！" />
 			</StackPanel>
 			<DataGrid AutoGenerateColumns="False"
 			          CanUserAddRows="False"

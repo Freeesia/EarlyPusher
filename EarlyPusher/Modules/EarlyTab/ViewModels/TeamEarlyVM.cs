@@ -32,12 +32,13 @@ namespace EarlyPusher.Modules.EarlyTab.ViewModels
 		{
 			this.Parent = parent;
 
-			this.AddPointCommand = new DelegateCommand( AddCommand );
+			this.AddPointCommand = new DelegateCommand( AddPoint );
 		}
 
-		private void AddCommand( object obj )
+		private void AddPoint( object obj )
 		{
 			this.Model.Point += this.Parent.GetPoint;
+			this.Parent.GetPoint = this.Parent.InitPoint;
 		}
 
 		private void CreateVM( MemberData member )
