@@ -58,7 +58,7 @@ namespace EarlyPusher.Modules.ChoiceTab.ViewModels
 		public MediaVM SelectedMedia
 		{
 			get { return this.selectedMedia; }
-			set { SetProperty( ref this.selectedMedia, value, null, SelectedMediaChanging ); }
+			set { SetProperty( ref this.selectedMedia, value, SelectedMediaChanged, SelectedMediaChanging ); }
 		}
 
 		/// <summary>
@@ -135,20 +135,6 @@ namespace EarlyPusher.Modules.ChoiceTab.ViewModels
 
 		#endregion
 
-		#region アクティブ
-
-		public override void Activate()
-		{
-			this.Parent.Manager.KeyPushed += Manager_KeyPushed;
-		}
-
-		public override void Deactivate()
-		{
-			this.Parent.Manager.KeyPushed -= Manager_KeyPushed;
-		}
-
-		#endregion
-
 		#region イベント
 
 		private void Data_PropertyChanged( object sender, System.ComponentModel.PropertyChangedEventArgs e )
@@ -170,6 +156,15 @@ namespace EarlyPusher.Modules.ChoiceTab.ViewModels
 			}
 		}
 
+		private void SelectedMediaChanged()
+		{
+			if( this.SelectedMedia != null )
+			{
+				this.SelectedMedia.MediaPlayed += SelectedMedia_MediaPlayed;
+				this.SelectedMedia.MediaStoped += SelectedMedia_MediaStoped;
+			}
+		}
+
 		/// <summary>
 		/// 選択しているメディアが変わるとき、以前のメディアを停止します。
 		/// </summary>
@@ -178,7 +173,19 @@ namespace EarlyPusher.Modules.ChoiceTab.ViewModels
 			if( this.SelectedMedia != null )
 			{
 				this.SelectedMedia.Stop();
+				this.SelectedMedia.MediaPlayed -= SelectedMedia_MediaPlayed;
+				this.SelectedMedia.MediaStoped -= SelectedMedia_MediaStoped;
 			}
+		}
+
+		private void SelectedMedia_MediaPlayed( object sender, EventArgs e )
+		{
+			this.Parent.Manager.KeyPushed += Manager_KeyPushed;
+		}
+
+		private void SelectedMedia_MediaStoped( object sender, EventArgs e )
+		{
+			this.Parent.Manager.KeyPushed -= Manager_KeyPushed;
 		}
 
 		#endregion
