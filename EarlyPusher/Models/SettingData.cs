@@ -18,6 +18,9 @@ namespace EarlyPusher.Models
 		private string choiceVideoDir;
 		private string sortVideoDir;
 		private string answerSoundPath;
+		private string correctSoundPath;
+		private string missSoundPath;
+
 
 		public ObservableHashCollection<TeamData> TeamList
 		{
@@ -53,6 +56,18 @@ namespace EarlyPusher.Models
 			set { SetProperty( ref answerSoundPath, value ); }
 		}
 
+		public string CorrectSoundPath
+		{
+			get { return this.correctSoundPath; }
+			set { SetProperty( ref this.correctSoundPath, value ); }
+		}
+
+		public string MissSoundPath
+		{
+			get { return this.missSoundPath; }
+			set { SetProperty( ref this.missSoundPath, value ); }
+		}
+		
 		private void SortVideoDirChanged()
 		{
 			if( !string.IsNullOrEmpty( this.SortVideoDir ) && Directory.Exists( this.SortVideoDir ) )

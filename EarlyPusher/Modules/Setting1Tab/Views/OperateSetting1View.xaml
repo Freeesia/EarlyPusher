@@ -38,6 +38,8 @@
 				<RowDefinition Height="Auto" />
 				<RowDefinition Height="Auto" />
 				<RowDefinition Height="Auto" />
+				<RowDefinition Height="Auto" />
+				<RowDefinition Height="Auto" />
 			</Grid.RowDefinitions>
 			<Grid.ColumnDefinitions>
 				<ColumnDefinition Width="Auto" />
@@ -99,6 +101,38 @@
 			<Button Grid.Row="3"
 			        Grid.Column="3"
 			        Command="{Binding AnswerSound.PlayOrPauseCommand}"
+			        Content="再生" />
+
+			<TextBlock Grid.Row="4"
+			           Grid.Column="0"
+			           Text="正解音" />
+			<TextBox Grid.Row="4"
+			         Grid.Column="1"
+			         IsReadOnly="True"
+			         Text="{Binding CorrectSound.FilePath}" />
+			<Button Grid.Row="4"
+			        Grid.Column="2"
+			        Command="{Binding SelectCorrectSoundCommand}"
+			        Content="参照" />
+			<Button Grid.Row="4"
+			        Grid.Column="3"
+			        Command="{Binding CorrectSound.PlayOrPauseCommand}"
+			        Content="再生" />
+
+			<TextBlock Grid.Row="5"
+			           Grid.Column="0"
+			           Text="不正解音" />
+			<TextBox Grid.Row="5"
+			         Grid.Column="1"
+			         IsReadOnly="True"
+			         Text="{Binding MissSound.FilePath}" />
+			<Button Grid.Row="5"
+			        Grid.Column="2"
+			        Command="{Binding SelectMissSoundCommand}"
+			        Content="参照" />
+			<Button Grid.Row="5"
+			        Grid.Column="3"
+			        Command="{Binding MissSound.PlayOrPauseCommand}"
 			        Content="再生" />
 		</Grid>
 

@@ -37,6 +37,8 @@ namespace EarlyPusher.Modules.Setting1Tab.ViewModels
 		private TeamSetting1VM selectedTeam;
 		private MemberSetting1VM selectedMember;
 		private MediaVM answerSound;
+		private MediaVM correctSound;
+		private MediaVM missSound;
 
 		#region プロパティ
 
@@ -49,6 +51,8 @@ namespace EarlyPusher.Modules.Setting1Tab.ViewModels
 		public DelegateCommand SelectChoiceVideoDirCommand { get; private set; }
 		public DelegateCommand SelectSortVideoDirCommand { get; private set; }
 		public DelegateCommand SelectAnswerSoundCommand { get; private set; }
+		public DelegateCommand SelectCorrectSoundCommand { get; private set; }
+		public DelegateCommand SelectMissSoundCommand { get; private set; }
 
 		public DelegateCommand SearchCommand { get; private set; }
 		public DelegateCommand AddTeamCommand { get; private set; }
@@ -132,6 +136,18 @@ namespace EarlyPusher.Modules.Setting1Tab.ViewModels
 			set { SetProperty( ref answerSound, value ); }
 		}
 
+		public MediaVM CorrectSound
+		{
+			get { return correctSound; }
+			set { SetProperty( ref correctSound, value ); }
+		}
+
+		public MediaVM MissSound
+		{
+			get { return missSound; }
+			set { SetProperty( ref missSound, value ); }
+		}
+
 		#endregion
 
 		public OperateSetting1VM( MainVM parent )
@@ -141,6 +157,8 @@ namespace EarlyPusher.Modules.Setting1Tab.ViewModels
 			this.SelectChoiceVideoDirCommand = new DelegateCommand( SelectChoiceVideoDir, null );
 			this.SelectSortVideoDirCommand = new DelegateCommand( SelectSortVideoDir, null );
 			this.SelectAnswerSoundCommand = new DelegateCommand( SelectAnwser, null );
+			this.SelectCorrectSoundCommand = new DelegateCommand( SelectCorrectSound, null );
+			this.SelectMissSoundCommand = new DelegateCommand( SelectMissSound, null );
 
 			this.AddMemberCommand = new DelegateCommand( AddMember, null );
 			this.DelMemberCommand = new DelegateCommand( DelMember, CanDelMember );
@@ -415,6 +433,34 @@ namespace EarlyPusher.Modules.Setting1Tab.ViewModels
 
 				this.AnswerSound = new MediaVM() { FilePath = dlg.FileName };
 				this.AnswerSound.LoadFile();
+			}
+		}
+
+		private void SelectCorrectSound( object obj )
+		{
+			OpenFileDialog dlg = new OpenFileDialog();
+			dlg.InitialDirectory = AppDomain.CurrentDomain.BaseDirectory;
+			dlg.Multiselect = false;
+			if( dlg.ShowDialog() == true )
+			{
+				this.Parent.Data.CorrectSoundPath = dlg.FileName;
+
+				this.CorrectSound = new MediaVM() { FilePath = dlg.FileName };
+				this.CorrectSound.LoadFile();
+			}
+		}
+
+		private void SelectMissSound( object obj )
+		{
+			OpenFileDialog dlg = new OpenFileDialog();
+			dlg.InitialDirectory = AppDomain.CurrentDomain.BaseDirectory;
+			dlg.Multiselect = false;
+			if( dlg.ShowDialog() == true )
+			{
+				this.Parent.Data.MissSoundPath = dlg.FileName;
+
+				this.MissSound = new MediaVM() { FilePath = dlg.FileName };
+				this.MissSound.LoadFile();
 			}
 		}
 

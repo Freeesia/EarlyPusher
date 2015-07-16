@@ -28,6 +28,8 @@ namespace EarlyPusher.Modules.EarlyTab.ViewModels
 
 		private MediaVM selectedMedia;
 		private MediaVM answerSound;
+		private MediaVM correctSound;
+		private MediaVM missSound;
 
 		private int rank = 0;
 
@@ -86,13 +88,9 @@ namespace EarlyPusher.Modules.EarlyTab.ViewModels
 			}
 		}
 
-		/// <summary>
-		/// 解答音
-		/// </summary>
-		public MediaVM AnswerSound
+		public MediaVM CorrectSound
 		{
-			get { return answerSound; }
-			set { SetProperty( ref answerSound, value ); }
+			get { return this.correctSound; }
 		}
 
 		public int GetPoint
@@ -144,9 +142,23 @@ namespace EarlyPusher.Modules.EarlyTab.ViewModels
 
 			if( !string.IsNullOrEmpty( this.Parent.Data.AnswerSoundPath ) )
 			{
-				this.AnswerSound = new MediaVM();
-				this.AnswerSound.FilePath = this.Parent.Data.AnswerSoundPath;
-				this.AnswerSound.LoadFile();
+				this.answerSound = new MediaVM();
+				this.answerSound.FilePath = this.Parent.Data.AnswerSoundPath;
+				this.answerSound.LoadFile();
+			}
+
+			if( !string.IsNullOrEmpty( this.Parent.Data.CorrectSoundPath ) )
+			{
+				this.correctSound = new MediaVM();
+				this.correctSound.FilePath = this.Parent.Data.CorrectSoundPath;
+				this.correctSound.LoadFile();
+			}
+
+			if( !string.IsNullOrEmpty( this.Parent.Data.MissSoundPath ) )
+			{
+				this.missSound = new MediaVM();
+				this.missSound.FilePath = this.Parent.Data.MissSoundPath;
+				this.missSound.LoadFile();
 			}
 
 			this.adapter = new ViewModelsAdapter<TeamEarlyVM, TeamData>( CreateTeamVM, DeleteTeamVM );
@@ -213,11 +225,39 @@ namespace EarlyPusher.Modules.EarlyTab.ViewModels
 					LoadVideos();
 					break;
 				case "AnswerSoundPath":
-					if( !string.IsNullOrEmpty(this.Parent.Data.AnswerSoundPath) )
+					if( !string.IsNullOrEmpty( this.Parent.Data.AnswerSoundPath ) )
 					{
-						this.AnswerSound = new MediaVM();
-						this.AnswerSound.FilePath = this.Parent.Data.AnswerSoundPath;
-						this.AnswerSound.LoadFile();
+						this.answerSound = new MediaVM();
+						this.answerSound.FilePath = this.Parent.Data.AnswerSoundPath;
+						this.answerSound.LoadFile();
+					}
+					else
+					{
+						this.answerSound = null;
+					}
+					break;
+				case "CorrectSoundPath":
+					if( !string.IsNullOrEmpty( this.Parent.Data.CorrectSoundPath ) )
+					{
+						this.correctSound = new MediaVM();
+						this.correctSound.FilePath = this.Parent.Data.CorrectSoundPath;
+						this.correctSound.LoadFile();
+					}
+					else
+					{
+						this.correctSound = null;
+					}
+					break;
+				case "MissSoundPath":
+					if( !string.IsNullOrEmpty( this.Parent.Data.MissSoundPath ) )
+					{
+						this.missSound = new MediaVM();
+						this.missSound.FilePath = this.Parent.Data.MissSoundPath;
+						this.missSound.LoadFile();
+					}
+					else
+					{
+						this.missSound = null;
 					}
 					break;
 				default:
@@ -237,9 +277,9 @@ namespace EarlyPusher.Modules.EarlyTab.ViewModels
 			{
 				rank++;
 				item.Rank = rank;
-				if( !this.AnswerSound.IsPlaying )
+				if( this.answerSound != null )
 				{
-					this.AnswerSound.Play();
+					this.answerSound.Play();
 				}
 				if( this.SelectedMedia != null )
 				{
@@ -287,6 +327,10 @@ namespace EarlyPusher.Modules.EarlyTab.ViewModels
 		private void Miss( object obj )
 		{
 			this.GetPoint += this.MissPoint;
+			if( this.missSound != null )
+			{
+				this.missSound.Play();
+			}
 		}
 
 		#endregion
