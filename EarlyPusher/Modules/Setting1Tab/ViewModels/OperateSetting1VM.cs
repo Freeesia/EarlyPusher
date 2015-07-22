@@ -208,6 +208,20 @@ namespace EarlyPusher.Modules.Setting1Tab.ViewModels
 				this.AnswerSound.FilePath = this.Parent.Data.AnswerSoundPath;
 				this.AnswerSound.LoadFile();
 			}
+
+			if( !string.IsNullOrEmpty( this.Parent.Data.CorrectSoundPath ) )
+			{
+				this.CorrectSound = new MediaVM();
+				this.CorrectSound.FilePath = this.Parent.Data.CorrectSoundPath;
+				this.CorrectSound.LoadFile();
+			}
+
+			if( !string.IsNullOrEmpty( this.Parent.Data.MissSoundPath ) )
+			{
+				this.MissSound = new MediaVM();
+				this.MissSound.FilePath = this.Parent.Data.MissSoundPath;
+				this.MissSound.LoadFile();
+			}
 		}
 
 		/// <summary>
