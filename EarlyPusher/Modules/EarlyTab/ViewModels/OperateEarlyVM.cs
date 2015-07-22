@@ -44,6 +44,7 @@ namespace EarlyPusher.Modules.EarlyTab.ViewModels
 
 		public DelegateCommand StartCommand { get; private set; }
 		public DelegateCommand ResetCommand { get; private set; }
+		public DelegateCommand CorrectCommand { get; private set; }
 		public DelegateCommand MissCommand { get; private set; }
 
 		/// <summary>
@@ -124,6 +125,7 @@ namespace EarlyPusher.Modules.EarlyTab.ViewModels
 		{
 			this.StartCommand = new DelegateCommand( Start );
 			this.ResetCommand = new DelegateCommand( Reset );
+			this.CorrectCommand = new DelegateCommand( Correct );
 			this.MissCommand = new DelegateCommand( Miss );
 		}
 
@@ -321,6 +323,14 @@ namespace EarlyPusher.Modules.EarlyTab.ViewModels
 			foreach( var item in this.Members )
 			{
 				item.CanAnswer = true;
+			}
+		}
+
+		private void Correct( object obj )
+		{
+			if( this.CorrectSound != null )
+			{
+				this.CorrectSound.Play();
 			}
 		}
 

@@ -39,10 +39,6 @@ namespace EarlyPusher.Modules.EarlyTab.ViewModels
 		{
 			this.Model.Point += this.Parent.GetPoint;
 			this.Parent.GetPoint = this.Parent.InitPoint;
-			if( this.Parent.CorrectSound != null )
-			{
-				this.Parent.CorrectSound.Play();
-			}
 		}
 
 		private void CreateVM( MemberData member )
