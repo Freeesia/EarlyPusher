@@ -89,6 +89,8 @@
 						<Setter Property="Height" Value="40" />
 					</Style>
 				</StackPanel.Resources>
+				<Button Command="{Binding StandSound.PlayCommand}" Content="全員Stand Up!!" />
+				<Button Command="{Binding QuestionSound.PlayCommand}" Content="問題です！デデン！" />
 				<Button Command="{Binding OpenCommand}" Content="Answer Check！" />
 				<Button Command="{Binding ResetCommand}" Content="解答リセット！" />
 			</StackPanel>

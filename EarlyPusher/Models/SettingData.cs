@@ -17,6 +17,8 @@ namespace EarlyPusher.Models
 		private string earlyVideoDir;
 		private string choiceVideoDir;
 		private string sortVideoDir;
+		private string standSoundPath;
+		private string questionSoundPath;
 		private string answerSoundPath;
 		private string correctSoundPath;
 		private string missSoundPath;
@@ -50,7 +52,19 @@ namespace EarlyPusher.Models
 			get { return this.sortVideoDir; }
 			set { SetProperty( ref this.sortVideoDir, value, SortVideoDirChanged ); }
 		}
-				
+
+		public string StandSoundPath
+		{
+			get { return this.standSoundPath; }
+			set { SetProperty( ref this.standSoundPath, value ); }
+		}
+
+		public string QuestionSoundPath
+		{
+			get { return this.questionSoundPath; }
+			set { SetProperty( ref this.questionSoundPath, value ); }
+		}
+						
 		public string AnswerSoundPath
 		{
 			get { return answerSoundPath; }

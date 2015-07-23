@@ -51,12 +51,13 @@ namespace EarlyPusher.ViewModels
 			get { return this.Media.HasVideo; }
 		}
 
+		public DelegateCommand PlayCommand { get; private set; }
 		public DelegateCommand PlayOrPauseCommand { get; private set; }
-
 		public DelegateCommand StopCommand { get; private set; }
 
 		public MediaVM()
 		{
+			this.PlayCommand = new DelegateCommand( o => Play() );
 			this.PlayOrPauseCommand = new DelegateCommand( PlayOrPause );
 			this.StopCommand = new DelegateCommand( p => Stop() );
 
@@ -100,12 +101,15 @@ namespace EarlyPusher.ViewModels
 
 		public void Play()
 		{
-			if( !this.IsPlaying )
+			if( this.IsPlaying )
 			{
-				this.IsPlaying = true;
-				this.Media.Play();
-				OnMediaPlayed();
+				this.Stop();
 			}
+
+			this.IsPlaying = true;
+			this.Media.Play();
+			OnMediaPlayed();
+
 		}
 
 		public void Pause()

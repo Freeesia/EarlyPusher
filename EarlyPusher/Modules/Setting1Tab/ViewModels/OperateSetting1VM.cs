@@ -36,6 +36,8 @@ namespace EarlyPusher.Modules.Setting1Tab.ViewModels
 
 		private TeamSetting1VM selectedTeam;
 		private MemberSetting1VM selectedMember;
+		private MediaVM standSound;
+		private MediaVM questionSound;
 		private MediaVM answerSound;
 		private MediaVM correctSound;
 		private MediaVM missSound;
@@ -51,6 +53,8 @@ namespace EarlyPusher.Modules.Setting1Tab.ViewModels
 		public DelegateCommand SelectEarlyVideoDirCommand { get; private set; }
 		public DelegateCommand SelectChoiceVideoDirCommand { get; private set; }
 		public DelegateCommand SelectSortVideoDirCommand { get; private set; }
+		public DelegateCommand SelectStandSoundCommand { get; private set; }
+		public DelegateCommand SelectQuestionSoundCommand { get; private set; }
 		public DelegateCommand SelectAnswerSoundCommand { get; private set; }
 		public DelegateCommand SelectCorrectSoundCommand { get; private set; }
 		public DelegateCommand SelectMissSoundCommand { get; private set; }
@@ -132,6 +136,18 @@ namespace EarlyPusher.Modules.Setting1Tab.ViewModels
 			set { SetProperty( ref updateTime, value ); }
 		}
 
+		public MediaVM StandSound
+		{
+			get { return this.standSound; }
+			set { SetProperty( ref this.standSound, value ); }
+		}
+
+		public MediaVM QuestionSound
+		{
+			get { return this.questionSound; }
+			set { SetProperty( ref this.questionSound, value ); }
+		}
+		
 		public MediaVM AnswerSound
 		{
 			get { return answerSound; }
@@ -164,6 +180,8 @@ namespace EarlyPusher.Modules.Setting1Tab.ViewModels
 			this.SelectEarlyVideoDirCommand = new DelegateCommand( SelectEarlyVideoDir, null );
 			this.SelectChoiceVideoDirCommand = new DelegateCommand( SelectChoiceVideoDir, null );
 			this.SelectSortVideoDirCommand = new DelegateCommand( SelectSortVideoDir, null );
+			this.SelectStandSoundCommand = new DelegateCommand( SelectStandSound, null );
+			this.SelectQuestionSoundCommand = new DelegateCommand( SelectQuestionSound, null );
 			this.SelectAnswerSoundCommand = new DelegateCommand( SelectAnwser, null );
 			this.SelectCorrectSoundCommand = new DelegateCommand( SelectCorrectSound, null );
 			this.SelectMissSoundCommand = new DelegateCommand( SelectMissSound, null );
@@ -210,6 +228,20 @@ namespace EarlyPusher.Modules.Setting1Tab.ViewModels
 
 			this.teamAdapter = new ViewModelsAdapter<TeamSetting1VM, TeamData>( CreateTeamVM, DeleteTeamVM );
 			this.teamAdapter.Adapt( this.Teams, this.Parent.Data.TeamList );
+
+			if( !string.IsNullOrEmpty( this.Parent.Data.StandSoundPath ) )
+			{
+				this.StandSound = new MediaVM();
+				this.StandSound.FilePath = this.Parent.Data.StandSoundPath;
+				this.StandSound.LoadFile();
+			}
+
+			if( !string.IsNullOrEmpty( this.Parent.Data.QuestionSoundPath ) )
+			{
+				this.QuestionSound = new MediaVM();
+				this.QuestionSound.FilePath = this.Parent.Data.QuestionSoundPath;
+				this.QuestionSound.LoadFile();
+			}
 
 			if( !string.IsNullOrEmpty( this.Parent.Data.AnswerSoundPath ) )
 			{
@@ -445,6 +477,34 @@ namespace EarlyPusher.Modules.Setting1Tab.ViewModels
 			{
 				this.Parent.Data.SortVideoDir = dlg.SelectedPath;
 				this.SortVideoDir = this.Parent.Data.SortVideoDir;
+			}
+		}
+
+		private void SelectStandSound( object obj )
+		{
+			OpenFileDialog dlg = new OpenFileDialog();
+			dlg.InitialDirectory = AppDomain.CurrentDomain.BaseDirectory;
+			dlg.Multiselect = false;
+			if( dlg.ShowDialog() == true )
+			{
+				this.Parent.Data.StandSoundPath = dlg.FileName;
+
+				this.StandSound = new MediaVM() { FilePath = dlg.FileName };
+				this.StandSound.LoadFile();
+			}
+		}
+
+		private void SelectQuestionSound( object obj )
+		{
+			OpenFileDialog dlg = new OpenFileDialog();
+			dlg.InitialDirectory = AppDomain.CurrentDomain.BaseDirectory;
+			dlg.Multiselect = false;
+			if( dlg.ShowDialog() == true )
+			{
+				this.Parent.Data.QuestionSoundPath = dlg.FileName;
+
+				this.QuestionSound = new MediaVM() { FilePath = dlg.FileName };
+				this.QuestionSound.LoadFile();
 			}
 		}
 

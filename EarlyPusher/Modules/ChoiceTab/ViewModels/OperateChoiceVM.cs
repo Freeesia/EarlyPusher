@@ -20,6 +20,8 @@ namespace EarlyPusher.Modules.ChoiceTab.ViewModels
 		private ObservableHashVMCollection<TeamChoiceVM> teams = new ObservableHashVMCollection<TeamChoiceVM>();
 		private ObservableHashVMCollection<MediaVM> medias = new ObservableHashVMCollection<MediaVM>();
 		private ViewModelsAdapter<TeamChoiceVM,TeamData> teamAdapter;
+		private MediaVM standSound;
+		private MediaVM questionSound;
 		private MediaVM selectedMedia;
 		private MediaVM checkSound;
 		private bool isChoiceVisible;
@@ -53,6 +55,18 @@ namespace EarlyPusher.Modules.ChoiceTab.ViewModels
 			get { return this.view; }
 		}
 
+		public MediaVM StandSound
+		{
+			get { return this.standSound; }
+			set { SetProperty( ref this.standSound, value ); }
+		}
+
+		public MediaVM QuestionSound
+		{
+			get { return this.questionSound; }
+			set { SetProperty( ref this.questionSound, value ); }
+		}
+		
 		/// <summary>
 		/// 選択しているメディア
 		/// </summary>
@@ -101,6 +115,20 @@ namespace EarlyPusher.Modules.ChoiceTab.ViewModels
 
 			this.teamAdapter = new ViewModelsAdapter<TeamChoiceVM, TeamData>( CreateTeamVM );
 			this.teamAdapter.Adapt( this.Teams, this.Parent.Data.TeamList );
+
+			if( !string.IsNullOrEmpty( this.Parent.Data.StandSoundPath ) )
+			{
+				this.StandSound = new MediaVM();
+				this.StandSound.FilePath = this.Parent.Data.StandSoundPath;
+				this.StandSound.LoadFile();
+			}
+
+			if( !string.IsNullOrEmpty( this.Parent.Data.QuestionSoundPath ) )
+			{
+				this.QuestionSound = new MediaVM();
+				this.QuestionSound.FilePath = this.Parent.Data.QuestionSoundPath;
+				this.QuestionSound.LoadFile();
+			}
 
 			if( !string.IsNullOrEmpty( this.Parent.Data.CheckSoundPath ) )
 			{
