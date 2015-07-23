@@ -21,6 +21,7 @@ namespace EarlyPusher.Modules.ChoiceTab.ViewModels
 		private ObservableHashVMCollection<MediaVM> medias = new ObservableHashVMCollection<MediaVM>();
 		private ViewModelsAdapter<TeamChoiceVM,TeamData> teamAdapter;
 		private MediaVM selectedMedia;
+		private MediaVM checkSound;
 		private bool isChoiceVisible;
 
 		#region プロパティ
@@ -101,6 +102,13 @@ namespace EarlyPusher.Modules.ChoiceTab.ViewModels
 			this.teamAdapter = new ViewModelsAdapter<TeamChoiceVM, TeamData>( CreateTeamVM );
 			this.teamAdapter.Adapt( this.Teams, this.Parent.Data.TeamList );
 
+			if( !string.IsNullOrEmpty( this.Parent.Data.CheckSoundPath ) )
+			{
+				this.checkSound = new MediaVM();
+				this.checkSound.FilePath = this.Parent.Data.CheckSoundPath;
+				this.checkSound.LoadFile();
+			}
+
 			LoadVideos();
 		}
 
@@ -122,6 +130,11 @@ namespace EarlyPusher.Modules.ChoiceTab.ViewModels
 		private void Open( object obj )
 		{
 			this.IsChoiceVisible = true;
+
+			if( this.checkSound != null )
+			{
+				this.checkSound.Play();
+			}
 		}
 
 		private void Reset( object obj )

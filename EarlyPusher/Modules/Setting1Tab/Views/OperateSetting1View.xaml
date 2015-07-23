@@ -12,7 +12,7 @@
 			<RowDefinition Height="Auto" />
 			<RowDefinition Height="*" />
 			<RowDefinition Height="Auto" />
-			<RowDefinition Height="4*" />
+			<RowDefinition Height="3*" />
 		</Grid.RowDefinitions>
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="*" />
@@ -34,6 +34,7 @@
 		      Grid.Column="2"
 		      Margin="5">
 			<Grid.RowDefinitions>
+				<RowDefinition Height="Auto" />
 				<RowDefinition Height="Auto" />
 				<RowDefinition Height="Auto" />
 				<RowDefinition Height="Auto" />
@@ -133,6 +134,22 @@
 			<Button Grid.Row="5"
 			        Grid.Column="3"
 			        Command="{Binding MissSound.PlayOrPauseCommand}"
+			        Content="再生" />
+
+			<TextBlock Grid.Row="6"
+			           Grid.Column="0"
+			           Text="AnswerCheck音" />
+			<TextBox Grid.Row="6"
+			         Grid.Column="1"
+			         IsReadOnly="True"
+			         Text="{Binding CheckSound.FilePath}" />
+			<Button Grid.Row="6"
+			        Grid.Column="2"
+			        Command="{Binding SelectCheckSoundCommand}"
+			        Content="参照" />
+			<Button Grid.Row="6"
+			        Grid.Column="3"
+			        Command="{Binding CheckSound.PlayOrPauseCommand}"
 			        Content="再生" />
 		</Grid>
 

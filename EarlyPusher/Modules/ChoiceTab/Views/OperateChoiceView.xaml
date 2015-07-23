@@ -78,10 +78,20 @@
 		              ResizeBehavior="PreviousAndNext" />
 
 		<DockPanel Grid.Column="2">
-			<Menu DockPanel.Dock="Top">
-				<MenuItem Command="{Binding OpenCommand}" Header="解答オープン(_O)" />
-				<MenuItem Command="{Binding ResetCommand}" Header="解答リセット(_R)" />
-			</Menu>
+			<StackPanel Margin="10"
+			            HorizontalAlignment="Center"
+			            DockPanel.Dock="Bottom"
+			            Orientation="Horizontal">
+				<StackPanel.Resources>
+					<Style TargetType="Button">
+						<Setter Property="Margin" Value="5" />
+						<Setter Property="Width" Value="120" />
+						<Setter Property="Height" Value="40" />
+					</Style>
+				</StackPanel.Resources>
+				<Button Command="{Binding OpenCommand}" Content="Answer Check！" />
+				<Button Command="{Binding ResetCommand}" Content="解答リセット！" />
+			</StackPanel>
 			<ListView ItemsSource="{Binding Teams}">
 				<ListView.View>
 					<GridView>

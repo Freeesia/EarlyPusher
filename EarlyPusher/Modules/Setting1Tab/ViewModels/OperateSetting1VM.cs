@@ -39,6 +39,7 @@ namespace EarlyPusher.Modules.Setting1Tab.ViewModels
 		private MediaVM answerSound;
 		private MediaVM correctSound;
 		private MediaVM missSound;
+		private MediaVM checkSound;
 
 		#region プロパティ
 
@@ -53,6 +54,7 @@ namespace EarlyPusher.Modules.Setting1Tab.ViewModels
 		public DelegateCommand SelectAnswerSoundCommand { get; private set; }
 		public DelegateCommand SelectCorrectSoundCommand { get; private set; }
 		public DelegateCommand SelectMissSoundCommand { get; private set; }
+		public DelegateCommand SelectCheckSoundCommand { get; private set; }
 
 		public DelegateCommand SearchCommand { get; private set; }
 		public DelegateCommand AddTeamCommand { get; private set; }
@@ -148,6 +150,12 @@ namespace EarlyPusher.Modules.Setting1Tab.ViewModels
 			set { SetProperty( ref missSound, value ); }
 		}
 
+		public MediaVM CheckSound
+		{
+			get { return checkSound; }
+			set { SetProperty( ref checkSound, value ); }
+		}
+
 		#endregion
 
 		public OperateSetting1VM( MainVM parent )
@@ -159,6 +167,7 @@ namespace EarlyPusher.Modules.Setting1Tab.ViewModels
 			this.SelectAnswerSoundCommand = new DelegateCommand( SelectAnwser, null );
 			this.SelectCorrectSoundCommand = new DelegateCommand( SelectCorrectSound, null );
 			this.SelectMissSoundCommand = new DelegateCommand( SelectMissSound, null );
+			this.SelectCheckSoundCommand = new DelegateCommand( SelectCheckSound, null );
 
 			this.AddMemberCommand = new DelegateCommand( AddMember, null );
 			this.DelMemberCommand = new DelegateCommand( DelMember, CanDelMember );
@@ -221,6 +230,13 @@ namespace EarlyPusher.Modules.Setting1Tab.ViewModels
 				this.MissSound = new MediaVM();
 				this.MissSound.FilePath = this.Parent.Data.MissSoundPath;
 				this.MissSound.LoadFile();
+			}
+
+			if( !string.IsNullOrEmpty( this.Parent.Data.CheckSoundPath ) )
+			{
+				this.CheckSound = new MediaVM();
+				this.CheckSound.FilePath = this.Parent.Data.CheckSoundPath;
+				this.CheckSound.LoadFile();
 			}
 		}
 
@@ -475,6 +491,20 @@ namespace EarlyPusher.Modules.Setting1Tab.ViewModels
 
 				this.MissSound = new MediaVM() { FilePath = dlg.FileName };
 				this.MissSound.LoadFile();
+			}
+		}
+
+		private void SelectCheckSound( object obj )
+		{
+			OpenFileDialog dlg = new OpenFileDialog();
+			dlg.InitialDirectory = AppDomain.CurrentDomain.BaseDirectory;
+			dlg.Multiselect = false;
+			if( dlg.ShowDialog() == true )
+			{
+				this.Parent.Data.CheckSoundPath = dlg.FileName;
+
+				this.CheckSound = new MediaVM() { FilePath = dlg.FileName };
+				this.CheckSound.LoadFile();
 			}
 		}
 

@@ -20,6 +20,7 @@ namespace EarlyPusher.Models
 		private string answerSoundPath;
 		private string correctSoundPath;
 		private string missSoundPath;
+		private string checkSoundPath;
 
 
 		public ObservableHashCollection<TeamData> TeamList
@@ -66,6 +67,12 @@ namespace EarlyPusher.Models
 		{
 			get { return this.missSoundPath; }
 			set { SetProperty( ref this.missSoundPath, value ); }
+		}
+
+		public string CheckSoundPath
+		{
+			get { return this.checkSoundPath; }
+			set { SetProperty( ref this.checkSoundPath, value ); }
 		}
 		
 		private void SortVideoDirChanged()
