@@ -13,6 +13,7 @@
         xmlns:sbv="clr-namespace:EarlyPusher.Modules.OrderTab.Views"
         xmlns:sv1="clr-namespace:EarlyPusher.Modules.Setting1Tab.Views"
         xmlns:sv2="clr-namespace:EarlyPusher.Modules.Setting2Tab.Views"
+        xmlns:ts="clr-namespace:EarlyPusher.Modules.TimeShockTab.Views"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         Title="SettingWindow"
         Width="800"
@@ -54,6 +55,9 @@
 			</TabItem>
 			<TabItem DataContext="{Binding OperateOrder}" Header="並べ替え">
 				<sbv:OperateOrderView />
+			</TabItem>
+			<TabItem DataContext="{Binding OperateTimeShock}" Header="タイムショック">
+				<ts:OperateTimeShockView />
 			</TabItem>
 		</TabControl>
 

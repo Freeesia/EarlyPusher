@@ -60,6 +60,9 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="WPFMediaKit">
+      <HintPath>..\Libs\WPFMediaKit\WPFMediaKit.dll</HintPath>
+    </Reference>
     <Reference Include="Xceed.Wpf.Toolkit">
       <HintPath>..\Libs\ExtendedWPFToolkit\Xceed.Wpf.Toolkit.dll</HintPath>
     </Reference>
@@ -109,6 +112,14 @@
     <Compile Include="Modules\OrderTab\Views\PlayWinnerOrderView.xaml.cs">
       <DependentUpon>PlayWinnerOrderView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Modules\TimeShockTab\ViewModels\ImageItemViewModel.cs" />
+    <Compile Include="Modules\TimeShockTab\ViewModels\OperateTimeShockVM.cs" />
+    <Compile Include="Modules\TimeShockTab\Views\OperateTimeShockView.xaml.cs">
+      <DependentUpon>OperateTimeShockView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\TimeShockTab\Views\PlayTimeShockView.xaml.cs">
+      <DependentUpon>PlayTimeShockView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModels\MainVM.cs" />
     <Compile Include="Modules\EarlyTab\ViewModels\MemberEarlyVM.cs" />
     <Compile Include="Basis\PlayMode.cs" />
@@ -138,6 +149,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Modules\OrderTab\Views\OrderViewResouces.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Modules\TimeShockTab\Views\OperateTimeShockView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Modules\TimeShockTab\Views\PlayTimeShockView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

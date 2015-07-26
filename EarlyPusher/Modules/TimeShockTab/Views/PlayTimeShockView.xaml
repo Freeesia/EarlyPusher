@@ -1,0 +1,59 @@
+﻿<UserControl x:Class="EarlyPusher.Modules.TimeShockTab.Views.PlayTimeShockView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:c="clr-namespace:StFrLibs.Core.Converter;assembly=StFrCore"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:m="clr-namespace:WPFMediaKit.DirectShow.Controls;assembly=WPFMediaKit"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             d:DesignHeight="300"
+             d:DesignWidth="300"
+             mc:Ignorable="d">
+	<UserControl.Resources>
+		<c:BoolToVisibilityConverter x:Key="b2vConv"
+		                             False="Hidden"
+		                             True="Visible" />
+	</UserControl.Resources>
+	<Viewbox>
+		<Grid>
+			<ItemsControl ItemsSource="{Binding CorrectImageItems}">
+				<ItemsControl.ItemsPanel>
+					<ItemsPanelTemplate>
+						<Grid />
+					</ItemsPanelTemplate>
+				</ItemsControl.ItemsPanel>
+				<ItemsControl.ItemTemplate>
+					<DataTemplate>
+						<Image Source="{Binding Image}" Visibility="{Binding IsVisible, Converter={StaticResource b2vConv}}" />
+					</DataTemplate>
+				</ItemsControl.ItemTemplate>
+			</ItemsControl>
+
+			<ItemsControl ItemsSource="{Binding TimerImageItems}">
+				<ItemsControl.ItemsPanel>
+					<ItemsPanelTemplate>
+						<Grid />
+					</ItemsPanelTemplate>
+				</ItemsControl.ItemsPanel>
+				<ItemsControl.ItemTemplate>
+					<DataTemplate>
+						<Image Source="{Binding Image}" Visibility="{Binding IsVisible, Converter={StaticResource b2vConv}}" />
+					</DataTemplate>
+				</ItemsControl.ItemTemplate>
+			</ItemsControl>
+
+			<m:VideoCaptureElement Grid.Row="0"
+			                       DesiredPixelHeight="1920"
+			                       DesiredPixelWidth="1080"
+			                       FPS="60"
+			                       RenderTransformOrigin="0.5,0.5"
+			                       VideoCaptureSource="{Binding Parent.Data.CameraDevice}">
+				<m:VideoCaptureElement.OpacityMask>
+					<ImageBrush ImageSource="{Binding MaskImage}" />
+				</m:VideoCaptureElement.OpacityMask>
+				<m:VideoCaptureElement.RenderTransform>
+					<ScaleTransform ScaleX="-1" ScaleY="1" />
+				</m:VideoCaptureElement.RenderTransform>
+			</m:VideoCaptureElement>
+		</Grid>
+	</Viewbox>
+</UserControl>
