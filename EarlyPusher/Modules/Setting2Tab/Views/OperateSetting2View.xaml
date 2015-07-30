@@ -150,6 +150,7 @@
 				<RowDefinition Height="Auto" />
 				<RowDefinition Height="Auto" />
 				<RowDefinition Height="Auto" />
+				<RowDefinition Height="Auto" />
 			</Grid.RowDefinitions>
 			<Grid.Resources>
 				<Style TargetType="Label">
@@ -174,7 +175,9 @@
 
 			<TextBlock Grid.Row="0"
 			           Grid.Column="1"
-			           Text="{Binding Parent.Data.TimerImagePath}" />
+			           HorizontalAlignment="Stretch"
+			           VerticalAlignment="Stretch"
+			           Text="{Binding TimerImagePath}" />
 			<Button Grid.Row="0"
 			        Grid.Column="2"
 			        Command="{Binding SelectTimerImagePathCommand}"
@@ -185,10 +188,12 @@
 			       Content="正解画像パス" />
 			<TextBlock Grid.Row="1"
 			           Grid.Column="1"
-			           Text="{Binding Parent.Data.CorrentImagePath}" />
+			           HorizontalAlignment="Stretch"
+			           VerticalAlignment="Stretch"
+			           Text="{Binding CorrectImagePath}" />
 			<Button Grid.Row="1"
 			        Grid.Column="2"
-			        Command="{Binding SelectCorrentImagePathCommand}"
+			        Command="{Binding SelectCorrectImagePathCommand}"
 			        Content="参照" />
 
 			<Label Grid.Row="2"
@@ -196,7 +201,9 @@
 			       Content="マスク画像パス" />
 			<TextBlock Grid.Row="2"
 			           Grid.Column="1"
-			           Text="{Binding Parent.Data.MaskImagePath}" />
+			           HorizontalAlignment="Stretch"
+			           VerticalAlignment="Stretch"
+			           Text="{Binding MaskImagePath}" />
 			<Button Grid.Row="2"
 			        Grid.Column="2"
 			        Command="{Binding SelectMaskImagePathCommand}"
@@ -204,12 +211,25 @@
 
 			<Label Grid.Row="3"
 			       Grid.Column="0"
+			       Content="背景画像パス" />
+			<TextBlock Grid.Row="3"
+			           Grid.Column="1"
+			           HorizontalAlignment="Stretch"
+			           VerticalAlignment="Stretch"
+			           Text="{Binding BackImagePath}" />
+			<Button Grid.Row="3"
+			        Grid.Column="2"
+			        Command="{Binding SelectBackImagePathCommand}"
+			        Content="参照" />
+
+			<Label Grid.Row="4"
+			       Grid.Column="0"
 			       Content="カメラ" />
 			<ComboBox Grid.Row="4"
 			          Grid.Column="1"
 			          Grid.ColumnSpan="2"
 			          ItemsSource="{Binding Source={x:Static m:MultimediaUtil.VideoInputNames}}"
-			          SelectedItem="{Binding SelectedCamera}" />
+			          SelectedItem="{Binding CameraDevice}" />
 
 		</Grid>
 	</Grid>

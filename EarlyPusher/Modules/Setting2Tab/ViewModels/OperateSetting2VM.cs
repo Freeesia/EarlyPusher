@@ -17,7 +17,11 @@ namespace EarlyPusher.Modules.Setting2Tab.ViewModels
 	{
 		private ObservableHashVMCollection<MediaSetting2VM> medias = new ObservableHashVMCollection<MediaSetting2VM>();
 		private MediaSetting2VM selectedMedia;
-		private string selectedCamera;
+		private string timerImagePath;
+		private string correctImagePath;
+		private string maskImagePath;
+		private string backImagePath;
+		private string cameraDevice;
 
 		/// <summary>
 		/// メディアのリスト
@@ -39,15 +43,40 @@ namespace EarlyPusher.Modules.Setting2Tab.ViewModels
 			set { SetProperty( ref this.selectedMedia, value ); }
 		}
 
-		public string SelectedCamera
+		public string TimerImagePath
 		{
-			get { return this.selectedCamera; }
-			set { SetProperty( ref this.selectedCamera, value, SelectedCameraChanged ); }
+			get { return this.timerImagePath; }
+			set { SetProperty( ref this.timerImagePath, value ); }
 		}
 
+		public string CorrectImagePath
+		{
+			get { return this.correctImagePath; }
+			set { SetProperty( ref this.correctImagePath, value ); }
+		}
+
+		public string MaskImagePath
+		{
+			get { return this.maskImagePath; }
+			set { SetProperty( ref this.maskImagePath, value ); }
+		}
+
+		public string BackImagePath
+		{
+			get { return this.backImagePath; }
+			set { SetProperty( ref this.backImagePath, value ); }
+		}
+
+		public string CameraDevice
+		{
+			get { return this.cameraDevice; }
+			set { SetProperty( ref this.cameraDevice, value ); }
+		}
+				
 		public DelegateCommand SelectTimerImagePathCommand { get; private set; }
 		public DelegateCommand SelectCorrectImagePathCommand { get; private set; }
 		public DelegateCommand SelectMaskImagePathCommand { get; private set; }
+		public DelegateCommand SelectBackImagePathCommand { get; private set; }
 		
 		public OperateSetting2VM( MainVM parent )
 			: base( parent )
@@ -55,6 +84,7 @@ namespace EarlyPusher.Modules.Setting2Tab.ViewModels
 			this.SelectTimerImagePathCommand = new DelegateCommand( SelectTimerImage );
 			this.SelectCorrectImagePathCommand = new DelegateCommand( SelectCorrectImage );
 			this.SelectMaskImagePathCommand = new DelegateCommand( SelectMaskImage );
+			this.SelectBackImagePathCommand = new DelegateCommand( SelectBackImage );
 		}
 
 		private void SelectTimerImage( object obj )
@@ -101,8 +131,20 @@ namespace EarlyPusher.Modules.Setting2Tab.ViewModels
 			}
 		}
 
+		private void SelectBackImage( object obj )
+		{
+			OpenFileDialog dlg = new OpenFileDialog();
+			dlg.InitialDirectory = AppDomain.CurrentDomain.BaseDirectory;
+			if( dlg.ShowDialog() == true )
+			{
+				this.Parent.Data.BackImagePath = dlg.FileName;
+			}
+		}
+
 		public override void LoadData()
 		{
+			this.Parent.Data.PropertyChanged -= Data_PropertyChanged;
+
 			if( !string.IsNullOrEmpty( this.Parent.Data.SortVideoDir ) && Directory.Exists( this.Parent.Data.SortVideoDir ) )
 			{
 				this.Medias.Clear();
@@ -116,9 +158,20 @@ namespace EarlyPusher.Modules.Setting2Tab.ViewModels
 					var media = new MediaSetting2VM( this.Parent.Data.ChoiceOrderMediaList[path] );
 					this.Medias.Add( media );
 				}
+
+				this.TimerImagePath = this.Parent.Data.TimerImagePath;
+				this.CorrectImagePath = this.Parent.Data.CorrectImagePath;
+				this.MaskImagePath = this.Parent.Data.MaskImagePath;
+				this.BackImagePath = this.Parent.Data.BackImagePath;
+				this.CameraDevice = this.Parent.Data.CameraDevice;
 			}
 
-			this.SelectedCamera = this.Parent.Data.CameraDevice;
+			this.Parent.Data.PropertyChanged += Data_PropertyChanged;
+		}
+
+		private void Data_PropertyChanged( object sender, System.ComponentModel.PropertyChangedEventArgs e )
+		{
+			LoadData();
 		}
 
 		public override void SaveData()
@@ -128,11 +181,6 @@ namespace EarlyPusher.Modules.Setting2Tab.ViewModels
 			{
 				this.Parent.Data.ChoiceOrderMediaList.Add( media.Model );
 			}
-		}
-
-		private void SelectedCameraChanged()
-		{
-			this.Parent.Data.CameraDevice = this.SelectedCamera;
 		}
 	}
 }

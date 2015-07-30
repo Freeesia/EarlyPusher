@@ -15,6 +15,7 @@
 	</UserControl.Resources>
 	<Viewbox>
 		<Grid>
+			<Image Source="{Binding BackImage}" />
 			<ItemsControl ItemsSource="{Binding CorrectImageItems}">
 				<ItemsControl.ItemsPanel>
 					<ItemsPanelTemplate>

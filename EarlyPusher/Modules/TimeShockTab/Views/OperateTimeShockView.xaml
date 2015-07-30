@@ -44,7 +44,7 @@
 		       Content="問題" />
 		<ListView Grid.Row="2"
 		          Grid.Column="1"
-		          ItemsSource="{Binding CorrectItems}">
+		          ItemsSource="{Binding CorrectImageItems}">
 			<ListView.View>
 				<GridView>
 					<GridViewColumn DisplayMemberBinding="{Binding Name}" Header="問題" />

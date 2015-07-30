@@ -19,6 +19,7 @@ namespace EarlyPusher.Modules.TimeShockTab.ViewModels
 		private ObservableCollection<ImageItemViewModel> correctImageItems = new ObservableCollection<ImageItemViewModel>();
 		private ObservableCollection<ImageItemViewModel> timerImageItems = new ObservableCollection<ImageItemViewModel>();
 		private BitmapImage maskImage;
+		private BitmapImage backImage;
 		private int time = 0;
 		private Timer timer;
 
@@ -37,9 +38,15 @@ namespace EarlyPusher.Modules.TimeShockTab.ViewModels
 			get { return this.maskImage; }
 			set { SetProperty( ref this.maskImage, value ); }
 		}
-		
-		public DelegateCommand StartCommand;
-		public DelegateCommand StopCommand;
+
+		public BitmapImage BackImage
+		{
+			get { return this.backImage; }
+			set { SetProperty( ref this.backImage, value ); }
+		}
+
+		public DelegateCommand StartCommand { get; private set; }
+		public DelegateCommand StopCommand { get; private set; }
 
 		public int Time
 		{
@@ -70,7 +77,6 @@ namespace EarlyPusher.Modules.TimeShockTab.ViewModels
 			{
 				this.timer.Dispose();
 				this.timer = null;
-
 			}
 
 			this.TimerImageItems.ForEach( i => i.IsVisible = false );
@@ -80,7 +86,13 @@ namespace EarlyPusher.Modules.TimeShockTab.ViewModels
 		private void IncrementTime( object state )
 		{
 			this.TimerImageItems[this.Time].IsVisible = true;
+
 			this.Time++;
+			if( this.Time >= this.TimerImageItems.Count )
+			{
+				this.timer.Dispose();
+				this.timer = null;
+			}
 		}
 
 		public override void LoadData()
@@ -105,9 +117,14 @@ namespace EarlyPusher.Modules.TimeShockTab.ViewModels
 				}
 			}
 
-			if( !string.IsNullOrEmpty( this.Parent.Data.MaskImagePath ) )
+			if( !string.IsNullOrEmpty( this.Parent.Data.MaskImagePath ) && File.Exists( this.Parent.Data.MaskImagePath ) )
 			{
 				this.MaskImage = new BitmapImage( new Uri( this.Parent.Data.MaskImagePath ) );
+			}
+
+			if( !string.IsNullOrEmpty( this.Parent.Data.BackImagePath ) && File.Exists( this.Parent.Data.BackImagePath ) )
+			{
+				this.BackImage = new BitmapImage( new Uri( this.Parent.Data.BackImagePath ) );
 			}
 
 			this.Parent.Data.PropertyChanged += Data_PropertyChanged;
@@ -117,6 +134,7 @@ namespace EarlyPusher.Modules.TimeShockTab.ViewModels
 		{
 			if( e.PropertyName == "CorrectImagePath" ||
 				e.PropertyName == "TimerImagePath" ||
+				e.PropertyName == "BackImagePath" ||
 				e.PropertyName == "MaskImagePath" )
 			{
 				LoadData();

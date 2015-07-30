@@ -26,6 +26,7 @@ namespace EarlyPusher.Models
 		private string timerImagePath;
 		private string correctImagePath;
 		private string maskImagePath;
+		private string backImagePath;
 		private string cameraDevice;
 
 		public ObservableHashCollection<TeamData> TeamList
@@ -109,7 +110,13 @@ namespace EarlyPusher.Models
 			get { return this.maskImagePath; }
 			set { SetProperty( ref this.maskImagePath, value ); }
 		}
-		
+
+		public string BackImagePath
+		{
+			get { return this.backImagePath; }
+			set { SetProperty( ref this.backImagePath, value ); }
+		}
+				
 		public string CameraDevice
 		{
 			get { return this.cameraDevice; }
