@@ -19,13 +19,13 @@
 			<ItemsControl ItemsSource="{Binding SelectableItems}" Visibility="{Binding IsChoiceVisible, Converter={StaticResource t2vConv}}">
 				<ItemsControl.ItemsPanel>
 					<ItemsPanelTemplate>
-						<Canvas Width="1920" Height="1080" />
+						<Canvas Width="1440" Height="1080" />
 					</ItemsPanelTemplate>
 				</ItemsControl.ItemsPanel>
 				<ItemsControl.ItemContainerStyle>
 					<Style>
 						<Setter Property="Canvas.Top" Value="{Binding Top}" />
-						<Setter Property="Canvas.Left" Value="{Binding Left}" />
+						<Setter Property="Canvas.Right" Value="{Binding Right}" />
 					</Style>
 				</ItemsControl.ItemContainerStyle>
 				<ItemsControl.ItemTemplate>
@@ -33,17 +33,16 @@
 						<ItemsControl ItemsSource="{Binding SelectableItems}">
 							<ItemsControl.ItemsPanel>
 								<ItemsPanelTemplate>
-									<WrapPanel Height="250" Orientation="Vertical" />
+									<WrapPanel Height="125" Orientation="Vertical" />
 								</ItemsPanelTemplate>
 							</ItemsControl.ItemsPanel>
 							<ItemsControl.ItemTemplate>
 								<DataTemplate>
-									<Border Width="100"
-									        Height="100"
-									        Margin="10"
+									<Border Width="60"
+									        Height="60"
+									        Margin="2"
 									        Background="{Binding Parent.Model.TeamColor,
 									                             Converter={StaticResource c2bConv}}"
-									        BorderThickness="5"
 									        CornerRadius="10"
 									        Visibility="{Binding IsSelected,
 									                             Converter={StaticResource t2vConv}}" />

@@ -98,7 +98,7 @@ namespace EarlyPusher.Modules.OrderTab.ViewModels
 			return true;
 		}
 
-		public void CheckCorrect( ChoiceOrderMediaVM media )
+		public void CheckCorrect( ChoiceOrderMediaVM media, int count )
 		{
 			if( this.SortedList.Any( i => i.Choice == null ) )
 			{
@@ -106,7 +106,13 @@ namespace EarlyPusher.Modules.OrderTab.ViewModels
 				return;
 			}
 
-			this.IsCorrect = this.SortedList.SequenceEqual( media.SortedList, new ComparerFunc<OrderItemVMBase>( SortItemEqual, SortItemGetHash ) );
+			for( int i = 0; i < count; i++ )
+			{
+				if( media.SortedList[i].Choice != this.SortedList[i].Choice )
+				{
+					this.IsCorrect = false;
+				}
+			}
 		}
 
 		private int SortItemGetHash( OrderItemVMBase arg )

@@ -31,6 +31,7 @@ namespace EarlyPusher.Modules.OrderTab.ViewModels
 		private UIElement playView;
 
 		private bool isVisiblePlayView;
+		private bool winnerResult;
 
 		#region プロパティ
 
@@ -72,6 +73,12 @@ namespace EarlyPusher.Modules.OrderTab.ViewModels
 			get { return this.OtherTeams.Any( t => t.IsCorrect ); }
 		}
 
+		public bool WinnerResult
+		{
+			get { return this.winnerResult; }
+			set { SetProperty( ref this.winnerResult, value ); }
+		}
+		
 		/// <summary>
 		/// 選択しているメディア
 		/// </summary>
@@ -171,7 +178,7 @@ namespace EarlyPusher.Modules.OrderTab.ViewModels
 			this.IsVisiblePlayView = true;
 			this.PlayView = this.playOtherView;
 
-			this.OtherTeams.ForEach( t => t.CheckCorrect( this.SelectedMedia ) );
+			this.OtherTeams.ForEach( t => t.CheckCorrect( this.SelectedMedia, 4 ) );
 			NotifyPropertyChanged( () => this.OtherTeams );
 			NotifyPropertyChanged( () => this.IsCorrectInOtherTeams );
 		}
@@ -181,26 +188,6 @@ namespace EarlyPusher.Modules.OrderTab.ViewModels
 			this.IsVisiblePlayView = true;
 			NotifyPropertyChanged( () => this.WinnerTeam );
 			this.PlayView = this.playWinnerView;
-			foreach( var order in this.WinnerTeam.SortedList )
-			{
-				switch( order.Choice )
-				{
-					case Choice.A:
-						order.Image = new BitmapImage( new Uri( this.SelectedMedia.Model.ChoiceAImagePath ) );
-						break;
-					case Choice.B:
-						order.Image = new BitmapImage( new Uri( this.SelectedMedia.Model.ChoiceBImagePath ) );
-						break;
-					case Choice.C:
-						order.Image = new BitmapImage( new Uri( this.SelectedMedia.Model.ChoiceCImagePath ) );
-						break;
-					case Choice.D:
-						order.Image = new BitmapImage( new Uri( this.SelectedMedia.Model.ChoiceDImagePath ) );
-						break;
-					default:
-						break;
-				}
-			}
 		}
 
 		private void OpenAnswer1( object obj )
@@ -208,7 +195,11 @@ namespace EarlyPusher.Modules.OrderTab.ViewModels
 			this.IsVisiblePlayView = true;
 			this.PlayView = this.playWinnerView;
 			this.SelectedMedia.SortedList[0].IsVisible = true;
-			this.WinnerTeam.CheckCorrect( this.SelectedMedia );
+			this.WinnerTeam.CheckCorrect( this.SelectedMedia, 1 );
+			if( !this.WinnerTeam.IsCorrect )
+			{
+				this.WinnerResult = true;
+			}
 		}
 
 		private void OpenAnswer2( object obj )
@@ -216,7 +207,11 @@ namespace EarlyPusher.Modules.OrderTab.ViewModels
 			this.IsVisiblePlayView = true;
 			this.PlayView = this.playWinnerView;
 			this.SelectedMedia.SortedList[1].IsVisible = true;
-			this.WinnerTeam.CheckCorrect( this.SelectedMedia );
+			this.WinnerTeam.CheckCorrect( this.SelectedMedia, 2 );
+			if( !this.WinnerTeam.IsCorrect )
+			{
+				this.WinnerResult = true;
+			}
 		}
 
 		private void OpenAnswerAll( object obj )
@@ -224,7 +219,8 @@ namespace EarlyPusher.Modules.OrderTab.ViewModels
 			this.IsVisiblePlayView = true;
 			this.PlayView = this.playWinnerView;
 			this.SelectedMedia.SortedList.ForEach( i => i.IsVisible = true );
-			this.WinnerTeam.CheckCorrect( this.SelectedMedia );
+			this.WinnerTeam.CheckCorrect( this.SelectedMedia, 4 );
+			this.WinnerResult = true;
 		}
 
 		private void Reset( object obj )
@@ -232,6 +228,7 @@ namespace EarlyPusher.Modules.OrderTab.ViewModels
 			this.IsVisiblePlayView = false;
 			this.SelectedMedia.Clear();
 			this.Teams.ForEach( t => t.Clear() );
+			this.WinnerResult = false;
 		}
 
 		#endregion

@@ -79,7 +79,7 @@
 						</Border>
 					</Grid>
 				</StackPanel>
-				<Grid Visibility="Hidden">
+				<Grid Visibility="{Binding WinnerResult, Converter={StaticResource t2vcConv}}">
 					<Border HorizontalAlignment="Center"
 					        VerticalAlignment="Bottom"
 					        Background="Blue"
