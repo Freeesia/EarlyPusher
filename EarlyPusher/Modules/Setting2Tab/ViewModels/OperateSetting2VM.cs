@@ -176,6 +176,7 @@ namespace EarlyPusher.Modules.Setting2Tab.ViewModels
 
 		public override void SaveData()
 		{
+			this.Parent.Data.CameraDevice = this.CameraDevice;
 			this.Parent.Data.ChoiceOrderMediaList.Clear();
 			foreach( var media in this.Medias )
 			{
