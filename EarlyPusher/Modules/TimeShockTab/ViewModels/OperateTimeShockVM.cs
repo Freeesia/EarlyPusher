@@ -59,8 +59,13 @@ namespace EarlyPusher.Modules.TimeShockTab.ViewModels
 		{
 			this.PlayView = new PlayTimeShockView();
 
-			this.StartCommand = new DelegateCommand( Start );
+			this.StartCommand = new DelegateCommand( Start, CanStart );
 			this.StopCommand = new DelegateCommand( Stop );
+		}
+
+		private bool CanStart( object obj )
+		{
+			return this.CorrectImageItems.Any() && this.TimerImageItems.Any();
 		}
 
 		private void Start( object obj )
@@ -128,6 +133,8 @@ namespace EarlyPusher.Modules.TimeShockTab.ViewModels
 			}
 
 			this.Parent.Data.PropertyChanged += Data_PropertyChanged;
+
+			this.StartCommand.RaiseCanExecuteChanged();
 		}
 
 		private void Data_PropertyChanged( object sender, System.ComponentModel.PropertyChangedEventArgs e )
