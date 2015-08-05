@@ -50,7 +50,7 @@
 			<TabItem DataContext="{Binding OperateEarly}" Header="早押し">
 				<ev:OperateEarlyView />
 			</TabItem>
-			<TabItem DataContext="{Binding OperateChoice}" Header="選択">
+			<TabItem DataContext="{Binding OperateChoice}" Header="4択">
 				<cv:OperateChoiceView />
 			</TabItem>
 			<TabItem DataContext="{Binding OperateOrder}" Header="並べ替え">

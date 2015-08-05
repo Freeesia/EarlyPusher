@@ -68,7 +68,7 @@
 
 				<TextBlock Grid.Row="1"
 				           Grid.Column="0"
-				           Text="選択問題 フォルダ" />
+				           Text="4択問題 フォルダ" />
 				<TextBox Grid.Row="1"
 				         Grid.Column="1"
 				         IsReadOnly="True"
