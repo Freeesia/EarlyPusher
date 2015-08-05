@@ -20,6 +20,8 @@ namespace EarlyPusher.Modules.TimeShockTab.ViewModels
 		private ObservableCollection<ImageItemViewModel> timerImageItems = new ObservableCollection<ImageItemViewModel>();
 		private BitmapImage maskImage;
 		private BitmapImage backImage;
+		private MediaVM bgm = new MediaVM();
+		private MediaVM correctSound = new MediaVM();
 		private int time = 0;
 		private Timer timer;
 
@@ -61,6 +63,36 @@ namespace EarlyPusher.Modules.TimeShockTab.ViewModels
 
 			this.StartCommand = new DelegateCommand( Start, CanStart );
 			this.StopCommand = new DelegateCommand( Stop );
+
+			this.CorrectImageItems.CollectionChanged += CorrectImageItems_CollectionChanged;
+		}
+
+		private void CorrectImageItems_CollectionChanged( object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e )
+		{
+			if( e.OldItems != null )
+			{
+				foreach( ImageItemViewModel item in e.OldItems )
+				{
+					item.PropertyChanged -= CorrectItem_PropertyChanged;
+				}
+			}
+
+			if( e.NewItems != null )
+			{
+				foreach( ImageItemViewModel item in e.NewItems )
+				{
+					item.PropertyChanged += CorrectItem_PropertyChanged;
+				}
+			}
+		}
+
+		private void CorrectItem_PropertyChanged( object sender, System.ComponentModel.PropertyChangedEventArgs e )
+		{
+			var item = sender as ImageItemViewModel;
+			if( e.PropertyName == "IsVisible" && item.IsVisible )
+			{
+				this.correctSound.Play();
+			}
 		}
 
 		private bool CanStart( object obj )
@@ -73,6 +105,7 @@ namespace EarlyPusher.Modules.TimeShockTab.ViewModels
 			if( this.timer == null )
 			{
 				this.timer = new Timer( IncrementTime, null, 0, 1000 );
+				this.bgm.Play();
 			}
 		}
 
@@ -84,6 +117,7 @@ namespace EarlyPusher.Modules.TimeShockTab.ViewModels
 				this.timer = null;
 			}
 
+			this.bgm.Stop();
 			this.TimerImageItems.ForEach( i => i.IsVisible = false );
 			this.CorrectImageItems.ForEach( i => i.IsVisible = false );
 		}
@@ -97,6 +131,7 @@ namespace EarlyPusher.Modules.TimeShockTab.ViewModels
 			{
 				this.timer.Dispose();
 				this.timer = null;
+				this.bgm.Media.Dispatcher.BeginInvoke( new Action( () => this.bgm.Stop() ) );
 			}
 		}
 
@@ -130,6 +165,18 @@ namespace EarlyPusher.Modules.TimeShockTab.ViewModels
 			if( !string.IsNullOrEmpty( this.Parent.Data.BackImagePath ) && File.Exists( this.Parent.Data.BackImagePath ) )
 			{
 				this.BackImage = new BitmapImage( new Uri( this.Parent.Data.BackImagePath ) );
+			}
+
+			if( !string.IsNullOrEmpty( this.Parent.Data.TimeshockBgmPath ) && File.Exists( this.Parent.Data.TimeshockBgmPath ) )
+			{
+				this.bgm.FilePath = this.Parent.Data.TimeshockBgmPath;
+				this.bgm.LoadFile();
+			}
+
+			if( !string.IsNullOrEmpty( this.Parent.Data.TimeshockCorrectSoundPath ) && File.Exists( this.Parent.Data.TimeshockCorrectSoundPath ) )
+			{
+				this.correctSound.FilePath = this.Parent.Data.TimeshockCorrectSoundPath;
+				this.correctSound.LoadFile();
 			}
 
 			this.Parent.Data.PropertyChanged += Data_PropertyChanged;

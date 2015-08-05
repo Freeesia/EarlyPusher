@@ -75,6 +75,10 @@ namespace EarlyPusher.ViewModels
 			{
 				this.Media.Source = new Uri( this.FilePath );
 			}
+			else
+			{
+				this.Media.Source = null;
+			}
 		}
 
 		private void Media_MediaOpened( object sender, RoutedEventArgs e )

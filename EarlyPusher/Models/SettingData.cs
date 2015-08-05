@@ -28,6 +28,8 @@ namespace EarlyPusher.Models
 		private string maskImagePath;
 		private string backImagePath;
 		private string cameraDevice;
+		private string timeshockBgmPath;
+		private string timeshockCorrectSoundPath;
 
 		public ObservableHashCollection<TeamData> TeamList
 		{
@@ -122,7 +124,19 @@ namespace EarlyPusher.Models
 			get { return this.cameraDevice; }
 			set { SetProperty( ref this.cameraDevice, value ); }
 		}
-						
+
+		public string TimeshockBgmPath
+		{
+			get { return this.timeshockBgmPath; }
+			set { SetProperty( ref this.timeshockBgmPath, value ); }
+		}
+
+		public string TimeshockCorrectSoundPath
+		{
+			get { return this.timeshockCorrectSoundPath; }
+			set { SetProperty( ref this.timeshockCorrectSoundPath, value ); }
+		}
+								
 		private void SortVideoDirChanged()
 		{
 			if( !string.IsNullOrEmpty( this.SortVideoDir ) && Directory.Exists( this.SortVideoDir ) )

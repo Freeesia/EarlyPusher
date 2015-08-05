@@ -22,6 +22,8 @@ namespace EarlyPusher.Modules.Setting2Tab.ViewModels
 		private string maskImagePath;
 		private string backImagePath;
 		private string cameraDevice;
+		private  string bgmPath;
+		private  string correctSoundPath;
 
 		/// <summary>
 		/// メディアのリスト
@@ -72,11 +74,25 @@ namespace EarlyPusher.Modules.Setting2Tab.ViewModels
 			get { return this.cameraDevice; }
 			set { SetProperty( ref this.cameraDevice, value ); }
 		}
-				
+
+		public string BgmPath
+		{
+			get { return this.bgmPath; }
+			set { SetProperty( ref this.bgmPath, value ); }
+		}
+
+		public string CorrectSoundPath
+		{
+			get { return this.correctSoundPath; }
+			set { SetProperty( ref this.correctSoundPath, value ); }
+		}
+			
 		public DelegateCommand SelectTimerImagePathCommand { get; private set; }
 		public DelegateCommand SelectCorrectImagePathCommand { get; private set; }
 		public DelegateCommand SelectMaskImagePathCommand { get; private set; }
 		public DelegateCommand SelectBackImagePathCommand { get; private set; }
+		public DelegateCommand SelectBgmPathCommand { get; private set; }
+		public DelegateCommand SelectCorrectSoundPathCommand { get; private set; }
 		
 		public OperateSetting2VM( MainVM parent )
 			: base( parent )
@@ -85,6 +101,8 @@ namespace EarlyPusher.Modules.Setting2Tab.ViewModels
 			this.SelectCorrectImagePathCommand = new DelegateCommand( SelectCorrectImage );
 			this.SelectMaskImagePathCommand = new DelegateCommand( SelectMaskImage );
 			this.SelectBackImagePathCommand = new DelegateCommand( SelectBackImage );
+			this.SelectBgmPathCommand = new DelegateCommand( SelectBgmPath );
+			this.SelectCorrectSoundPathCommand = new DelegateCommand( SelectCorrectSoundPath );
 		}
 
 		private void SelectTimerImage( object obj )
@@ -141,6 +159,26 @@ namespace EarlyPusher.Modules.Setting2Tab.ViewModels
 			}
 		}
 
+		private void SelectBgmPath( object obj )
+		{
+			OpenFileDialog dlg = new OpenFileDialog();
+			dlg.InitialDirectory = AppDomain.CurrentDomain.BaseDirectory;
+			if( dlg.ShowDialog() == true )
+			{
+				this.Parent.Data.TimeshockBgmPath = dlg.FileName;
+			}
+		}
+
+		private void SelectCorrectSoundPath( object obj )
+		{
+			OpenFileDialog dlg = new OpenFileDialog();
+			dlg.InitialDirectory = AppDomain.CurrentDomain.BaseDirectory;
+			if( dlg.ShowDialog() == true )
+			{
+				this.Parent.Data.TimeshockCorrectSoundPath = dlg.FileName;
+			}
+		}
+
 		public override void LoadData()
 		{
 			this.Parent.Data.PropertyChanged -= Data_PropertyChanged;
@@ -164,6 +202,8 @@ namespace EarlyPusher.Modules.Setting2Tab.ViewModels
 				this.MaskImagePath = this.Parent.Data.MaskImagePath;
 				this.BackImagePath = this.Parent.Data.BackImagePath;
 				this.CameraDevice = this.Parent.Data.CameraDevice;
+				this.BgmPath = this.Parent.Data.TimeshockBgmPath;
+				this.CorrectSoundPath = this.Parent.Data.TimeshockCorrectSoundPath;
 			}
 
 			this.Parent.Data.PropertyChanged += Data_PropertyChanged;
