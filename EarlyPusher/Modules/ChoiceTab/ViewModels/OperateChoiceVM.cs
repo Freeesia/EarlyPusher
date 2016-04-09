@@ -5,6 +5,7 @@ using System.Linq;
 using System.Windows;
 using EarlyPusher.Manager;
 using EarlyPusher.Models;
+using EarlyPusher.Modules.ChoiceTab.Views;
 using EarlyPusher.Modules.EarlyTab.Views;
 using EarlyPusher.ViewModels;
 using StFrLibs.Core.Adapters;
@@ -66,7 +67,7 @@ namespace EarlyPusher.Modules.ChoiceTab.ViewModels
 			get { return this.questionSound; }
 			set { SetProperty( ref this.questionSound, value ); }
 		}
-		
+
 		/// <summary>
 		/// 選択しているメディア
 		/// </summary>
@@ -96,11 +97,23 @@ namespace EarlyPusher.Modules.ChoiceTab.ViewModels
 			set { SetProperty( ref this.isChoiceVisible, value ); }
 		}
 
+		public override UIElement View
+		{
+			get;
+		}
+
+		public override string Header
+		{
+			get;
+		}
+
 		#endregion
 
 		public OperateChoiceVM( MainVM parent )
 			: base( parent )
 		{
+			this.View = new OperateChoiceView();
+			this.Header = "4択";
 			this.OpenCommand = new DelegateCommand( Open );
 			this.ResetCommand = new DelegateCommand( Reset );
 		}

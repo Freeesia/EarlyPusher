@@ -78,7 +78,7 @@ namespace EarlyPusher.Modules.OrderTab.ViewModels
 			get { return this.winnerResult; }
 			set { SetProperty( ref this.winnerResult, value ); }
 		}
-		
+
 		/// <summary>
 		/// 選択しているメディア
 		/// </summary>
@@ -93,11 +93,21 @@ namespace EarlyPusher.Modules.OrderTab.ViewModels
 			get { return this.isVisiblePlayView; }
 			set { SetProperty( ref this.isVisiblePlayView, value ); }
 		}
-		
+
 		public override UIElement PlayView
 		{
 			get { return this.playView; }
 			set { SetProperty( ref this.playView, value ); }
+		}
+
+		public override UIElement View
+		{
+			get;
+		}
+
+		public override string Header
+		{
+			get;
 		}
 
 		#endregion
@@ -105,6 +115,9 @@ namespace EarlyPusher.Modules.OrderTab.ViewModels
 		public OperateOrderVM( MainVM parent )
 			: base( parent )
 		{
+			this.View = new OperateOrderView();
+			this.Header = "並び替え";
+
 			this.OpenWinnerCommand = new DelegateCommand( OpenWinner, CanSelectedMedia );
 			this.OpenOtherCommand = new DelegateCommand( OpenOther, CanSelectedMedia );
 			this.OpenAnswer1Command = new DelegateCommand( OpenAnswer1, CanSelectedMedia );

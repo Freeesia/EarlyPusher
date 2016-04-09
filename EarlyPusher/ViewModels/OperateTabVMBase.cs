@@ -38,7 +38,17 @@ namespace EarlyPusher.ViewModels
 			get;
 			set;
 		}
-		
+
+		public abstract UIElement View
+		{
+			get;
+		}
+
+		public abstract string Header
+		{
+			get;
+		}
+
 		#endregion
 
 		/// <summary>

@@ -31,13 +31,6 @@ namespace EarlyPusher.ViewModels
 
 		private OperateTabVMBase selectedTab;
 
-		private OperateSetting1VM operateSetting1;
-		private OperateSetting2VM operateSetting2;
-		private OperateChoiceVM operateChoice;
-		private OperateEarlyVM operateEarly;
-		private OperateOrderVM operateOrder;
-		private OperateTimeShockVM operateTimeShock;
-
 		#region プロパティ
 
 		public DelegateCommand WindowCommand { get; private set; }
@@ -49,60 +42,20 @@ namespace EarlyPusher.ViewModels
 		/// <summary>
 		/// ボタンデバイスの管理クラス
 		/// </summary>
-		public DeviceManager Manager
-		{
-			get { return this.manager; }
-		}
+		public DeviceManager Manager => this.manager;
 
-		public SettingData Data
-		{
-			get { return this.data; }
-		}
+		public SettingData Data => this.data;
+
+		public IEnumerable<OperateTabVMBase> Tabs => this.operateVMs;
 
 		public OperateTabVMBase SelectedTab
 		{
 			get { return this.selectedTab; }
 			set { SetProperty( ref this.selectedTab, value, SelectedTabChanged, SelectedTabChanging ); }
 		}
-		
-		public OperateSetting1VM OperateSetting1
-		{
-			get { return this.operateSetting1; }
-			set { SetProperty( ref this.operateSetting1, value ); }
-		}
 
-		public OperateSetting2VM OperateSetting2
-		{
-			get { return this.operateSetting2; }
-			set { SetProperty( ref this.operateSetting2, value ); }
-		}
-
-		public OperateChoiceVM OperateChoice
-		{
-			get { return this.operateChoice; }
-			set { SetProperty( ref this.operateChoice, value ); }
-		}
-
-		public OperateEarlyVM OperateEarly
-		{
-			get { return this.operateEarly; }
-			set { SetProperty( ref this.operateEarly, value ); }
-		}
-
-		public OperateOrderVM OperateOrder
-		{
-			get { return this.operateOrder; }
-			set { SetProperty( ref this.operateOrder, value ); }
-		}
-
-		public OperateTimeShockVM OperateTimeShock
-		{
-			get { return this.operateTimeShock; }
-			set { SetProperty( ref this.operateTimeShock, value ); }
-		}
-				
 		#endregion
-		
+
 		public MainVM()
 		{
 			this.WindowCommand = new DelegateCommand( ShowCloseWindow, CanShowCloseWindow );
@@ -113,19 +66,12 @@ namespace EarlyPusher.ViewModels
 
 			this.manager = new DeviceManager();
 
-			this.OperateSetting1 = new OperateSetting1VM( this );
-			this.OperateSetting2 = new OperateSetting2VM( this );
-			this.OperateChoice = new OperateChoiceVM( this );
-			this.OperateEarly = new OperateEarlyVM( this );
-			this.OperateOrder = new OperateOrderVM( this );
-			this.OperateTimeShock = new OperateTimeShockVM( this );
-
-			this.operateVMs.Add( this.OperateSetting1 );
-			this.operateVMs.Add( this.OperateSetting2 );
-			this.operateVMs.Add( this.OperateChoice );
-			this.operateVMs.Add( this.OperateEarly );
-			this.operateVMs.Add( this.OperateOrder );
-			this.operateVMs.Add( this.OperateTimeShock );
+			this.operateVMs.Add( new OperateSetting1VM( this ) );
+			this.operateVMs.Add( new OperateSetting2VM( this ) );
+			this.operateVMs.Add( new OperateChoiceVM( this ) );
+			this.operateVMs.Add( new OperateEarlyVM( this ) );
+			this.operateVMs.Add( new OperateOrderVM( this ) );
+			this.operateVMs.Add( new OperateTimeShockVM( this ) );
 		}
 
 		private void SelectedTabChanging()
@@ -208,8 +154,6 @@ namespace EarlyPusher.ViewModels
 		private void Inited( object obj )
 		{
 			LoadData();
-
-			this.SelectedTab = this.OperateSetting1;
 		}
 
 		/// <summary>

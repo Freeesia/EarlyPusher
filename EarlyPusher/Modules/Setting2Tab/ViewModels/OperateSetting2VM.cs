@@ -4,7 +4,9 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using EarlyPusher.Models;
+using EarlyPusher.Modules.Setting2Tab.Views;
 using EarlyPusher.ViewModels;
 using Microsoft.Win32;
 using Ookii.Dialogs.Wpf;
@@ -86,17 +88,30 @@ namespace EarlyPusher.Modules.Setting2Tab.ViewModels
 			get { return this.correctSoundPath; }
 			set { SetProperty( ref this.correctSoundPath, value ); }
 		}
-			
+
 		public DelegateCommand SelectTimerImagePathCommand { get; private set; }
 		public DelegateCommand SelectCorrectImagePathCommand { get; private set; }
 		public DelegateCommand SelectMaskImagePathCommand { get; private set; }
 		public DelegateCommand SelectBackImagePathCommand { get; private set; }
 		public DelegateCommand SelectBgmPathCommand { get; private set; }
 		public DelegateCommand SelectCorrectSoundPathCommand { get; private set; }
-		
+
+		public override UIElement View
+		{
+			get;
+		}
+
+		public override string Header
+		{
+			get;
+		}
+
 		public OperateSetting2VM( MainVM parent )
 			: base( parent )
 		{
+			this.View = new OperateSetting2View();
+			this.Header = "設定2";
+
 			this.SelectTimerImagePathCommand = new DelegateCommand( SelectTimerImage );
 			this.SelectCorrectImagePathCommand = new DelegateCommand( SelectCorrectImage );
 			this.SelectMaskImagePathCommand = new DelegateCommand( SelectMaskImage );

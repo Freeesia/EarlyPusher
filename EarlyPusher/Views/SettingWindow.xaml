@@ -6,14 +6,8 @@
         xmlns:ba="clr-namespace:EarlyPusher.Basis"
         xmlns:c="clr-namespace:StFrLibs.Core.Converter;assembly=StFrCore"
         xmlns:ctrl="clr-namespace:EarlyPusher.Controls"
-        xmlns:cv="clr-namespace:EarlyPusher.Modules.ChoiceTab.Views"
         xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
-        xmlns:ev="clr-namespace:EarlyPusher.Modules.EarlyTab.Views"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-        xmlns:sbv="clr-namespace:EarlyPusher.Modules.OrderTab.Views"
-        xmlns:sv1="clr-namespace:EarlyPusher.Modules.Setting1Tab.Views"
-        xmlns:sv2="clr-namespace:EarlyPusher.Modules.Setting2Tab.Views"
-        xmlns:ts="clr-namespace:EarlyPusher.Modules.TimeShockTab.Views"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         Title="SettingWindow"
         Width="800"
@@ -39,26 +33,16 @@
 		</Menu>
 
 		<TabControl Grid.Row="1"
+		            ItemsSource="{Binding Tabs}"
 		            SelectedValue="{Binding SelectedTab}"
 		            SelectedValuePath="DataContext">
-			<TabItem DataContext="{Binding OperateSetting1}" Header="設定専用1">
-				<sv1:OperateSetting1View />
-			</TabItem>
-			<TabItem DataContext="{Binding OperateSetting2}" Header="設定専用2">
-				<sv2:OperateSetting2View />
-			</TabItem>
-			<TabItem DataContext="{Binding OperateEarly}" Header="早押し">
-				<ev:OperateEarlyView />
-			</TabItem>
-			<TabItem DataContext="{Binding OperateChoice}" Header="4択">
-				<cv:OperateChoiceView />
-			</TabItem>
-			<TabItem DataContext="{Binding OperateOrder}" Header="並べ替え">
-				<sbv:OperateOrderView />
-			</TabItem>
-			<TabItem DataContext="{Binding OperateTimeShock}" Header="タイムショック">
-				<ts:OperateTimeShockView />
-			</TabItem>
+			<TabControl.ItemContainerStyle>
+				<Style TargetType="TabItem">
+					<Setter Property="Header" Value="{Binding Header}" />
+					<Setter Property="Content" Value="{Binding View}" />
+					<Setter Property="DataContext" Value="{Binding}" />
+				</Style>
+			</TabControl.ItemContainerStyle>
 		</TabControl>
 
 	</Grid>

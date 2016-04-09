@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Media.Imaging;
 using EarlyPusher.Modules.TimeShockTab.Views;
 using EarlyPusher.ViewModels;
@@ -55,10 +56,23 @@ namespace EarlyPusher.Modules.TimeShockTab.ViewModels
 			get { return this.time; }
 			set { SetProperty( ref this.time, value ); }
 		}
-		
+
+		public override UIElement View
+		{
+			get;
+		}
+
+		public override string Header
+		{
+			get;
+		}
+
 		public OperateTimeShockVM( MainVM parent )
 			: base( parent )
 		{
+			this.View = new OperateTimeShockView();
+			this.Header = "タイムショック";
+
 			this.PlayView = new PlayTimeShockView();
 
 			this.StartCommand = new DelegateCommand( Start, CanStart );

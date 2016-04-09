@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using EarlyPusher.Manager;
 using EarlyPusher.Models;
+using EarlyPusher.Modules.Setting1Tab.Views;
 using EarlyPusher.ViewModels;
 using Microsoft.Win32;
 using Ookii.Dialogs.Wpf;
@@ -81,7 +82,7 @@ namespace EarlyPusher.Modules.Setting1Tab.ViewModels
 			get { return this.sortVideoDir; }
 			set { SetProperty( ref this.sortVideoDir, value ); }
 		}
-						
+
 		/// <summary>
 		/// チームのリスト
 		/// </summary>
@@ -147,7 +148,7 @@ namespace EarlyPusher.Modules.Setting1Tab.ViewModels
 			get { return this.questionSound; }
 			set { SetProperty( ref this.questionSound, value ); }
 		}
-		
+
 		public MediaVM AnswerSound
 		{
 			get { return answerSound; }
@@ -172,11 +173,24 @@ namespace EarlyPusher.Modules.Setting1Tab.ViewModels
 			set { SetProperty( ref checkSound, value ); }
 		}
 
+		public override UIElement View
+		{
+			get;
+		}
+
+		public override string Header
+		{
+			get;
+		}
+
 		#endregion
 
 		public OperateSetting1VM( MainVM parent )
 			: base( parent )
 		{
+			this.View = new OperateSetting1View();
+			this.Header = "設定1";
+
 			this.SelectEarlyVideoDirCommand = new DelegateCommand( SelectEarlyVideoDir, null );
 			this.SelectChoiceVideoDirCommand = new DelegateCommand( SelectChoiceVideoDir, null );
 			this.SelectSortVideoDirCommand = new DelegateCommand( SelectSortVideoDir, null );

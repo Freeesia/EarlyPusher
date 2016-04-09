@@ -39,7 +39,6 @@ namespace EarlyPusher.Modules.EarlyTab.ViewModels
 
 		private bool isAcceptance = false;
 
-
 		#region プロパティ
 
 		public DelegateCommand StartCommand { get; private set; }
@@ -111,18 +110,30 @@ namespace EarlyPusher.Modules.EarlyTab.ViewModels
 			get { return this.missPoint; }
 			set { SetProperty( ref this.missPoint, value ); }
 		}
-		
+
 		public bool IsAcceptance
 		{
 			get { return this.isAcceptance; }
 			set { SetProperty( ref this.isAcceptance, value ); }
 		}
-				
+
+		public override UIElement View
+		{
+			get;
+		}
+
+		public override string Header
+		{
+			get;
+		}
+
 		#endregion
 
 		public OperateEarlyVM( MainVM parent )
 			: base( parent )
 		{
+			this.View = new OperateEarlyView();
+			this.Header = "早押し";
 			this.StartCommand = new DelegateCommand( Start );
 			this.ResetCommand = new DelegateCommand( Reset );
 			this.CorrectCommand = new DelegateCommand( Correct );
