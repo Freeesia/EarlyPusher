@@ -97,16 +97,6 @@ namespace EarlyPusher.Modules.ChoiceTab.ViewModels
 			set { SetProperty( ref this.isChoiceVisible, value ); }
 		}
 
-		public override UIElement View
-		{
-			get;
-		}
-
-		public override string Header
-		{
-			get;
-		}
-
 		#endregion
 
 		public OperateChoiceVM( MainVM parent )

@@ -100,16 +100,6 @@ namespace EarlyPusher.Modules.OrderTab.ViewModels
 			set { SetProperty( ref this.playView, value ); }
 		}
 
-		public override UIElement View
-		{
-			get;
-		}
-
-		public override string Header
-		{
-			get;
-		}
-
 		#endregion
 
 		public OperateOrderVM( MainVM parent )

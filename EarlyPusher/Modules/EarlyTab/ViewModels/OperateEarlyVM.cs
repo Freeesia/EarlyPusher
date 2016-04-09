@@ -117,16 +117,6 @@ namespace EarlyPusher.Modules.EarlyTab.ViewModels
 			set { SetProperty( ref this.isAcceptance, value ); }
 		}
 
-		public override UIElement View
-		{
-			get;
-		}
-
-		public override string Header
-		{
-			get;
-		}
-
 		#endregion
 
 		public OperateEarlyVM( MainVM parent )

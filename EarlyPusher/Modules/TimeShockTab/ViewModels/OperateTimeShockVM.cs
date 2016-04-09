@@ -57,16 +57,6 @@ namespace EarlyPusher.Modules.TimeShockTab.ViewModels
 			set { SetProperty( ref this.time, value ); }
 		}
 
-		public override UIElement View
-		{
-			get;
-		}
-
-		public override string Header
-		{
-			get;
-		}
-
 		public OperateTimeShockVM( MainVM parent )
 			: base( parent )
 		{

@@ -173,16 +173,6 @@ namespace EarlyPusher.Modules.Setting1Tab.ViewModels
 			set { SetProperty( ref checkSound, value ); }
 		}
 
-		public override UIElement View
-		{
-			get;
-		}
-
-		public override string Header
-		{
-			get;
-		}
-
 		#endregion
 
 		public OperateSetting1VM( MainVM parent )

@@ -154,6 +154,7 @@ namespace EarlyPusher.ViewModels
 		private void Inited( object obj )
 		{
 			LoadData();
+			this.SelectedTab = this.Tabs.First();
 		}
 
 		/// <summary>

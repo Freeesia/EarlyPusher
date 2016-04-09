@@ -34,8 +34,7 @@
 
 		<TabControl Grid.Row="1"
 		            ItemsSource="{Binding Tabs}"
-		            SelectedValue="{Binding SelectedTab}"
-		            SelectedValuePath="DataContext">
+		            SelectedItem="{Binding SelectedTab}">
 			<TabControl.ItemContainerStyle>
 				<Style TargetType="TabItem">
 					<Setter Property="Header" Value="{Binding Header}" />

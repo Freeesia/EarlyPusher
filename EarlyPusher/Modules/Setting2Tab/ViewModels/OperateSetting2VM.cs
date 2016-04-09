@@ -96,16 +96,6 @@ namespace EarlyPusher.Modules.Setting2Tab.ViewModels
 		public DelegateCommand SelectBgmPathCommand { get; private set; }
 		public DelegateCommand SelectCorrectSoundPathCommand { get; private set; }
 
-		public override UIElement View
-		{
-			get;
-		}
-
-		public override string Header
-		{
-			get;
-		}
-
 		public OperateSetting2VM( MainVM parent )
 			: base( parent )
 		{
