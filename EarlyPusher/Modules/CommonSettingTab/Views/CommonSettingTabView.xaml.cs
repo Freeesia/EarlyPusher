@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace EarlyPusher.Modules.Setting1Tab.Views
+namespace EarlyPusher.Modules.CommonSettingTab.Views
 {
 	/// <summary>
-	/// OperateSetting1View.xaml の相互作用ロジック
+	/// CommonSettingTabView.xaml の相互作用ロジック
 	/// </summary>
-	public partial class OperateSetting1View : UserControl
+	public partial class CommonSettingTabView : UserControl
 	{
-		public OperateSetting1View()
+		public CommonSettingTabView()
 		{
 			InitializeComponent();
 		}

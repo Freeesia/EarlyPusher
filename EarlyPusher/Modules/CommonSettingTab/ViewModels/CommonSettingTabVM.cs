@@ -1,92 +1,56 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
-using System.Diagnostics.Contracts;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using EarlyPusher.Manager;
 using EarlyPusher.Models;
-using EarlyPusher.Modules.Setting1Tab.Views;
+using EarlyPusher.Modules.CommonSettingTab.Views;
 using EarlyPusher.ViewModels;
 using Microsoft.Win32;
-using Ookii.Dialogs.Wpf;
 using SlimDX.DirectInput;
 using StFrLibs.Core.Adapters;
 using StFrLibs.Core.Basis;
 using StFrLibs.Core.Commands;
 using StFrLibs.Core.Extensions;
 
-namespace EarlyPusher.Modules.Setting1Tab.ViewModels
+namespace EarlyPusher.Modules.CommonSettingTab.ViewModels
 {
-	public class OperateSetting1VM : OperateTabVMBase
+	public class CommonSettingTabVM : OperateTabVMBase
 	{
-		private ObservableHashVMCollection<TeamSetting1VM> teams = new ObservableHashVMCollection<TeamSetting1VM>();
-		private ObservableHashVMCollection<MemberSetting1VM> members = new ObservableHashVMCollection<MemberSetting1VM>();
+		private ObservableHashVMCollection<TeamVM> teams = new ObservableHashVMCollection<TeamVM>();
+		private ObservableHashVMCollection<MemberVM> members = new ObservableHashVMCollection<MemberVM>();
 		private ObservableCollection<string> devices = new ObservableCollection<string>();
-		private ViewModelsAdapter<TeamSetting1VM,TeamData> teamAdapter;
-
-		private string earlyVideoDir;
-		private string choiceVideoDir;
-		private string sortVideoDir;
+		private ViewModelsAdapter<TeamVM,TeamData> teamAdapter;
 
 		private long updateTime;
 
-		private TeamSetting1VM selectedTeam;
-		private MemberSetting1VM selectedMember;
-		private MediaVM standSound;
-		private MediaVM questionSound;
+		private TeamVM selectedTeam;
+		private MemberVM selectedMember;
+
 		private MediaVM answerSound;
 		private MediaVM correctSound;
 		private MediaVM missSound;
-		private MediaVM checkSound;
 
 		#region プロパティ
 
-		public DelegateCommand AddMemberCommand { get; private set; }
-		public DelegateCommand DelMemberCommand { get; private set; }
-		public DelegateCommand AllKeyLockCommand { get; private set; }
-		public DelegateCommand AllKeyReleaseCommand { get; private set; }
+		public DelegateCommand SearchCommand { get; }
+		public DelegateCommand AddTeamCommand { get; }
+		public DelegateCommand DelTeamCommand { get; }
 
-		public DelegateCommand SelectEarlyVideoDirCommand { get; private set; }
-		public DelegateCommand SelectChoiceVideoDirCommand { get; private set; }
-		public DelegateCommand SelectSortVideoDirCommand { get; private set; }
-		public DelegateCommand SelectStandSoundCommand { get; private set; }
-		public DelegateCommand SelectQuestionSoundCommand { get; private set; }
-		public DelegateCommand SelectAnswerSoundCommand { get; private set; }
-		public DelegateCommand SelectCorrectSoundCommand { get; private set; }
-		public DelegateCommand SelectMissSoundCommand { get; private set; }
-		public DelegateCommand SelectCheckSoundCommand { get; private set; }
+		public DelegateCommand AddMemberCommand { get; }
+		public DelegateCommand DelMemberCommand { get; }
+		public DelegateCommand AllKeyLockCommand { get; }
+		public DelegateCommand AllKeyReleaseCommand { get; }
 
-		public DelegateCommand SearchCommand { get; private set; }
-		public DelegateCommand AddTeamCommand { get; private set; }
-		public DelegateCommand DelTeamCommand { get; private set; }
-
-		public string EarlyVideoDir
-		{
-			get { return this.earlyVideoDir; }
-			set { SetProperty( ref this.earlyVideoDir, value ); }
-		}
-
-		public string ChoiceVideoDir
-		{
-			get { return this.choiceVideoDir; }
-			set { SetProperty( ref this.choiceVideoDir, value ); }
-		}
-
-		public string SortVideoDir
-		{
-			get { return this.sortVideoDir; }
-			set { SetProperty( ref this.sortVideoDir, value ); }
-		}
+		public DelegateCommand SelectAnswerSoundCommand { get; }
+		public DelegateCommand SelectCorrectSoundCommand { get; }
+		public DelegateCommand SelectMissSoundCommand { get; }
 
 		/// <summary>
 		/// チームのリスト
 		/// </summary>
-		public ObservableHashCollection<TeamSetting1VM> Teams
+		public ObservableHashCollection<TeamVM> Teams
 		{
 			get { return this.teams; }
 		}
@@ -94,7 +58,7 @@ namespace EarlyPusher.Modules.Setting1Tab.ViewModels
 		/// <summary>
 		/// メンバーのリスト
 		/// </summary>
-		public ObservableHashVMCollection<MemberSetting1VM> Members
+		public ObservableHashVMCollection<MemberVM> Members
 		{
 			get { return this.members; }
 		}
@@ -102,7 +66,7 @@ namespace EarlyPusher.Modules.Setting1Tab.ViewModels
 		/// <summary>
 		/// 選択しているチーム
 		/// </summary>
-		public TeamSetting1VM SelectedTeam
+		public TeamVM SelectedTeam
 		{
 			get { return this.selectedTeam; }
 			set { SetProperty( ref this.selectedTeam, value, SeletedTeamChanged ); }
@@ -111,7 +75,7 @@ namespace EarlyPusher.Modules.Setting1Tab.ViewModels
 		/// <summary>
 		/// 選択しているメンバー
 		/// </summary>
-		public MemberSetting1VM SelectedMember
+		public MemberVM SelectedMember
 		{
 			get { return selectedMember; }
 			set { SetProperty( ref selectedMember, value, SelectedMemberChanged ); }
@@ -137,18 +101,6 @@ namespace EarlyPusher.Modules.Setting1Tab.ViewModels
 			set { SetProperty( ref updateTime, value ); }
 		}
 
-		public MediaVM StandSound
-		{
-			get { return this.standSound; }
-			set { SetProperty( ref this.standSound, value ); }
-		}
-
-		public MediaVM QuestionSound
-		{
-			get { return this.questionSound; }
-			set { SetProperty( ref this.questionSound, value ); }
-		}
-
 		public MediaVM AnswerSound
 		{
 			get { return answerSound; }
@@ -167,37 +119,25 @@ namespace EarlyPusher.Modules.Setting1Tab.ViewModels
 			set { SetProperty( ref missSound, value ); }
 		}
 
-		public MediaVM CheckSound
-		{
-			get { return checkSound; }
-			set { SetProperty( ref checkSound, value ); }
-		}
-
 		#endregion
 
-		public OperateSetting1VM( MainVM parent )
+		public CommonSettingTabVM( MainVM parent )
 			: base( parent )
 		{
-			this.View = new OperateSetting1View();
-			this.Header = "設定1";
+			this.View = new CommonSettingTabView();
+			this.Header = "共通設定";
 
-			this.SelectEarlyVideoDirCommand = new DelegateCommand( SelectEarlyVideoDir, null );
-			this.SelectChoiceVideoDirCommand = new DelegateCommand( SelectChoiceVideoDir, null );
-			this.SelectSortVideoDirCommand = new DelegateCommand( SelectSortVideoDir, null );
-			this.SelectStandSoundCommand = new DelegateCommand( SelectStandSound, null );
-			this.SelectQuestionSoundCommand = new DelegateCommand( SelectQuestionSound, null );
-			this.SelectAnswerSoundCommand = new DelegateCommand( SelectAnwser, null );
-			this.SelectCorrectSoundCommand = new DelegateCommand( SelectCorrectSound, null );
-			this.SelectMissSoundCommand = new DelegateCommand( SelectMissSound, null );
-			this.SelectCheckSoundCommand = new DelegateCommand( SelectCheckSound, null );
+			this.SelectAnswerSoundCommand = new DelegateCommand( SelectAnwser );
+			this.SelectCorrectSoundCommand = new DelegateCommand( SelectCorrectSound );
+			this.SelectMissSoundCommand = new DelegateCommand( SelectMissSound );
 
-			this.AddMemberCommand = new DelegateCommand( AddMember, null );
+			this.AddMemberCommand = new DelegateCommand( AddMember );
 			this.DelMemberCommand = new DelegateCommand( DelMember, CanDelMember );
 
 			this.AllKeyLockCommand = new DelegateCommand( AllKeyLock );
 			this.AllKeyReleaseCommand = new DelegateCommand( AllKeyRelease );
 
-			this.SearchCommand = new DelegateCommand( SearchDevice, null );
+			this.SearchCommand = new DelegateCommand( SearchDevice );
 			this.AddTeamCommand = new DelegateCommand( AddTeam );
 			this.DelTeamCommand = new DelegateCommand( DelTeam, CanDelTeam );
 
@@ -226,26 +166,8 @@ namespace EarlyPusher.Modules.Setting1Tab.ViewModels
 		{
 			base.LoadData();
 
-			this.EarlyVideoDir = this.Parent.Data.EarlyVideoDir;
-			this.ChoiceVideoDir = this.Parent.Data.ChoiceVideoDir;
-			this.SortVideoDir = this.Parent.Data.SortVideoDir;
-
-			this.teamAdapter = new ViewModelsAdapter<TeamSetting1VM, TeamData>( CreateTeamVM, DeleteTeamVM );
+			this.teamAdapter = new ViewModelsAdapter<TeamVM, TeamData>( CreateTeamVM, DeleteTeamVM );
 			this.teamAdapter.Adapt( this.Teams, this.Parent.Data.TeamList );
-
-			if( !string.IsNullOrEmpty( this.Parent.Data.StandSoundPath ) )
-			{
-				this.StandSound = new MediaVM();
-				this.StandSound.FilePath = this.Parent.Data.StandSoundPath;
-				this.StandSound.LoadFile();
-			}
-
-			if( !string.IsNullOrEmpty( this.Parent.Data.QuestionSoundPath ) )
-			{
-				this.QuestionSound = new MediaVM();
-				this.QuestionSound.FilePath = this.Parent.Data.QuestionSoundPath;
-				this.QuestionSound.LoadFile();
-			}
 
 			if( !string.IsNullOrEmpty( this.Parent.Data.AnswerSoundPath ) )
 			{
@@ -267,13 +189,6 @@ namespace EarlyPusher.Modules.Setting1Tab.ViewModels
 				this.MissSound.FilePath = this.Parent.Data.MissSoundPath;
 				this.MissSound.LoadFile();
 			}
-
-			if( !string.IsNullOrEmpty( this.Parent.Data.CheckSoundPath ) )
-			{
-				this.CheckSound = new MediaVM();
-				this.CheckSound.FilePath = this.Parent.Data.CheckSoundPath;
-				this.CheckSound.LoadFile();
-			}
 		}
 
 		/// <summary>
@@ -281,9 +196,9 @@ namespace EarlyPusher.Modules.Setting1Tab.ViewModels
 		/// </summary>
 		/// <param name="data">モデル</param>
 		/// <returns>VM</returns>
-		private TeamSetting1VM CreateTeamVM( TeamData data )
+		private TeamVM CreateTeamVM( TeamData data )
 		{
-			var vm = new TeamSetting1VM( data );
+			var vm = new TeamVM( data );
 			vm.Members.CollectionChanged += Members_CollectionChanged;
 			return vm;
 		}
@@ -292,7 +207,7 @@ namespace EarlyPusher.Modules.Setting1Tab.ViewModels
 		/// VMが削除されたときの処理
 		/// </summary>
 		/// <param name="vm"></param>
-		private void DeleteTeamVM( TeamSetting1VM vm )
+		private void DeleteTeamVM( TeamVM vm )
 		{
 			this.Members.RemoveWhere( m => m.Parent == vm );
 			vm.Members.CollectionChanged -= Members_CollectionChanged;
@@ -338,7 +253,7 @@ namespace EarlyPusher.Modules.Setting1Tab.ViewModels
 		{
 			if( e.OldItems != null )
 			{
-				foreach( MemberSetting1VM member in e.OldItems )
+				foreach( MemberVM member in e.OldItems )
 				{
 					this.Members.Remove( member );
 				}
@@ -346,7 +261,7 @@ namespace EarlyPusher.Modules.Setting1Tab.ViewModels
 
 			if( e.NewItems != null )
 			{
-				foreach( MemberSetting1VM member in e.NewItems )
+				foreach( MemberVM member in e.NewItems )
 				{
 					this.Members.Add( member );
 				}
@@ -423,96 +338,6 @@ namespace EarlyPusher.Modules.Setting1Tab.ViewModels
 		#region コマンド
 
 		/// <summary>
-		/// メディアフォルダの選択
-		/// </summary>
-		/// <param name="obj"></param>
-		private void SelectEarlyVideoDir( object obj )
-		{
-			VistaFolderBrowserDialog dlg = new VistaFolderBrowserDialog();
-			if( string.IsNullOrEmpty( this.Parent.Data.EarlyVideoDir ) )
-			{
-				dlg.SelectedPath = AppDomain.CurrentDomain.BaseDirectory;
-			}
-			else
-			{
-				dlg.SelectedPath = this.Parent.Data.EarlyVideoDir;
-			}
-			if( dlg.ShowDialog() == true )
-			{
-				this.Parent.Data.EarlyVideoDir = dlg.SelectedPath;
-				this.EarlyVideoDir = this.Parent.Data.EarlyVideoDir;
-			}
-		}
-
-		/// <summary>
-		/// メディアフォルダの選択
-		/// </summary>
-		/// <param name="obj"></param>
-		private void SelectChoiceVideoDir( object obj )
-		{
-			VistaFolderBrowserDialog dlg = new VistaFolderBrowserDialog();
-			if( string.IsNullOrEmpty( this.Parent.Data.ChoiceVideoDir ) )
-			{
-				dlg.SelectedPath = AppDomain.CurrentDomain.BaseDirectory;
-			}
-			else
-			{
-				dlg.SelectedPath = this.Parent.Data.ChoiceVideoDir;
-			}
-			if( dlg.ShowDialog() == true )
-			{
-				this.Parent.Data.ChoiceVideoDir = dlg.SelectedPath;
-				this.ChoiceVideoDir = this.Parent.Data.ChoiceVideoDir;
-			}
-		}
-
-		private void SelectSortVideoDir( object obj )
-		{
-			VistaFolderBrowserDialog dlg = new VistaFolderBrowserDialog();
-			if( string.IsNullOrEmpty( this.Parent.Data.SortVideoDir ) )
-			{
-				dlg.SelectedPath = AppDomain.CurrentDomain.BaseDirectory;
-			}
-			else
-			{
-				dlg.SelectedPath = this.Parent.Data.SortVideoDir;
-			}
-			if( dlg.ShowDialog() == true )
-			{
-				this.Parent.Data.SortVideoDir = dlg.SelectedPath;
-				this.SortVideoDir = this.Parent.Data.SortVideoDir;
-			}
-		}
-
-		private void SelectStandSound( object obj )
-		{
-			OpenFileDialog dlg = new OpenFileDialog();
-			dlg.InitialDirectory = AppDomain.CurrentDomain.BaseDirectory;
-			dlg.Multiselect = false;
-			if( dlg.ShowDialog() == true )
-			{
-				this.Parent.Data.StandSoundPath = dlg.FileName;
-
-				this.StandSound = new MediaVM() { FilePath = dlg.FileName };
-				this.StandSound.LoadFile();
-			}
-		}
-
-		private void SelectQuestionSound( object obj )
-		{
-			OpenFileDialog dlg = new OpenFileDialog();
-			dlg.InitialDirectory = AppDomain.CurrentDomain.BaseDirectory;
-			dlg.Multiselect = false;
-			if( dlg.ShowDialog() == true )
-			{
-				this.Parent.Data.QuestionSoundPath = dlg.FileName;
-
-				this.QuestionSound = new MediaVM() { FilePath = dlg.FileName };
-				this.QuestionSound.LoadFile();
-			}
-		}
-
-		/// <summary>
 		/// 解答音の選択
 		/// </summary>
 		/// <param name="obj"></param>
@@ -555,20 +380,6 @@ namespace EarlyPusher.Modules.Setting1Tab.ViewModels
 
 				this.MissSound = new MediaVM() { FilePath = dlg.FileName };
 				this.MissSound.LoadFile();
-			}
-		}
-
-		private void SelectCheckSound( object obj )
-		{
-			OpenFileDialog dlg = new OpenFileDialog();
-			dlg.InitialDirectory = AppDomain.CurrentDomain.BaseDirectory;
-			dlg.Multiselect = false;
-			if( dlg.ShowDialog() == true )
-			{
-				this.Parent.Data.CheckSoundPath = dlg.FileName;
-
-				this.CheckSound = new MediaVM() { FilePath = dlg.FileName };
-				this.CheckSound.LoadFile();
 			}
 		}
 

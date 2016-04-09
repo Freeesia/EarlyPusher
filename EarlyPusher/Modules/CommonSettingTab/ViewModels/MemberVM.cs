@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 using EarlyPusher.Models;
 using StFrLibs.Core.Basis;
 
-namespace EarlyPusher.Modules.Setting1Tab.ViewModels
+namespace EarlyPusher.Modules.CommonSettingTab.ViewModels
 {
-	public class MemberSetting1VM : ViewModelBase<MemberData>
+	public class MemberVM : ViewModelBase<MemberData>
 	{
-		private TeamSetting1VM parent;
+		private TeamVM parent;
 
 		private bool isKeyLock = true;
 
@@ -20,13 +20,13 @@ namespace EarlyPusher.Modules.Setting1Tab.ViewModels
 			set { SetProperty( ref this.isKeyLock, value ); }
 		}
 		
-		public MemberSetting1VM( TeamSetting1VM parent, MemberData data )
+		public MemberVM( TeamVM parent, MemberData data )
 			: base( data )
 		{
 			this.parent = parent;
 		}
 
-		public TeamSetting1VM Parent
+		public TeamVM Parent
 		{
 			get { return this.parent; }
 		}

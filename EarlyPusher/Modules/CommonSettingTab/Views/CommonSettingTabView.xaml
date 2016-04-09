@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="EarlyPusher.Modules.Setting1Tab.Views.OperateSetting1View"
+﻿<UserControl x:Class="EarlyPusher.Modules.CommonSettingTab.Views.CommonSettingTabView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -11,7 +11,6 @@
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto" />
 			<RowDefinition Height="*" />
-			<RowDefinition Height="Auto" />
 			<RowDefinition Height="3*" />
 		</Grid.RowDefinitions>
 		<Grid.ColumnDefinitions>
@@ -25,182 +24,13 @@
 		              Width="3"
 		              ResizeBehavior="PreviousAndNext" />
 
-		<Menu Grid.Row="0" Grid.Column="0">
+		<Menu Grid.Row="0"
+		      Grid.Column="0"
+		      Grid.ColumnSpan="3">
 			<MenuItem Command="{Binding SearchCommand}" Header="検索" />
 			<TextBlock Text="{Binding UpdateTime, StringFormat=更新間隔 : {0}}" />
-		</Menu>
-
-		<ScrollViewer Grid.Row="0"
-		              Grid.RowSpan="2"
-		              Grid.Column="2"
-		              Margin="5">
-			<Grid>
-				<Grid.RowDefinitions>
-					<RowDefinition Height="Auto" />
-					<RowDefinition Height="Auto" />
-					<RowDefinition Height="Auto" />
-					<RowDefinition Height="Auto" />
-					<RowDefinition Height="Auto" />
-					<RowDefinition Height="Auto" />
-					<RowDefinition Height="Auto" />
-					<RowDefinition Height="Auto" />
-					<RowDefinition Height="Auto" />
-				</Grid.RowDefinitions>
-				<Grid.ColumnDefinitions>
-					<ColumnDefinition Width="Auto" />
-					<ColumnDefinition Width="*" />
-					<ColumnDefinition Width="Auto" />
-					<ColumnDefinition Width="Auto" />
-				</Grid.ColumnDefinitions>
-
-				<TextBlock Grid.Row="0"
-				           Grid.Column="0"
-				           Text="早押し問題 フォルダ" />
-				<TextBox Grid.Row="0"
-				         Grid.Column="1"
-				         IsReadOnly="True"
-				         Text="{Binding EarlyVideoDir}" />
-				<Button Grid.Row="0"
-				        Grid.Column="2"
-				        Grid.ColumnSpan="2"
-				        Command="{Binding SelectEarlyVideoDirCommand}"
-				        Content="参照" />
-
-				<TextBlock Grid.Row="1"
-				           Grid.Column="0"
-				           Text="4択問題 フォルダ" />
-				<TextBox Grid.Row="1"
-				         Grid.Column="1"
-				         IsReadOnly="True"
-				         Text="{Binding ChoiceVideoDir}" />
-				<Button Grid.Row="1"
-				        Grid.Column="2"
-				        Grid.ColumnSpan="2"
-				        Command="{Binding SelectChoiceVideoDirCommand}"
-				        Content="参照" />
-
-				<TextBlock Grid.Row="2"
-				           Grid.Column="0"
-				           Text="並び替え問題 フォルダ" />
-				<TextBox Grid.Row="2"
-				         Grid.Column="1"
-				         IsReadOnly="True"
-				         Text="{Binding SortVideoDir}" />
-				<Button Grid.Row="2"
-				        Grid.Column="2"
-				        Grid.ColumnSpan="2"
-				        Command="{Binding SelectSortVideoDirCommand}"
-				        Content="参照" />
-
-				<TextBlock Grid.Row="3"
-				           Grid.Column="0"
-				           Text="立ち音" />
-				<TextBox Grid.Row="3"
-				         Grid.Column="1"
-				         IsReadOnly="True"
-				         Text="{Binding StandSound.FilePath}" />
-				<Button Grid.Row="3"
-				        Grid.Column="2"
-				        Command="{Binding SelectStandSoundCommand}"
-				        Content="参照" />
-				<Button Grid.Row="3"
-				        Grid.Column="3"
-				        Command="{Binding StandSound.PlayCommand}"
-				        Content="再生" />
-
-				<TextBlock Grid.Row="4"
-				           Grid.Column="0"
-				           Text="問題音" />
-				<TextBox Grid.Row="4"
-				         Grid.Column="1"
-				         IsReadOnly="True"
-				         Text="{Binding QuestionSound.FilePath}" />
-				<Button Grid.Row="4"
-				        Grid.Column="2"
-				        Command="{Binding SelectQuestionSoundCommand}"
-				        Content="参照" />
-				<Button Grid.Row="4"
-				        Grid.Column="3"
-				        Command="{Binding QuestionSound.PlayCommand}"
-				        Content="再生" />
-
-				<TextBlock Grid.Row="5"
-				           Grid.Column="0"
-				           Text="解答音" />
-				<TextBox Grid.Row="5"
-				         Grid.Column="1"
-				         IsReadOnly="True"
-				         Text="{Binding AnswerSound.FilePath}" />
-				<Button Grid.Row="5"
-				        Grid.Column="2"
-				        Command="{Binding SelectAnswerSoundCommand}"
-				        Content="参照" />
-				<Button Grid.Row="5"
-				        Grid.Column="3"
-				        Command="{Binding AnswerSound.PlayCommand}"
-				        Content="再生" />
-
-				<TextBlock Grid.Row="6"
-				           Grid.Column="0"
-				           Text="正解音" />
-				<TextBox Grid.Row="6"
-				         Grid.Column="1"
-				         IsReadOnly="True"
-				         Text="{Binding CorrectSound.FilePath}" />
-				<Button Grid.Row="6"
-				        Grid.Column="2"
-				        Command="{Binding SelectCorrectSoundCommand}"
-				        Content="参照" />
-				<Button Grid.Row="6"
-				        Grid.Column="3"
-				        Command="{Binding CorrectSound.PlayCommand}"
-				        Content="再生" />
-
-				<TextBlock Grid.Row="7"
-				           Grid.Column="0"
-				           Text="不正解音" />
-				<TextBox Grid.Row="7"
-				         Grid.Column="1"
-				         IsReadOnly="True"
-				         Text="{Binding MissSound.FilePath}" />
-				<Button Grid.Row="7"
-				        Grid.Column="2"
-				        Command="{Binding SelectMissSoundCommand}"
-				        Content="参照" />
-				<Button Grid.Row="7"
-				        Grid.Column="3"
-				        Command="{Binding MissSound.PlayCommand}"
-				        Content="再生" />
-
-				<TextBlock Grid.Row="8"
-				           Grid.Column="0"
-				           Text="AnswerCheck音" />
-				<TextBox Grid.Row="8"
-				         Grid.Column="1"
-				         IsReadOnly="True"
-				         Text="{Binding CheckSound.FilePath}" />
-				<Button Grid.Row="8"
-				        Grid.Column="2"
-				        Command="{Binding SelectCheckSoundCommand}"
-				        Content="参照" />
-				<Button Grid.Row="8"
-				        Grid.Column="3"
-				        Command="{Binding CheckSound.PlayCommand}"
-				        Content="再生" />
-			</Grid>
-
-		</ScrollViewer>
-
-		<ListBox Grid.Row="1"
-		         Grid.Column="0"
-		         ItemsSource="{Binding Devices}" />
-
-
-		<Menu Grid.Row="2" Grid.Column="0">
 			<MenuItem Command="{Binding AddTeamCommand}" Header="チーム追加" />
 			<MenuItem Command="{Binding DelTeamCommand}" Header="チーム削除" />
-		</Menu>
-		<Menu Grid.Row="2" Grid.Column="2">
 			<MenuItem Header="メンバー追加" ItemsSource="{Binding Teams}">
 				<MenuItem.ItemContainerStyle>
 					<Style TargetType="MenuItem">
@@ -217,7 +47,79 @@
 			</MenuItem>
 		</Menu>
 
-		<DataGrid Grid.Row="3"
+		<ListBox Grid.Row="1"
+		         Grid.Column="0"
+		         ItemsSource="{Binding Devices}" />
+
+		<ScrollViewer Grid.Row="1"
+		              Grid.Column="2"
+		              Margin="5"
+		              VerticalScrollBarVisibility="Auto">
+			<Grid>
+				<Grid.RowDefinitions>
+					<RowDefinition Height="Auto" />
+					<RowDefinition Height="Auto" />
+					<RowDefinition Height="Auto" />
+				</Grid.RowDefinitions>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="Auto" />
+					<ColumnDefinition Width="*" />
+					<ColumnDefinition Width="Auto" />
+					<ColumnDefinition Width="Auto" />
+				</Grid.ColumnDefinitions>
+
+				<TextBlock Grid.Row="0"
+				           Grid.Column="0"
+				           Text="解答音" />
+				<TextBox Grid.Row="0"
+				         Grid.Column="1"
+				         IsReadOnly="True"
+				         Text="{Binding AnswerSound.FilePath}" />
+				<Button Grid.Row="0"
+				        Grid.Column="2"
+				        Command="{Binding SelectAnswerSoundCommand}"
+				        Content="参照" />
+				<Button Grid.Row="0"
+				        Grid.Column="3"
+				        Command="{Binding AnswerSound.PlayCommand}"
+				        Content="再生" />
+
+				<TextBlock Grid.Row="1"
+				           Grid.Column="0"
+				           Text="正解音" />
+				<TextBox Grid.Row="1"
+				         Grid.Column="1"
+				         IsReadOnly="True"
+				         Text="{Binding CorrectSound.FilePath}" />
+				<Button Grid.Row="1"
+				        Grid.Column="2"
+				        Command="{Binding SelectCorrectSoundCommand}"
+				        Content="参照" />
+				<Button Grid.Row="1"
+				        Grid.Column="3"
+				        Command="{Binding CorrectSound.PlayCommand}"
+				        Content="再生" />
+
+				<TextBlock Grid.Row="2"
+				           Grid.Column="0"
+				           Text="不正解音" />
+				<TextBox Grid.Row="2"
+				         Grid.Column="1"
+				         IsReadOnly="True"
+				         Text="{Binding MissSound.FilePath}" />
+				<Button Grid.Row="2"
+				        Grid.Column="2"
+				        Command="{Binding SelectMissSoundCommand}"
+				        Content="参照" />
+				<Button Grid.Row="2"
+				        Grid.Column="3"
+				        Command="{Binding MissSound.PlayCommand}"
+				        Content="再生" />
+			</Grid>
+
+		</ScrollViewer>
+
+		<DataGrid Grid.Row="2"
 		          Grid.Column="0"
 		          AutoGenerateColumns="False"
 		          CanUserAddRows="False"
@@ -248,7 +150,7 @@
 			</DataGrid.Columns>
 		</DataGrid>
 
-		<DataGrid Grid.Row="3"
+		<DataGrid Grid.Row="2"
 		          Grid.Column="2"
 		          AutoGenerateColumns="False"
 		          CanUserAddRows="False"

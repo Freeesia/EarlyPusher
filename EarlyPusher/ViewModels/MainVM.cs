@@ -10,7 +10,7 @@ using EarlyPusher.Manager;
 using EarlyPusher.Models;
 using EarlyPusher.Modules.ChoiceTab.ViewModels;
 using EarlyPusher.Modules.EarlyTab.ViewModels;
-using EarlyPusher.Modules.Setting1Tab.ViewModels;
+using EarlyPusher.Modules.CommonSettingTab.ViewModels;
 using EarlyPusher.Modules.Setting2Tab.ViewModels;
 using EarlyPusher.Modules.OrderTab.ViewModels;
 using EarlyPusher.Views;
@@ -66,12 +66,12 @@ namespace EarlyPusher.ViewModels
 
 			this.manager = new DeviceManager();
 
-			this.operateVMs.Add( new OperateSetting1VM( this ) );
+			this.operateVMs.Add( new CommonSettingTabVM( this ) );
 			this.operateVMs.Add( new OperateSetting2VM( this ) );
-			this.operateVMs.Add( new OperateChoiceVM( this ) );
+			//this.operateVMs.Add( new OperateChoiceVM( this ) );
 			this.operateVMs.Add( new OperateEarlyVM( this ) );
-			this.operateVMs.Add( new OperateOrderVM( this ) );
-			this.operateVMs.Add( new OperateTimeShockVM( this ) );
+			//this.operateVMs.Add( new OperateOrderVM( this ) );
+			//this.operateVMs.Add( new OperateTimeShockVM( this ) );
 		}
 
 		private void SelectedTabChanging()

@@ -107,8 +107,8 @@
     <Compile Include="Modules\EarlyTab\ViewModels\TeamEarlyVM.cs" />
     <Compile Include="Modules\OrderTab\ViewModels\CurrectOrederItemVM.cs" />
     <Compile Include="Modules\OrderTab\ViewModels\OrderItemVMBase.cs" />
-    <Compile Include="Modules\Setting1Tab\ViewModels\MemberSetting1VM.cs" />
-    <Compile Include="Modules\Setting1Tab\ViewModels\TeamSetting1VM.cs" />
+    <Compile Include="Modules\CommonSettingTab\ViewModels\MemberVM.cs" />
+    <Compile Include="Modules\CommonSettingTab\ViewModels\TeamVM.cs" />
     <Compile Include="Modules\Setting2Tab\ViewModels\MediaSetting2VM.cs" />
     <Compile Include="Modules\Setting2Tab\ViewModels\OperateSetting2VM.cs" />
     <Compile Include="Modules\Setting2Tab\Views\OperateSetting2View.xaml.cs">
@@ -188,7 +188,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Modules\Setting1Tab\Views\OperateSetting1View.xaml">
+    <Page Include="Modules\CommonSettingTab\Views\CommonSettingTabView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -200,7 +200,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Modules\Setting1Tab\ViewModels\OperateSetting1VM.cs" />
+    <Compile Include="Modules\CommonSettingTab\ViewModels\CommonSettingTabVM.cs" />
     <Compile Include="ViewModels\MediaVM.cs" />
     <Compile Include="Modules\ChoiceTab\Views\PlayChoiceView.xaml.cs">
       <DependentUpon>PlayChoiceView.xaml</DependentUpon>
@@ -217,8 +217,8 @@
     <Compile Include="Modules\EarlyTab\Views\OperateEarlyView.xaml.cs">
       <DependentUpon>OperateEarlyView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Modules\Setting1Tab\Views\OperateSetting1View.xaml.cs">
-      <DependentUpon>OperateSetting1View.xaml</DependentUpon>
+    <Compile Include="Modules\CommonSettingTab\Views\CommonSettingTabView.xaml.cs">
+      <DependentUpon>CommonSettingTabView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SettingWindow.xaml.cs">
       <DependentUpon>SettingWindow.xaml</DependentUpon>
