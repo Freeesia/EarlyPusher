@@ -103,6 +103,10 @@
     <Compile Include="Modules\ChoiceTab\ViewModels\OperateChoiceVM.cs" />
     <Compile Include="Modules\ChoiceTab\ViewModels\SelectableItemVM.cs" />
     <Compile Include="Modules\ChoiceTab\ViewModels\TeamChoiceVM.cs" />
+    <Compile Include="Modules\EarlySettingTab\ViewModels\EarlySettingTabViewModel.cs" />
+    <Compile Include="Modules\EarlySettingTab\Views\EarlySettingTabView.xaml.cs">
+      <DependentUpon>EarlySettingTabView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Modules\EarlyTab\ViewModels\OperateEarlyVM.cs" />
     <Compile Include="Modules\EarlyTab\ViewModels\TeamEarlyVM.cs" />
     <Compile Include="Modules\OrderTab\ViewModels\CurrectOrederItemVM.cs" />
@@ -141,6 +145,10 @@
     <Compile Include="Basis\PlayMode.cs" />
     <Compile Include="ViewModels\OperateTabVMBase.cs" />
     <Page Include="Modules\ChoiceTab\Views\PlayChoiceView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Modules\EarlySettingTab\Views\EarlySettingTabView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

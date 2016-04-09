@@ -17,6 +17,7 @@ using EarlyPusher.Views;
 using StFrLibs.Core.Basis;
 using StFrLibs.Core.Commands;
 using EarlyPusher.Modules.TimeShockTab.ViewModels;
+using EarlyPusher.Modules.EarlySettingTab.ViewModels;
 
 namespace EarlyPusher.ViewModels
 {
@@ -27,7 +28,7 @@ namespace EarlyPusher.ViewModels
 		private PlayWindow window;
 		private DeviceManager manager;
 
-		private List<OperateTabVMBase> operateVMs = new List<OperateTabVMBase>();
+		private List<OperateTabVMBase> tabs = new List<OperateTabVMBase>();
 
 		private OperateTabVMBase selectedTab;
 
@@ -46,7 +47,7 @@ namespace EarlyPusher.ViewModels
 
 		public SettingData Data => this.data;
 
-		public IEnumerable<OperateTabVMBase> Tabs => this.operateVMs;
+		public IEnumerable<OperateTabVMBase> Tabs => this.tabs;
 
 		public OperateTabVMBase SelectedTab
 		{
@@ -66,12 +67,13 @@ namespace EarlyPusher.ViewModels
 
 			this.manager = new DeviceManager();
 
-			this.operateVMs.Add( new CommonSettingTabVM( this ) );
-			this.operateVMs.Add( new OperateSetting2VM( this ) );
-			//this.operateVMs.Add( new OperateChoiceVM( this ) );
-			this.operateVMs.Add( new OperateEarlyVM( this ) );
-			//this.operateVMs.Add( new OperateOrderVM( this ) );
-			//this.operateVMs.Add( new OperateTimeShockVM( this ) );
+			this.tabs.Add( new CommonSettingTabVM( this ) );
+			//this.tabs.Add( new OperateSetting2VM( this ) );
+			//this.tabs.Add( new OperateChoiceVM( this ) );
+			this.tabs.Add( new EarlySettingTabViewModel( this ) );
+			this.tabs.Add( new OperateEarlyVM( this ) );
+			//this.tabs.Add( new OperateOrderVM( this ) );
+			//this.tabs.Add( new OperateTimeShockVM( this ) );
 		}
 
 		private void SelectedTabChanging()
@@ -213,7 +215,7 @@ namespace EarlyPusher.ViewModels
 			}
 
 			//各タブのロード処理
-			foreach( var vm in this.operateVMs )
+			foreach( var vm in this.tabs )
 			{
 				vm.LoadData();
 			}
@@ -225,7 +227,7 @@ namespace EarlyPusher.ViewModels
 		public void SaveData( string path )
 		{
 			//各タブのセーブ処理
-			foreach( var vm in this.operateVMs )
+			foreach( var vm in this.tabs )
 			{
 				vm.SaveData();
 			}

@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace EarlyPusher.Modules.ChoiceTab.Views
+namespace EarlyPusher.Modules.EarlySettingTab.Views
 {
 	/// <summary>
-	/// Choice4ModeView.xaml の相互作用ロジック
+	/// EarlySettingTabView.xaml の相互作用ロジック
 	/// </summary>
-	public partial class PlayChoiceView : UserControl
+	public partial class EarlySettingTabView : UserControl
 	{
-		public PlayChoiceView()
+		public EarlySettingTabView()
 		{
 			InitializeComponent();
 		}

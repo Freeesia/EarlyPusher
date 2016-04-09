@@ -28,7 +28,7 @@
 		      Grid.Column="0"
 		      Grid.ColumnSpan="3">
 			<MenuItem Command="{Binding SearchCommand}" Header="検索" />
-			<TextBlock Text="{Binding UpdateTime, StringFormat=更新間隔 : {0}}" />
+			<TextBlock Width="80" Text="{Binding UpdateTime, StringFormat=更新間隔 : {0}}" />
 			<MenuItem Command="{Binding AddTeamCommand}" Header="チーム追加" />
 			<MenuItem Command="{Binding DelTeamCommand}" Header="チーム削除" />
 			<MenuItem Header="メンバー追加" ItemsSource="{Binding Teams}">

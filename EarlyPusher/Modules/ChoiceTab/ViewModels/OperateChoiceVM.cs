@@ -6,7 +6,6 @@ using System.Windows;
 using EarlyPusher.Manager;
 using EarlyPusher.Models;
 using EarlyPusher.Modules.ChoiceTab.Views;
-using EarlyPusher.Modules.EarlyTab.Views;
 using EarlyPusher.ViewModels;
 using StFrLibs.Core.Adapters;
 using StFrLibs.Core.Basis;
