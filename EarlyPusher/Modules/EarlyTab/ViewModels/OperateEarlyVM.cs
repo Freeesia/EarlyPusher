@@ -351,16 +351,16 @@ namespace EarlyPusher.Modules.EarlyTab.ViewModels
 		/// </summary>
 		private void LoadVideos()
 		{
-			if( !string.IsNullOrEmpty( this.Parent.Data.EarlyVideoDir ) && Directory.Exists( this.Parent.Data.EarlyVideoDir ) )
-			{
-				this.Medias.Clear();
-				foreach( string path in Directory.EnumerateFiles( this.Parent.Data.EarlyVideoDir, "*", SearchOption.AllDirectories ) )
-				{
-					var media = new MediaVM() { FilePath = path, FileName = Path.GetFileName( path ) };
-					media.LoadFile();
-					this.Medias.Add( media );
-				}
-			}
+			//if( !string.IsNullOrEmpty( this.Parent.Data.EarlyVideoDir ) && Directory.Exists( this.Parent.Data.EarlyVideoDir ) )
+			//{
+			//	this.Medias.Clear();
+			//	foreach( string path in Directory.EnumerateFiles( this.Parent.Data.EarlyVideoDir, "*", SearchOption.AllDirectories ) )
+			//	{
+			//		var media = new MediaVM() { FilePath = path, FileName = Path.GetFileName( path ) };
+			//		media.LoadFile();
+			//		this.Medias.Add( media );
+			//	}
+			//}
 		}
 
 		/// <summary>

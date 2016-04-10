@@ -96,6 +96,7 @@
     <Compile Include="Manager\DeviceManager.cs" />
     <Compile Include="Models\Choice.cs" />
     <Compile Include="Models\MemberData.cs" />
+    <Compile Include="Models\SetData.cs" />
     <Compile Include="Models\SettingData.cs" />
     <Compile Include="Models\ChoiceOrderMediaData.cs" />
     <Compile Include="Models\TeamData.cs" />
@@ -104,6 +105,7 @@
     <Compile Include="Modules\ChoiceTab\ViewModels\SelectableItemVM.cs" />
     <Compile Include="Modules\ChoiceTab\ViewModels\TeamChoiceVM.cs" />
     <Compile Include="Modules\EarlySettingTab\ViewModels\EarlySettingTabViewModel.cs" />
+    <Compile Include="Modules\EarlySettingTab\ViewModels\SetViewModel.cs" />
     <Compile Include="Modules\EarlySettingTab\Views\EarlySettingTabView.xaml.cs">
       <DependentUpon>EarlySettingTabView.xaml</DependentUpon>
     </Compile>

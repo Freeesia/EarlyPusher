@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
@@ -15,7 +16,7 @@ namespace EarlyPusher.Models
 		private string teamName;
 		private Color teamColor;
 		private int point;
-		private ObservableHashCollection<MemberData> members = new ObservableHashCollection<MemberData>();
+		private ObservableCollection<MemberData> members = new ObservableCollection<MemberData>();
 		
 		public string TeamName
 		{
@@ -35,7 +36,7 @@ namespace EarlyPusher.Models
 			set { SetProperty( ref this.point, value ); }
 		}
 		
-		public ObservableHashCollection<MemberData> Members
+		public ObservableCollection<MemberData> Members
 		{
 			get { return this.members; }
 		}

@@ -6,15 +6,14 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 using System.IO;
+using System.Collections.ObjectModel;
 
 namespace EarlyPusher.Models
 {
 	public class SettingData : ObservableObject
 	{
 		public const string FileName = "conf.xml";
-		private ObservableHashCollection<TeamData> teamList = new ObservableHashCollection<TeamData>();
 		private ObservableKeyedCollection<string,ChoiceOrderMediaData> choiceOrderMediaList = new ObservableKeyedCollection<string, ChoiceOrderMediaData>( m => m.MediaPath );
-		private string earlyVideoDir;
 		private string choiceVideoDir;
 		private string sortVideoDir;
 		private string standSoundPath;
@@ -31,20 +30,13 @@ namespace EarlyPusher.Models
 		private string timeshockBgmPath;
 		private string timeshockCorrectSoundPath;
 
-		public ObservableHashCollection<TeamData> TeamList
-		{
-			get { return teamList; }
-		}
+		public ObservableCollection<TeamData> TeamList { get; } = new ObservableCollection<TeamData>();
+
+		public ObservableCollection<SetData> Sets { get; } = new ObservableCollection<SetData>();
 
 		public ObservableKeyedCollection<string, ChoiceOrderMediaData> ChoiceOrderMediaList
 		{
 			get { return choiceOrderMediaList; }
-		}
-
-		public string EarlyVideoDir
-		{
-			get { return earlyVideoDir; }
-			set { SetProperty( ref earlyVideoDir, value ); }
 		}
 
 		public string ChoiceVideoDir
@@ -70,7 +62,7 @@ namespace EarlyPusher.Models
 			get { return this.questionSoundPath; }
 			set { SetProperty( ref this.questionSoundPath, value ); }
 		}
-						
+
 		public string AnswerSoundPath
 		{
 			get { return answerSoundPath; }
@@ -118,7 +110,7 @@ namespace EarlyPusher.Models
 			get { return this.backImagePath; }
 			set { SetProperty( ref this.backImagePath, value ); }
 		}
-				
+
 		public string CameraDevice
 		{
 			get { return this.cameraDevice; }
@@ -136,7 +128,7 @@ namespace EarlyPusher.Models
 			get { return this.timeshockCorrectSoundPath; }
 			set { SetProperty( ref this.timeshockCorrectSoundPath, value ); }
 		}
-								
+
 		private void SortVideoDirChanged()
 		{
 			if( !string.IsNullOrEmpty( this.SortVideoDir ) && Directory.Exists( this.SortVideoDir ) )
