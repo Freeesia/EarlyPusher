@@ -1,0 +1,27 @@
+﻿<UserControl x:Class="EarlyPusher.Modules.BinkanSettingTab.Views.BinkanSettingTabView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:EarlyPusher.Modules.BinkanSettingTab.Views"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             d:DesignHeight="600"
+             d:DesignWidth="800"
+             mc:Ignorable="d">
+	<DockPanel Margin="10">
+		<WrapPanel Margin="10"
+		           HorizontalAlignment="Right"
+		           DockPanel.Dock="Bottom">
+			<WrapPanel.Resources>
+				<Style TargetType="Button">
+					<Setter Property="Width" Value="80" />
+					<Setter Property="Margin" Value="10 0" />
+				</Style>
+			</WrapPanel.Resources>
+			<Button Command="{Binding AddCommand}" Content="追加" />
+			<Button Command="{Binding RemCommand}" Content="削除" />
+			<Button Command="{Binding UpCommand}" Content="↑" />
+			<Button Command="{Binding DownCommand}" Content="↓" />
+		</WrapPanel>
+		<ListView ItemsSource="{Binding Hints}" SelectedItem="{Binding SelectedItem}" />
+	</DockPanel>
+</UserControl>

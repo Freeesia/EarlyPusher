@@ -100,6 +100,10 @@
     <Compile Include="Models\SettingData.cs" />
     <Compile Include="Models\ChoiceOrderMediaData.cs" />
     <Compile Include="Models\TeamData.cs" />
+    <Compile Include="Modules\BinkanSettingTab\ViewModels\BinkanSettingTabViewModel.cs" />
+    <Compile Include="Modules\BinkanSettingTab\Views\BinkanSettingTabView.xaml.cs">
+      <DependentUpon>BinkanSettingTabView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Modules\ChoiceTab\ViewModels\MediaChoiceVM.cs" />
     <Compile Include="Modules\ChoiceTab\ViewModels\OperateChoiceVM.cs" />
     <Compile Include="Modules\ChoiceTab\ViewModels\SelectableItemVM.cs" />
@@ -146,6 +150,10 @@
     <Compile Include="Modules\EarlyTab\ViewModels\MemberEarlyVM.cs" />
     <Compile Include="Basis\PlayMode.cs" />
     <Compile Include="ViewModels\OperateTabVMBase.cs" />
+    <Page Include="Modules\BinkanSettingTab\Views\BinkanSettingTabView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Modules\ChoiceTab\Views\PlayChoiceView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

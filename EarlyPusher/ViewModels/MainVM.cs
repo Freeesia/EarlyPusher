@@ -18,6 +18,7 @@ using StFrLibs.Core.Basis;
 using StFrLibs.Core.Commands;
 using EarlyPusher.Modules.TimeShockTab.ViewModels;
 using EarlyPusher.Modules.EarlySettingTab.ViewModels;
+using EarlyPusher.Modules.BinkanSettingTab.ViewModels;
 
 namespace EarlyPusher.ViewModels
 {
@@ -72,6 +73,7 @@ namespace EarlyPusher.ViewModels
 			//this.tabs.Add( new OperateChoiceVM( this ) );
 			this.tabs.Add( new EarlySettingTabViewModel( this ) );
 			this.tabs.Add( new OperateEarlyVM( this ) );
+			this.tabs.Add( new BinkanSettingTabViewModel( this ) );
 			//this.tabs.Add( new OperateOrderVM( this ) );
 			//this.tabs.Add( new OperateTimeShockVM( this ) );
 		}

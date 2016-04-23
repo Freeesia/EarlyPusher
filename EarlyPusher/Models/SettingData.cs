@@ -34,6 +34,11 @@ namespace EarlyPusher.Models
 
 		public ObservableCollection<SetData> Sets { get; } = new ObservableCollection<SetData>();
 
+		/// <summary>
+		/// ビンカン用のヒント動画
+		/// </summary>
+		public ObservableCollection<string> BinkanHints { get; } = new ObservableCollection<string>();
+
 		public ObservableKeyedCollection<string, ChoiceOrderMediaData> ChoiceOrderMediaList
 		{
 			get { return choiceOrderMediaList; }
