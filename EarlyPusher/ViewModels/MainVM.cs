@@ -19,6 +19,7 @@ using StFrLibs.Core.Commands;
 using EarlyPusher.Modules.TimeShockTab.ViewModels;
 using EarlyPusher.Modules.EarlySettingTab.ViewModels;
 using EarlyPusher.Modules.BinkanSettingTab.ViewModels;
+using EarlyPusher.Modules.BinkanOperateTab.ViewModels;
 
 namespace EarlyPusher.ViewModels
 {
@@ -74,6 +75,7 @@ namespace EarlyPusher.ViewModels
 			this.tabs.Add( new EarlySettingTabViewModel( this ) );
 			this.tabs.Add( new OperateEarlyVM( this ) );
 			this.tabs.Add( new BinkanSettingTabViewModel( this ) );
+			this.tabs.Add( new BinkanOperateTabViewModel( this ) );
 			//this.tabs.Add( new OperateOrderVM( this ) );
 			//this.tabs.Add( new OperateTimeShockVM( this ) );
 		}
@@ -208,18 +210,17 @@ namespace EarlyPusher.ViewModels
 			}
 
 			//4択用に必ず1チーム4人は確保する。
-			foreach( var team in this.data.TeamList )
-			{
-				while( team.Members.Count < 4 )
-				{
-					team.Members.Add( new MemberData() );
-				}
-			}
+			//foreach( var team in this.data.TeamList )
+			//{
+			//	while( team.Members.Count < 4 )
+			//	{
+			//		team.Members.Add( new MemberData() );
+			//	}
+			//}
 
-			//各タブのロード処理
-			foreach( var vm in this.tabs )
+			foreach( var tab in this.Tabs )
 			{
-				vm.LoadData();
+				tab.LoadData();
 			}
 		}
 
@@ -228,10 +229,9 @@ namespace EarlyPusher.ViewModels
 		/// </summary>
 		public void SaveData( string path )
 		{
-			//各タブのセーブ処理
-			foreach( var vm in this.tabs )
+			foreach( var tab in this.Tabs )
 			{
-				vm.SaveData();
+				tab.SaveData();
 			}
 
 			using( Stream file = new FileStream( path, FileMode.Create ) )

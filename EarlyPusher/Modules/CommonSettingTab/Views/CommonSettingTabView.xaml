@@ -136,7 +136,7 @@
 				                        IsReadOnly="True">
 					<DataGridTemplateColumn.CellTemplate>
 						<DataTemplate>
-							<xctk:ColorPicker SelectedColor="{Binding Model.TeamColor}" />
+							<xctk:ColorPicker SelectedColor="{Binding Model.TeamColor, UpdateSourceTrigger=PropertyChanged}" />
 						</DataTemplate>
 					</DataGridTemplateColumn.CellTemplate>
 				</DataGridTemplateColumn>

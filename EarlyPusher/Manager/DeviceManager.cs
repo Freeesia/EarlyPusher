@@ -43,9 +43,9 @@ namespace EarlyPusher.Manager
 
 		#region イベント
 
-		public EventHandler<DeviceKeyEventArgs> KeyPushed;
+		public event EventHandler<DeviceKeyEventArgs> KeyPushed;
 
-		public EventHandler<DeviceKeyEventArgs> KeyReleased;
+		public event EventHandler<DeviceKeyEventArgs> KeyReleased;
 
 		#endregion
 
@@ -124,10 +124,10 @@ namespace EarlyPusher.Manager
 						bool[] buttons = state.GetButtons();
 						for( int i = 0; i < buttons.Length; i++ )
 						{
-							Tuple<Guid,int> key = new Tuple<Guid,int>(joy.Information.InstanceGuid, i+1);
+							Tuple<Guid, int> key = new Tuple<Guid, int>( joy.Information.InstanceGuid, i + 1 );
 							if( buttons[i] && !this.pushingKeys.Contains( key ) )
 							{
-								newPush.Add(key);
+								newPush.Add( key );
 							}
 							else if( !buttons[i] && this.pushingKeys.Contains( key ) )
 							{
@@ -148,10 +148,10 @@ namespace EarlyPusher.Manager
 
 						foreach( var item in state.AllKeys )
 						{
-							Tuple<Guid, int> key = new Tuple<Guid, int>( board.Information.InstanceGuid, ( int )item );
-							if( state.IsPressed(item) && !this.pushingKeys.Contains( key ) )
+							Tuple<Guid, int> key = new Tuple<Guid, int>( board.Information.InstanceGuid, (int)item );
+							if( state.IsPressed( item ) && !this.pushingKeys.Contains( key ) )
 							{
-								newPush.Add(key);
+								newPush.Add( key );
 							}
 							else if( state.IsReleased( item ) && this.pushingKeys.Contains( key ) )
 							{
@@ -162,14 +162,14 @@ namespace EarlyPusher.Manager
 					}
 
 					newPush.Shuffle();
-					if (newPush.Count > 0)
+					if( newPush.Count > 0 )
 					{
-						Debug.WriteLine("同時押し数 : " + newPush.Count);
+						Debug.WriteLine( "同時押し数 : " + newPush.Count );
 					}
-					foreach (var key in newPush)
+					foreach( var key in newPush )
 					{
-						this.pushingKeys.Add(key);
-						Pushed(key);
+						this.pushingKeys.Add( key );
+						Pushed( key );
 					}
 
 				}

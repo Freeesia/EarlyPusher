@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace EarlyPusher.Extensions
 {
-	public static class ListExtension
+	public static class ListExtensions
 	{
 		public static void Shuffle<T>(this IList<T> list)
 		{

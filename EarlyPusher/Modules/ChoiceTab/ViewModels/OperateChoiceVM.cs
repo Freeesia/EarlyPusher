@@ -243,7 +243,7 @@ namespace EarlyPusher.Modules.ChoiceTab.ViewModels
 			{
 				foreach( string path in Directory.EnumerateDirectories( this.Parent.Data.ChoiceVideoDir, "*", SearchOption.TopDirectoryOnly ) )
 				{
-					var media = new MediaChoiceVM( path ) { FileName = Path.GetFileName( path ) };
+					var media = new MediaChoiceVM( path );
 					this.Medias.Add( media );
 				}
 			}

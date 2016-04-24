@@ -15,7 +15,6 @@ namespace EarlyPusher.ViewModels
 	public class MediaVM : ViewModelBase
 	{
 		private string path;
-		private string name;
 		private MediaElement media;
 		private bool isPlaying;
 
@@ -27,7 +26,7 @@ namespace EarlyPusher.ViewModels
 			get { return this.media; }
 			set { SetProperty( ref this.media, value ); }
 		}
-		
+
 		public string FilePath
 		{
 			get { return path; }
@@ -36,8 +35,7 @@ namespace EarlyPusher.ViewModels
 
 		public string FileName
 		{
-			get { return this.name; }
-			set { SetProperty( ref this.name, value ); }
+			get { return Path.GetFileName( this.FilePath ); }
 		}
 
 		public bool IsPlaying
@@ -51,9 +49,9 @@ namespace EarlyPusher.ViewModels
 			get { return this.Media.HasVideo; }
 		}
 
-		public DelegateCommand PlayCommand { get; private set; }
-		public DelegateCommand PlayOrPauseCommand { get; private set; }
-		public DelegateCommand StopCommand { get; private set; }
+		public DelegateCommand PlayCommand { get; }
+		public DelegateCommand PlayOrPauseCommand { get; }
+		public DelegateCommand StopCommand { get; }
 
 		public MediaVM()
 		{

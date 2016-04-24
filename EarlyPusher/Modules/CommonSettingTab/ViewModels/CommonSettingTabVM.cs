@@ -18,9 +18,9 @@ namespace EarlyPusher.Modules.CommonSettingTab.ViewModels
 {
 	public class CommonSettingTabVM : OperateTabVMBase
 	{
-		private ObservableCollection<TeamVM> teams = new ObservableCollection<TeamVM>();
+		private ObservableVMCollection<TeamData,TeamVM> teams = new ObservableVMCollection<TeamData,TeamVM>();
 		private ObservableCollection<MemberVM> members = new ObservableCollection<MemberVM>();
-		private System.Collections.ObjectModel.ObservableCollection<string> devices = new System.Collections.ObjectModel.ObservableCollection<string>();
+		private ObservableCollection<string> devices = new ObservableCollection<string>();
 		private ViewModelsAdapter<TeamVM,TeamData> teamAdapter;
 
 		private long updateTime;
@@ -50,7 +50,7 @@ namespace EarlyPusher.Modules.CommonSettingTab.ViewModels
 		/// <summary>
 		/// チームのリスト
 		/// </summary>
-		public ObservableCollection<TeamVM> Teams
+		public ObservableVMCollection<TeamData, TeamVM> Teams
 		{
 			get { return this.teams; }
 		}

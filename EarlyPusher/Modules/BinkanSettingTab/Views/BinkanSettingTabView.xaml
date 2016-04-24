@@ -8,20 +8,72 @@
              d:DesignWidth="800"
              mc:Ignorable="d">
 	<DockPanel Margin="10">
+		<DockPanel.Resources>
+			<Style TargetType="Button">
+				<Setter Property="Width" Value="80" />
+				<Setter Property="Margin" Value="10 0" />
+			</Style>
+		</DockPanel.Resources>
 		<WrapPanel Margin="10"
 		           HorizontalAlignment="Right"
 		           DockPanel.Dock="Bottom">
-			<WrapPanel.Resources>
-				<Style TargetType="Button">
-					<Setter Property="Width" Value="80" />
-					<Setter Property="Margin" Value="10 0" />
-				</Style>
-			</WrapPanel.Resources>
 			<Button Command="{Binding AddCommand}" Content="追加" />
 			<Button Command="{Binding RemCommand}" Content="削除" />
 			<Button Command="{Binding UpCommand}" Content="↑" />
 			<Button Command="{Binding DownCommand}" Content="↓" />
 		</WrapPanel>
+		<Grid Margin="10" DockPanel.Dock="Top">
+			<Grid.RowDefinitions>
+				<RowDefinition Height="Auto" />
+				<RowDefinition Height="Auto" />
+				<RowDefinition Height="Auto" />
+			</Grid.RowDefinitions>
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="Auto" />
+				<ColumnDefinition Width="*" />
+				<ColumnDefinition Width="Auto" />
+			</Grid.ColumnDefinitions>
+
+			<Label Grid.Row="0"
+			       Grid.Column="0"
+			       Content="プッシュ音" />
+			<TextBox Grid.Row="0"
+			         Grid.Column="1"
+			         IsReadOnly="True"
+			         Text="{Binding PushPath,
+			                        Mode=OneWay}" />
+			<Button Grid.Row="0"
+			        Grid.Column="2"
+			        Command="{Binding OpenPushPathCommand}"
+			        Content="参照" />
+
+			<Label Grid.Row="1"
+			       Grid.Column="0"
+			       Content="正解音" />
+			<TextBox Grid.Row="1"
+			         Grid.Column="1"
+			         IsReadOnly="True"
+			         Text="{Binding CorrectPath,
+			                        Mode=OneWay}" />
+			<Button Grid.Row="1"
+			        Grid.Column="2"
+			        Command="{Binding OpenCorrectPathCommand}"
+			        Content="参照" />
+
+			<Label Grid.Row="2"
+			       Grid.Column="0"
+			       Content="不正解音" />
+			<TextBox Grid.Row="2"
+			         Grid.Column="1"
+			         IsReadOnly="True"
+			         Text="{Binding IncorrectPath,
+			                        Mode=OneWay}" />
+			<Button Grid.Row="2"
+			        Grid.Column="2"
+			        Command="{Binding OpenIncorrectPathCommand}"
+			        Content="参照" />
+
+		</Grid>
 		<ListView ItemsSource="{Binding Hints}" SelectedItem="{Binding SelectedItem}" />
 	</DockPanel>
 </UserControl>

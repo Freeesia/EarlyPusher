@@ -91,15 +91,21 @@
     <Compile Include="Controls\FixedWrapPanel.cs" />
     <Compile Include="Controls\ScaleFitControl.cs" />
     <Compile Include="Converters\RankVisibilityConverter.cs" />
-    <Compile Include="Extensions\ListExtension.cs" />
+    <Compile Include="Extensions\ListExtensions.cs" />
     <Compile Include="Manager\DeviceKeyEventArgs.cs" />
     <Compile Include="Manager\DeviceManager.cs" />
+    <Compile Include="Models\BinkanData.cs" />
     <Compile Include="Models\Choice.cs" />
     <Compile Include="Models\MemberData.cs" />
     <Compile Include="Models\SetData.cs" />
     <Compile Include="Models\SettingData.cs" />
     <Compile Include="Models\ChoiceOrderMediaData.cs" />
     <Compile Include="Models\TeamData.cs" />
+    <Compile Include="Modules\BinkanOperateTab\ViewModels\BinkanOperateTabViewModel.cs" />
+    <Compile Include="Modules\BinkanOperateTab\ViewModels\TeamViewModel.cs" />
+    <Compile Include="Modules\BinkanOperateTab\Views\BinkanOperateTabView.xaml.cs">
+      <DependentUpon>BinkanOperateTabView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Modules\BinkanSettingTab\ViewModels\BinkanSettingTabViewModel.cs" />
     <Compile Include="Modules\BinkanSettingTab\Views\BinkanSettingTabView.xaml.cs">
       <DependentUpon>BinkanSettingTabView.xaml</DependentUpon>
@@ -146,10 +152,15 @@
     <Compile Include="Modules\TimeShockTab\Views\PlayTimeShockView.xaml.cs">
       <DependentUpon>PlayTimeShockView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Utils\PathUtility.cs" />
     <Compile Include="ViewModels\MainVM.cs" />
     <Compile Include="Modules\EarlyTab\ViewModels\MemberEarlyVM.cs" />
     <Compile Include="Basis\PlayMode.cs" />
     <Compile Include="ViewModels\OperateTabVMBase.cs" />
+    <Page Include="Modules\BinkanOperateTab\Views\BinkanOperateTabView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Modules\BinkanSettingTab\Views\BinkanSettingTabView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

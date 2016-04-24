@@ -10,10 +10,12 @@ using System.Collections.ObjectModel;
 
 namespace EarlyPusher.Models
 {
+	[Serializable]
 	public class SettingData : ObservableObject
 	{
 		public const string FileName = "conf.xml";
 		private ObservableKeyedCollection<string,ChoiceOrderMediaData> choiceOrderMediaList = new ObservableKeyedCollection<string, ChoiceOrderMediaData>( m => m.MediaPath );
+		private BinkanData binkan = new BinkanData();
 		private string choiceVideoDir;
 		private string sortVideoDir;
 		private string standSoundPath;
@@ -35,9 +37,13 @@ namespace EarlyPusher.Models
 		public ObservableCollection<SetData> Sets { get; } = new ObservableCollection<SetData>();
 
 		/// <summary>
-		/// ビンカン用のヒント動画
+		/// ビンカン用設定
 		/// </summary>
-		public ObservableCollection<string> BinkanHints { get; } = new ObservableCollection<string>();
+		public BinkanData Binkan
+		{
+			get { return this.binkan; }
+			set { SetProperty( ref this.binkan, value ); }
+		}
 
 		public ObservableKeyedCollection<string, ChoiceOrderMediaData> ChoiceOrderMediaList
 		{

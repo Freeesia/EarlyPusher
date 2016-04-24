@@ -1,0 +1,107 @@
+﻿<UserControl x:Class="EarlyPusher.Modules.BinkanOperateTab.Views.BinkanOperateTabView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:EarlyPusher.Modules.BinkanOperateTab.Views"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:xcd="http://schemas.xceed.com/wpf/xaml/toolkit"
+             d:DesignHeight="600"
+             d:DesignWidth="800"
+             mc:Ignorable="d">
+	<UserControl.Resources>
+		<Style TargetType="Label">
+			<Setter Property="Margin" Value="10" />
+			<Setter Property="VerticalAlignment" Value="Center" />
+		</Style>
+		<Style TargetType="Button">
+			<Setter Property="Margin" Value="10" />
+			<Setter Property="Width" Value="90" />
+		</Style>
+	</UserControl.Resources>
+	<Grid>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="*" />
+			<ColumnDefinition Width="Auto" />
+			<ColumnDefinition Width="2*" />
+		</Grid.ColumnDefinitions>
+		<ListBox Grid.Column="0"
+		         DisplayMemberPath="FileName"
+		         IsSynchronizedWithCurrentItem="True"
+		         ItemsSource="{Binding Medias}"
+		         SelectedItem="{Binding SelectedMedia}"
+		         SelectionMode="Single" />
+
+		<GridSplitter Grid.Column="1"
+		              Width="3"
+		              ResizeBehavior="PreviousAndNext" />
+
+		<Grid Grid.Column="2">
+			<Grid.RowDefinitions>
+				<RowDefinition Height="Auto" />
+				<RowDefinition Height="Auto" />
+				<RowDefinition Height="Auto" />
+				<RowDefinition Height="*" />
+			</Grid.RowDefinitions>
+
+			<WrapPanel HorizontalAlignment="Center" Orientation="Horizontal">
+				<Button Grid.Row="0"
+				        Height="80"
+				        Command="{Binding SelectedMedia.PlayOrPauseCommand}"
+				        Content="再生/一時停止" />
+				<Button Grid.Row="0"
+				        Height="80"
+				        Command="{Binding SelectedMedia.StopCommand}"
+				        Content="停止" />
+			</WrapPanel>
+
+			<Viewbox Grid.Row="1">
+				<WrapPanel HorizontalAlignment="Center" Orientation="Horizontal">
+					<Label Content="解答権チーム" />
+					<Label MinWidth="100" Content="{Binding AnswerTeam.Model.TeamName}" />
+					<Label Content="追加ポイント" />
+					<xcd:IntegerUpDown Width="60"
+					                   Margin="10"
+					                   Increment="10"
+					                   Value="{Binding AddPoint,
+					                                   UpdateSourceTrigger=PropertyChanged}" />
+					<Button Command="{Binding CorrectCommand}" Content="正解！" />
+					<Button Command="{Binding IncorrectCommand}" Content="不正解！" />
+				</WrapPanel>
+			</Viewbox>
+
+			<ListView Grid.Row="2" ItemsSource="{Binding Teams}">
+				<ListView.View>
+					<GridView>
+						<GridViewColumn DisplayMemberBinding="{Binding Model.TeamName}" Header="チーム名" />
+						<GridViewColumn Header="プッシュ権">
+							<GridViewColumn.CellTemplate>
+								<DataTemplate>
+									<CheckBox HorizontalAlignment="Center"
+									          VerticalAlignment="Center"
+									          HorizontalContentAlignment="Center"
+									          VerticalContentAlignment="Center"
+									          IsChecked="{Binding Pushable,
+									                              UpdateSourceTrigger=PropertyChanged}" />
+								</DataTemplate>
+							</GridViewColumn.CellTemplate>
+						</GridViewColumn>
+						<GridViewColumn Header="ポイント">
+							<GridViewColumn.CellTemplate>
+								<DataTemplate>
+									<xcd:IntegerUpDown MinWidth="100"
+									                   Increment="10"
+									                   Value="{Binding Model.Point,
+									                                   UpdateSourceTrigger=PropertyChanged}" />
+								</DataTemplate>
+							</GridViewColumn.CellTemplate>
+						</GridViewColumn>
+					</GridView>
+				</ListView.View>
+			</ListView>
+
+			<Viewbox Grid.Row="3">
+				<ContentPresenter Content="{Binding SelectedMedia.Media}" />
+			</Viewbox>
+		</Grid>
+	</Grid>
+</UserControl>

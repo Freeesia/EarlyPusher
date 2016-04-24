@@ -40,25 +40,25 @@ namespace EarlyPusher.Modules.OrderTab.ViewModels
 				switch( item.Choice )
 				{
 					case Choice.A:
-						if( !string.IsNullOrEmpty(this.model.ChoiceAImagePath) )
+						if( !string.IsNullOrEmpty( this.model.ChoiceAImagePath ) )
 						{
 							item.Image = new BitmapImage( new Uri( this.model.ChoiceAImagePath ) );
 						}
 						break;
 					case Choice.B:
-						if( !string.IsNullOrEmpty(this.model.ChoiceBImagePath) )
+						if( !string.IsNullOrEmpty( this.model.ChoiceBImagePath ) )
 						{
 							item.Image = new BitmapImage( new Uri( this.model.ChoiceBImagePath ) );
 						}
 						break;
 					case Choice.C:
-						if( !string.IsNullOrEmpty(this.model.ChoiceCImagePath) )
+						if( !string.IsNullOrEmpty( this.model.ChoiceCImagePath ) )
 						{
 							item.Image = new BitmapImage( new Uri( this.model.ChoiceCImagePath ) );
 						}
 						break;
 					case Choice.D:
-						if( !string.IsNullOrEmpty(this.model.ChoiceDImagePath) )
+						if( !string.IsNullOrEmpty( this.model.ChoiceDImagePath ) )
 						{
 							item.Image = new BitmapImage( new Uri( this.model.ChoiceDImagePath ) );
 						}
@@ -69,7 +69,6 @@ namespace EarlyPusher.Modules.OrderTab.ViewModels
 			}
 
 			this.FilePath = this.model.MediaPath;
-			this.FileName = Path.GetFileName( this.FilePath );
 			this.LoadFile();
 		}
 
