@@ -63,7 +63,7 @@ namespace EarlyPusher.Modules.BinkanOperateTab.ViewModels
 		public TeamViewModel AnswerTeam
 		{
 			get { return this.answerTeam; }
-			set { SetProperty( ref this.answerTeam, value, AnswerTeamChanged ); }
+			set { SetProperty( ref this.answerTeam, value, AnswerTeamChanged, AnswerTeamChanging ); }
 		}
 
 		/// <summary>
@@ -93,12 +93,26 @@ namespace EarlyPusher.Modules.BinkanOperateTab.ViewModels
 
 			this.CorrectCommand = new DelegateCommand( Correct, p => this.AnswerTeam != null );
 			this.IncorrectCommand = new DelegateCommand( Incorrect, p => this.AnswerTeam != null );
+
+			this.PlayView = new BinkanPlayView();
 		}
 
 		#region コマンド
 
+		private void AnswerTeamChanging()
+		{
+			if( this.AnswerTeam != null )
+			{
+				this.AnswerTeam.Answerable = false;
+			}
+		}
+
 		private void AnswerTeamChanged()
 		{
+			if( this.AnswerTeam != null )
+			{
+				this.AnswerTeam.Answerable = true;
+			}
 			this.CorrectCommand.RaiseCanExecuteChanged();
 			this.IncorrectCommand.RaiseCanExecuteChanged();
 		}

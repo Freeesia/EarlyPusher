@@ -103,8 +103,12 @@
     <Compile Include="Models\TeamData.cs" />
     <Compile Include="Modules\BinkanOperateTab\ViewModels\BinkanOperateTabViewModel.cs" />
     <Compile Include="Modules\BinkanOperateTab\ViewModels\TeamViewModel.cs" />
+    <Compile Include="Modules\BinkanOperateTab\Views\AnswerTeamConverter.cs" />
     <Compile Include="Modules\BinkanOperateTab\Views\BinkanOperateTabView.xaml.cs">
       <DependentUpon>BinkanOperateTabView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\BinkanOperateTab\Views\BinkanPlayView.xaml.cs">
+      <DependentUpon>BinkanPlayView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Modules\BinkanSettingTab\ViewModels\BinkanSettingTabViewModel.cs" />
     <Compile Include="Modules\BinkanSettingTab\Views\BinkanSettingTabView.xaml.cs">
@@ -121,19 +125,14 @@
     </Compile>
     <Compile Include="Modules\EarlyTab\ViewModels\OperateEarlyVM.cs" />
     <Compile Include="Modules\EarlyTab\ViewModels\TeamEarlyVM.cs" />
-    <Compile Include="Modules\OrderTab\ViewModels\CurrectOrederItemVM.cs" />
-    <Compile Include="Modules\OrderTab\ViewModels\OrderItemVMBase.cs" />
     <Compile Include="Modules\CommonSettingTab\ViewModels\MemberVM.cs" />
     <Compile Include="Modules\CommonSettingTab\ViewModels\TeamVM.cs" />
-    <Compile Include="Modules\Setting2Tab\ViewModels\MediaSetting2VM.cs" />
-    <Compile Include="Modules\Setting2Tab\ViewModels\OperateSetting2VM.cs" />
-    <Compile Include="Modules\Setting2Tab\Views\OperateSetting2View.xaml.cs">
-      <DependentUpon>OperateSetting2View.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Modules\OrderTab\Interfaces\IBackColorHolder.cs" />
+    <Compile Include="Modules\OrderTab\ViewModels\ChoiceOrderMediaVM.cs" />
+    <Compile Include="Modules\OrderTab\ViewModels\CurrectOrederItemVM.cs" />
     <Compile Include="Modules\OrderTab\ViewModels\OperateOrderVM.cs" />
     <Compile Include="Modules\OrderTab\ViewModels\OrderItemVM.cs" />
-    <Compile Include="Modules\OrderTab\ViewModels\ChoiceOrderMediaVM.cs" />
+    <Compile Include="Modules\OrderTab\ViewModels\OrderItemVMBase.cs" />
     <Compile Include="Modules\OrderTab\ViewModels\TeamOrderVM.cs" />
     <Compile Include="Modules\OrderTab\Views\OperateOrderView.xaml.cs">
       <DependentUpon>OperateOrderView.xaml</DependentUpon>
@@ -143,6 +142,11 @@
     </Compile>
     <Compile Include="Modules\OrderTab\Views\PlayWinnerOrderView.xaml.cs">
       <DependentUpon>PlayWinnerOrderView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\Setting2Tab\ViewModels\MediaSetting2VM.cs" />
+    <Compile Include="Modules\Setting2Tab\ViewModels\OperateSetting2VM.cs" />
+    <Compile Include="Modules\Setting2Tab\Views\OperateSetting2View.xaml.cs">
+      <DependentUpon>OperateSetting2View.xaml</DependentUpon>
     </Compile>
     <Compile Include="Modules\TimeShockTab\ViewModels\ImageItemViewModel.cs" />
     <Compile Include="Modules\TimeShockTab\ViewModels\OperateTimeShockVM.cs" />
@@ -158,6 +162,10 @@
     <Compile Include="Basis\PlayMode.cs" />
     <Compile Include="ViewModels\OperateTabVMBase.cs" />
     <Page Include="Modules\BinkanOperateTab\Views\BinkanOperateTabView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Modules\BinkanOperateTab\Views\BinkanPlayView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -177,33 +185,33 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Modules\Setting2Tab\Views\OperateSetting2View.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Modules\OrderTab\Views\OperateOrderView.xaml">
-      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Modules\OrderTab\Views\PlayOtherOrderView.xaml">
       <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Modules\OrderTab\Views\PlayWinnerOrderView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Modules\OrderTab\Views\OrderViewResouces.xaml">
-      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Modules\OrderTab\Views\PlayOtherOrderView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Modules\OrderTab\Views\PlayWinnerOrderView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Modules\Setting2Tab\Views\OperateSetting2View.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Modules\TimeShockTab\Views\OperateTimeShockView.xaml">
-      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Modules\TimeShockTab\Views\PlayTimeShockView.xaml">
-      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\PlayWindow.xaml">
       <SubType>Designer</SubType>

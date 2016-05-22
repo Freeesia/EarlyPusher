@@ -11,8 +11,18 @@ namespace EarlyPusher.Modules.BinkanOperateTab.ViewModels
 {
 	public class TeamViewModel : ViewModelBase<TeamData>
 	{
+		private bool answerable = false;
 		private bool pushPermission = true;
 
+		/// <summary>
+		/// 解答権
+		/// </summary>
+		public bool Answerable
+		{
+			get { return this.answerable; }
+			set { SetProperty( ref this.answerable, value ); }
+		}
+		
 		/// <summary>
 		/// プッシュ権
 		/// </summary>
