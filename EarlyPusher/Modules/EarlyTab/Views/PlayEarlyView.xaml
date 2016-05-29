@@ -4,20 +4,24 @@
              xmlns:c="clr-namespace:StFrLibs.Core.Converter;assembly=StFrCore"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             FontFamily="HGPSoeiKakupoptai"
              d:DesignHeight="300"
              d:DesignWidth="300"
+             Background="Black"
+             FontFamily="HGPSoeiKakupoptai"
              mc:Ignorable="d">
 	<UserControl.Resources>
-		<c:ColorToBrushConverter x:Key="c2bConv" />
-		<c:BoolToVisibilityConverter x:Key="f2vConv"
-		                             False="Visible"
-		                             True="Collapsed" />
-		<c:BoolToVisibilityConverter x:Key="t2vConv"
-		                             False="Collapsed"
-		                             True="Visible" />
-		<c:BoolAndMultiConverter x:Key="bmConv" UnsetValue="False" />
-		<c:BoolReverseConverter x:Key="brConv" />
+		<ResourceDictionary>
+			<ResourceDictionary.MergedDictionaries>
+				<ResourceDictionary Source="pack://application:,,,/Themes/Generic.xaml" />
+			</ResourceDictionary.MergedDictionaries>
+			<c:BoolToVisibilityConverter x:Key="f2vConv"
+			                             False="Visible"
+			                             True="Collapsed" />
+			<c:BoolToVisibilityConverter x:Key="t2vConv"
+			                             False="Collapsed"
+			                             True="Visible" />
+			<c:BoolAndMultiConverter x:Key="bmConv" UnsetValue="False" />
+		</ResourceDictionary>
 	</UserControl.Resources>
 	<Grid>
 		<ContentPresenter Content="{Binding SelectedMedia.Media}" Visibility="{Binding SelectedMedia.IsPlaying, Converter={StaticResource t2vConv}}" />
@@ -44,81 +48,27 @@
 				        VerticalAlignment="Center"
 				        Background="White"
 				        CornerRadius="10">
-					<TextBlock Margin="10"
-					           HorizontalAlignment="Center"
-					           VerticalAlignment="Center"
-					           FontSize="40"
-					           Text="{Binding GetPoint}" />
+					<StackPanel>
+						<TextBlock Margin="10"
+						           HorizontalAlignment="Center"
+						           VerticalAlignment="Center"
+						           FontSize="20"
+						           Text="得点プール" />
+						<TextBlock Margin="10"
+						           HorizontalAlignment="Center"
+						           VerticalAlignment="Center"
+						           FontSize="40"
+						           Text="{Binding AddPoint}" />
+					</StackPanel>
 				</Border>
-				<ItemsControl Grid.Row="1" ItemsSource="{Binding Teams}">
+				<ItemsControl Grid.Row="1"
+				              ItemTemplate="{StaticResource teamPanel}"
+				              ItemsSource="{Binding Teams}">
 					<ItemsControl.ItemsPanel>
 						<ItemsPanelTemplate>
 							<StackPanel Orientation="Horizontal" />
 						</ItemsPanelTemplate>
 					</ItemsControl.ItemsPanel>
-					<ItemsControl.ItemTemplate>
-						<DataTemplate>
-							<Grid Margin="2">
-								<Border Margin="3"
-								        Background="White"
-								        CornerRadius="10" />
-								<Border Margin="3"
-								        Background="{Binding Model.TeamColor,
-								                             Converter={StaticResource c2bConv}}"
-								        CornerRadius="10"
-								        Opacity="0.3" />
-								<Border BorderBrush="White"
-								        BorderThickness="5"
-								        CornerRadius="10" />
-								<StackPanel>
-									<TextBlock Margin="5"
-									           HorizontalAlignment="Center"
-									           FontSize="20"
-									           Text="{Binding Model.TeamName}" />
-									<!--  得点は最高4桁なので、このサイズが一番良い  -->
-									<TextBlock Margin="5"
-									           HorizontalAlignment="Center"
-									           FontSize="35"
-									           Text="{Binding Model.Point}" />
-									<ItemsControl ItemsSource="{Binding Members}">
-										<ItemsControl.ItemsPanel>
-											<ItemsPanelTemplate>
-												<StackPanel Orientation="Vertical" />
-											</ItemsPanelTemplate>
-										</ItemsControl.ItemsPanel>
-										<ItemsControl.ItemTemplate>
-											<DataTemplate>
-												<StackPanel Margin="5 0 5 15" Orientation="Vertical">
-													<Border Width="100"
-													        Height="100"
-													        Background="{Binding Parent.Model.TeamColor,
-													                             Converter={StaticResource c2bConv}}"
-													        BorderThickness="5"
-													        CornerRadius="10"
-													        Opacity="{Binding Opacity}">
-														<TextBlock HorizontalAlignment="Center"
-														           VerticalAlignment="Center"
-														           FontSize="60"
-														           FontWeight="Bold"
-														           Foreground="White"
-														           Text="{Binding RankPlayStr}">
-															<TextBlock.Effect>
-																<DropShadowEffect BlurRadius="10"
-																                  RenderingBias="Quality"
-																                  ShadowDepth="0"
-																                  Color="White" />
-															</TextBlock.Effect>
-														</TextBlock>
-													</Border>
-													<TextBlock HorizontalAlignment="Center" Text="{Binding Model.Name}" />
-												</StackPanel>
-											</DataTemplate>
-										</ItemsControl.ItemTemplate>
-									</ItemsControl>
-								</StackPanel>
-							</Grid>
-						</DataTemplate>
-					</ItemsControl.ItemTemplate>
 				</ItemsControl>
 			</Grid>
 		</Viewbox>

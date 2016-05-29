@@ -28,10 +28,6 @@ namespace EarlyPusher.Modules.CommonSettingTab.ViewModels
 		private TeamVM selectedTeam;
 		private MemberVM selectedMember;
 
-		private MediaVM answerSound;
-		private MediaVM correctSound;
-		private MediaVM missSound;
-
 		#region プロパティ
 
 		public DelegateCommand SearchCommand { get; }
@@ -42,10 +38,6 @@ namespace EarlyPusher.Modules.CommonSettingTab.ViewModels
 		public DelegateCommand DelMemberCommand { get; }
 		public DelegateCommand AllKeyLockCommand { get; }
 		public DelegateCommand AllKeyReleaseCommand { get; }
-
-		public DelegateCommand SelectAnswerSoundCommand { get; }
-		public DelegateCommand SelectCorrectSoundCommand { get; }
-		public DelegateCommand SelectMissSoundCommand { get; }
 
 		/// <summary>
 		/// チームのリスト
@@ -101,24 +93,6 @@ namespace EarlyPusher.Modules.CommonSettingTab.ViewModels
 			set { SetProperty( ref updateTime, value ); }
 		}
 
-		public MediaVM AnswerSound
-		{
-			get { return answerSound; }
-			set { SetProperty( ref answerSound, value ); }
-		}
-
-		public MediaVM CorrectSound
-		{
-			get { return correctSound; }
-			set { SetProperty( ref correctSound, value ); }
-		}
-
-		public MediaVM MissSound
-		{
-			get { return missSound; }
-			set { SetProperty( ref missSound, value ); }
-		}
-
 		#endregion
 
 		public CommonSettingTabVM( MainVM parent )
@@ -126,10 +100,6 @@ namespace EarlyPusher.Modules.CommonSettingTab.ViewModels
 		{
 			this.View = new CommonSettingTabView();
 			this.Header = "共通設定";
-
-			this.SelectAnswerSoundCommand = new DelegateCommand( SelectAnwser );
-			this.SelectCorrectSoundCommand = new DelegateCommand( SelectCorrectSound );
-			this.SelectMissSoundCommand = new DelegateCommand( SelectMissSound );
 
 			this.AddMemberCommand = new DelegateCommand( AddMember );
 			this.DelMemberCommand = new DelegateCommand( DelMember, CanDelMember );
@@ -168,27 +138,6 @@ namespace EarlyPusher.Modules.CommonSettingTab.ViewModels
 
 			this.teamAdapter = new ViewModelsAdapter<TeamVM, TeamData>( CreateTeamVM, DeleteTeamVM );
 			this.teamAdapter.Adapt( this.Teams, this.Parent.Data.TeamList );
-
-			if( !string.IsNullOrEmpty( this.Parent.Data.AnswerSoundPath ) )
-			{
-				this.AnswerSound = new MediaVM();
-				this.AnswerSound.FilePath = this.Parent.Data.AnswerSoundPath;
-				this.AnswerSound.LoadFile();
-			}
-
-			if( !string.IsNullOrEmpty( this.Parent.Data.CorrectSoundPath ) )
-			{
-				this.CorrectSound = new MediaVM();
-				this.CorrectSound.FilePath = this.Parent.Data.CorrectSoundPath;
-				this.CorrectSound.LoadFile();
-			}
-
-			if( !string.IsNullOrEmpty( this.Parent.Data.MissSoundPath ) )
-			{
-				this.MissSound = new MediaVM();
-				this.MissSound.FilePath = this.Parent.Data.MissSoundPath;
-				this.MissSound.LoadFile();
-			}
 		}
 
 		/// <summary>
@@ -336,53 +285,6 @@ namespace EarlyPusher.Modules.CommonSettingTab.ViewModels
 		#endregion
 
 		#region コマンド
-
-		/// <summary>
-		/// 解答音の選択
-		/// </summary>
-		/// <param name="obj"></param>
-		private void SelectAnwser( object obj )
-		{
-			OpenFileDialog dlg = new OpenFileDialog();
-			dlg.InitialDirectory = AppDomain.CurrentDomain.BaseDirectory;
-			dlg.Multiselect = false;
-			if( dlg.ShowDialog() == true )
-			{
-				this.Parent.Data.AnswerSoundPath = dlg.FileName;
-
-				this.AnswerSound = new MediaVM() { FilePath = dlg.FileName };
-				this.AnswerSound.LoadFile();
-			}
-		}
-
-		private void SelectCorrectSound( object obj )
-		{
-			OpenFileDialog dlg = new OpenFileDialog();
-			dlg.InitialDirectory = AppDomain.CurrentDomain.BaseDirectory;
-			dlg.Multiselect = false;
-			if( dlg.ShowDialog() == true )
-			{
-				this.Parent.Data.CorrectSoundPath = dlg.FileName;
-
-				this.CorrectSound = new MediaVM() { FilePath = dlg.FileName };
-				this.CorrectSound.LoadFile();
-			}
-		}
-
-		private void SelectMissSound( object obj )
-		{
-			OpenFileDialog dlg = new OpenFileDialog();
-			dlg.InitialDirectory = AppDomain.CurrentDomain.BaseDirectory;
-			dlg.Multiselect = false;
-			if( dlg.ShowDialog() == true )
-			{
-				this.Parent.Data.MissSoundPath = dlg.FileName;
-
-				this.MissSound = new MediaVM() { FilePath = dlg.FileName };
-				this.MissSound.LoadFile();
-			}
-		}
-
 		/// <summary>
 		/// メンバーの追加
 		/// </summary>

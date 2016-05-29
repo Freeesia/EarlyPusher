@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using EarlyPusher.Models;
 using EarlyPusher.Modules.EarlyTab.Views;
@@ -33,12 +30,13 @@ namespace EarlyPusher.Modules.EarlyTab.ViewModels
 
 		private TeamEarlyVM answerTeam;
 		private bool receivable;
-		private int addPoint;
+		private int addPoint = 0;
 
 		#region プロパティ
 
 		public DelegateCommand CorrectCommand { get; }
 		public DelegateCommand MissCommand { get; }
+		public DelegateCommand SetBasePointCommand { get; }
 
 		public IEnumerable<SetData> Sets
 		{
@@ -112,8 +110,9 @@ namespace EarlyPusher.Modules.EarlyTab.ViewModels
 
 			this.View = new OperateEarlyView();
 			this.Header = "早押し";
-			this.CorrectCommand = new DelegateCommand( Correct );
-			this.MissCommand = new DelegateCommand( Miss );
+			this.CorrectCommand = new DelegateCommand( Correct, o => this.AnswerTeam != null );
+			this.MissCommand = new DelegateCommand( Miss, o => this.AnswerTeam != null );
+			this.SetBasePointCommand = new DelegateCommand( SetBasePoint );
 		}
 
 		public override UIElement PlayView
@@ -303,6 +302,13 @@ namespace EarlyPusher.Modules.EarlyTab.ViewModels
 		{
 			this.missSound.Play();
 			this.AnswerTeam = null;
+
+			this.AddPoint += this.SelectedSet.BasePoint;
+		}
+
+		private void SetBasePoint( object obj )
+		{
+			this.AddPoint += this.SelectedSet.BasePoint;
 		}
 
 		#endregion

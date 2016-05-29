@@ -55,18 +55,22 @@
 			</WrapPanel>
 
 			<Viewbox Grid.Row="1">
-				<WrapPanel HorizontalAlignment="Center" Orientation="Horizontal">
-					<Label Content="解答権チーム" />
-					<Label MinWidth="100" Content="{Binding AnswerTeam.Model.TeamName}" />
-					<Label Content="追加ポイント" />
-					<xcd:IntegerUpDown Width="60"
-					                   Margin="10"
-					                   Increment="10"
-					                   Value="{Binding AddPoint,
-					                                   UpdateSourceTrigger=PropertyChanged}" />
-					<Button Command="{Binding CorrectCommand}" Content="正解！" />
-					<Button Command="{Binding IncorrectCommand}" Content="不正解！" />
-				</WrapPanel>
+				<StackPanel>
+					<WrapPanel HorizontalAlignment="Center" Orientation="Horizontal">
+						<Label Content="解答権チーム" />
+						<Label MinWidth="100" Content="{Binding AnswerTeam.Model.TeamName}" />
+						<Label Content="追加ポイント" />
+						<xcd:IntegerUpDown Width="60"
+						                   Margin="10"
+						                   Increment="10"
+						                   Value="{Binding AddPoint,
+						                                   UpdateSourceTrigger=PropertyChanged}" />
+					</WrapPanel>
+					<WrapPanel HorizontalAlignment="Center" Orientation="Horizontal">
+						<Button Command="{Binding CorrectCommand}" Content="正解！" />
+						<Button Command="{Binding IncorrectCommand}" Content="不正解！" />
+					</WrapPanel>
+				</StackPanel>
 			</Viewbox>
 
 			<ListView Grid.Row="2" ItemsSource="{Binding Teams}">
