@@ -16,6 +16,7 @@ namespace EarlyPusher.Models
 		public const string FileName = "conf.xml";
 		private ObservableKeyedCollection<string,ChoiceOrderMediaData> choiceOrderMediaList = new ObservableKeyedCollection<string, ChoiceOrderMediaData>( m => m.MediaPath );
 		private BinkanData binkan = new BinkanData();
+		private EarlyData early = new EarlyData();
 		private string choiceVideoDir;
 		private string sortVideoDir;
 		private string standSoundPath;
@@ -34,8 +35,6 @@ namespace EarlyPusher.Models
 
 		public ObservableCollection<TeamData> TeamList { get; } = new ObservableCollection<TeamData>();
 
-		public ObservableCollection<SetData> Sets { get; } = new ObservableCollection<SetData>();
-
 		/// <summary>
 		/// ビンカン用設定
 		/// </summary>
@@ -43,6 +42,15 @@ namespace EarlyPusher.Models
 		{
 			get { return this.binkan; }
 			set { SetProperty( ref this.binkan, value ); }
+		}
+
+		/// <summary>
+		/// 早押し用設定
+		/// </summary>
+		public EarlyData Early
+		{
+			get { return this.early; }
+			set { SetProperty( ref this.early, value ); }
 		}
 
 		public ObservableKeyedCollection<string, ChoiceOrderMediaData> ChoiceOrderMediaList

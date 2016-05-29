@@ -96,6 +96,7 @@
     <Compile Include="Manager\DeviceManager.cs" />
     <Compile Include="Models\BinkanData.cs" />
     <Compile Include="Models\Choice.cs" />
+    <Compile Include="Models\EarlyData.cs" />
     <Compile Include="Models\MemberData.cs" />
     <Compile Include="Models\SetData.cs" />
     <Compile Include="Models\SettingData.cs" />

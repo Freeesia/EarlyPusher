@@ -4,11 +4,13 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using EarlyPusher.Models;
 using EarlyPusher.Modules.EarlyTab.Views;
+using EarlyPusher.Utils;
 using EarlyPusher.ViewModels;
 using StFrLibs.Core.Adapters;
 using StFrLibs.Core.Basis;
@@ -25,9 +27,9 @@ namespace EarlyPusher.Modules.EarlyTab.ViewModels
 		private PlayEarlyView view = new PlayEarlyView();
 
 		private MediaVM selectedMedia;
-		private MediaVM pushSound;
-		private MediaVM correctSound;
-		private MediaVM missSound;
+		private MediaVM pushSound = new MediaVM();
+		private MediaVM correctSound = new MediaVM();
+		private MediaVM missSound = new MediaVM();
 
 		private TeamEarlyVM answerTeam;
 		private bool receivable;
@@ -106,6 +108,7 @@ namespace EarlyPusher.Modules.EarlyTab.ViewModels
 		{
 			this.Teams = new ObservableVMCollection<TeamData, TeamEarlyVM>();
 			this.Medias = new ObservableHashVMCollection<MediaVM>();
+			this.Medias.CollectionChanged += Medias_CollectionChanged;
 
 			this.View = new OperateEarlyView();
 			this.Header = "早押し";
@@ -124,33 +127,48 @@ namespace EarlyPusher.Modules.EarlyTab.ViewModels
 		{
 			base.LoadData();
 
-			this.Parent.Data.PropertyChanged += Data_PropertyChanged;
-
-			if( !string.IsNullOrEmpty( this.Parent.Data.AnswerSoundPath ) )
-			{
-				this.pushSound = new MediaVM();
-				this.pushSound.FilePath = this.Parent.Data.AnswerSoundPath;
-				this.pushSound.LoadFile();
-			}
-
-			if( !string.IsNullOrEmpty( this.Parent.Data.CorrectSoundPath ) )
-			{
-				this.correctSound = new MediaVM();
-				this.correctSound.FilePath = this.Parent.Data.CorrectSoundPath;
-				this.correctSound.LoadFile();
-			}
-
-			if( !string.IsNullOrEmpty( this.Parent.Data.MissSoundPath ) )
-			{
-				this.missSound = new MediaVM();
-				this.missSound.FilePath = this.Parent.Data.MissSoundPath;
-				this.missSound.LoadFile();
-			}
-
 			this.adapter = new ViewModelsAdapter<TeamEarlyVM, TeamData>( m => new TeamEarlyVM( m ) );
 			this.adapter.Adapt( this.Teams, this.Parent.Data.TeamList );
 
-			this.Sets = this.Parent.Data.Sets;
+			this.Sets = this.Parent.Data.Early.Sets;
+
+			var baseDir = Path.GetDirectoryName( Assembly.GetExecutingAssembly().Location );
+			{
+				this.pushSound.FilePath = PathUtility.GetAbsolutePath( baseDir, this.Parent.Data.Early.PushPath );
+				this.pushSound.LoadFile();
+			}
+			{
+				this.correctSound.FilePath = PathUtility.GetAbsolutePath( baseDir, this.Parent.Data.Early.CorrectPath );
+				this.correctSound.LoadFile();
+			}
+			{
+				this.missSound.FilePath = PathUtility.GetAbsolutePath( baseDir, this.Parent.Data.Early.IncorrectPath );
+				this.missSound.LoadFile();
+			}
+			this.Parent.Data.Early.PropertyChanged += Early_PropertyChanged;
+		}
+
+		private void Early_PropertyChanged( object sender, System.ComponentModel.PropertyChangedEventArgs e )
+		{
+			var baseDir = Path.GetDirectoryName( Assembly.GetExecutingAssembly().Location );
+
+			if( e.PropertyName == nameof( this.Parent.Data.Early.PushPath ) )
+			{
+				this.pushSound.FilePath = PathUtility.GetAbsolutePath( baseDir, this.Parent.Data.Early.PushPath );
+				this.pushSound.LoadFile();
+			}
+
+			if( e.PropertyName == nameof( this.Parent.Data.Early.CorrectPath ) )
+			{
+				this.correctSound.FilePath = PathUtility.GetAbsolutePath( baseDir, this.Parent.Data.Early.CorrectPath );
+				this.correctSound.LoadFile();
+			}
+
+			if( e.PropertyName == nameof( this.Parent.Data.Early.IncorrectPath ) )
+			{
+				this.missSound.FilePath = PathUtility.GetAbsolutePath( baseDir, this.Parent.Data.Early.IncorrectPath );
+				this.missSound.LoadFile();
+			}
 		}
 
 		#endregion
@@ -171,51 +189,6 @@ namespace EarlyPusher.Modules.EarlyTab.ViewModels
 
 		#region イベント
 
-		private void Data_PropertyChanged( object sender, PropertyChangedEventArgs e )
-		{
-			switch( e.PropertyName )
-			{
-				case "AnswerSoundPath":
-					if( !string.IsNullOrEmpty( this.Parent.Data.AnswerSoundPath ) )
-					{
-						this.pushSound = new MediaVM();
-						this.pushSound.FilePath = this.Parent.Data.AnswerSoundPath;
-						this.pushSound.LoadFile();
-					}
-					else
-					{
-						this.pushSound = null;
-					}
-					break;
-				case "CorrectSoundPath":
-					if( !string.IsNullOrEmpty( this.Parent.Data.CorrectSoundPath ) )
-					{
-						this.correctSound = new MediaVM();
-						this.correctSound.FilePath = this.Parent.Data.CorrectSoundPath;
-						this.correctSound.LoadFile();
-					}
-					else
-					{
-						this.correctSound = null;
-					}
-					break;
-				case "MissSoundPath":
-					if( !string.IsNullOrEmpty( this.Parent.Data.MissSoundPath ) )
-					{
-						this.missSound = new MediaVM();
-						this.missSound.FilePath = this.Parent.Data.MissSoundPath;
-						this.missSound.LoadFile();
-					}
-					else
-					{
-						this.missSound = null;
-					}
-					break;
-				default:
-					break;
-			}
-		}
-
 		private void Manager_KeyPushed( object sender, Manager.DeviceKeyEventArgs e )
 		{
 			if( this.Receivable )
@@ -226,6 +199,8 @@ namespace EarlyPusher.Modules.EarlyTab.ViewModels
 					this.pushSound.Play();
 					this.AnswerTeam = team;
 					this.SelectedMedia.Pause();
+
+					this.Receivable = false;
 				}
 			}
 		}
@@ -242,6 +217,36 @@ namespace EarlyPusher.Modules.EarlyTab.ViewModels
 					this.Medias.Add( media );
 				}
 			}
+		}
+
+		private void Medias_CollectionChanged( object sender, NotifyCollectionChangedEventArgs e )
+		{
+			if( e.NewItems != null )
+			{
+				foreach( MediaVM media in e.NewItems )
+				{
+					media.MediaPlayed += Media_MediaPlayed;
+					media.MediaStoped += Media_MediaStoped;
+				}
+			}
+			if( e.OldItems != null )
+			{
+				foreach( MediaVM media in e.OldItems )
+				{
+					media.MediaPlayed -= Media_MediaPlayed;
+					media.MediaStoped -= Media_MediaStoped;
+				}
+			}
+		}
+
+		private void Media_MediaStoped( object sender, EventArgs e )
+		{
+			this.Receivable = false;
+		}
+
+		private void Media_MediaPlayed( object sender, EventArgs e )
+		{
+			this.Receivable = true;
 		}
 
 		/// <summary>

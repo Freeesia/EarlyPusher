@@ -23,9 +23,9 @@ namespace EarlyPusher.Modules.BinkanOperateTab.ViewModels
 		private TeamViewModel answerTeam;
 		private int addPoint;
 
-		private MediaVM pushSound= new MediaVM();
-		private MediaVM correctSound= new MediaVM();
-		private MediaVM incorrectSound= new MediaVM();
+		private MediaVM pushSound = new MediaVM();
+		private MediaVM correctSound = new MediaVM();
+		private MediaVM incorrectSound = new MediaVM();
 
 		#region プロパティ
 
@@ -263,6 +263,8 @@ namespace EarlyPusher.Modules.BinkanOperateTab.ViewModels
 					this.pushSound.Play();
 					this.AnswerTeam = team;
 					this.SelectedMedia.Pause();
+
+					this.Receivable = false;
 				}
 			}
 		}

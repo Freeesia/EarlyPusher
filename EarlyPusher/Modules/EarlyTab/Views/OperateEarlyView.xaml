@@ -73,7 +73,7 @@
 					                   Value="{Binding AddPoint,
 					                                   UpdateSourceTrigger=PropertyChanged}" />
 					<Button Command="{Binding CorrectCommand}" Content="正解！" />
-					<Button Command="{Binding IncorrectCommand}" Content="不正解！" />
+					<Button Command="{Binding MissCommand}" Content="不正解！" />
 				</WrapPanel>
 			</Viewbox>
 
