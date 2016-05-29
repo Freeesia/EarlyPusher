@@ -158,7 +158,6 @@
     </Compile>
     <Compile Include="Utils\PathUtility.cs" />
     <Compile Include="ViewModels\MainVM.cs" />
-    <Compile Include="Modules\EarlyTab\ViewModels\MemberEarlyVM.cs" />
     <Compile Include="Basis\PlayMode.cs" />
     <Compile Include="ViewModels\OperateTabVMBase.cs" />
     <Page Include="Modules\BinkanOperateTab\Views\BinkanOperateTabView.xaml">

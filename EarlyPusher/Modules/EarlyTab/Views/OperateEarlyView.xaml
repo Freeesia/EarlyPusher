@@ -5,63 +5,39 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+             xmlns:xcd="http://schemas.xceed.com/wpf/xaml/toolkit"
              d:DesignHeight="600"
              d:DesignWidth="800"
              mc:Ignorable="d">
 	<UserControl.Resources>
-		<c:BoolReverseConverter x:Key="brConv" />
-		<c:IsNullConverter x:Key="nullConv" IsNull="False" />
+		<Style TargetType="Label">
+			<Setter Property="Margin" Value="10" />
+			<Setter Property="VerticalAlignment" Value="Center" />
+		</Style>
+		<Style TargetType="Button">
+			<Setter Property="Margin" Value="10" />
+			<Setter Property="Width" Value="90" />
+		</Style>
 	</UserControl.Resources>
 	<Grid>
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="*" />
 			<ColumnDefinition Width="Auto" />
-			<ColumnDefinition Width="*" />
-			<ColumnDefinition Width="Auto" />
 			<ColumnDefinition Width="2*" />
 		</Grid.ColumnDefinitions>
-		<Grid Grid.Column="0">
-			<Grid.RowDefinitions>
-				<RowDefinition Height="*" />
-				<RowDefinition Height="Auto" />
-			</Grid.RowDefinitions>
-			<Grid.ColumnDefinitions>
-				<ColumnDefinition />
-				<ColumnDefinition />
-			</Grid.ColumnDefinitions>
-			<ListBox Grid.Row="0"
-			         Grid.ColumnSpan="2"
-			         ItemsSource="{Binding Medias}"
-			         SelectedItem="{Binding SelectedMedia}">
-				<ListBox.ItemTemplate>
-					<DataTemplate>
-						<ContentControl Content="{Binding FileName}">
-							<i:Interaction.Triggers>
-								<i:EventTrigger EventName="MouseDoubleClick">
-									<i:InvokeCommandAction Command="{Binding PlayOrPauseCommand}" />
-								</i:EventTrigger>
-							</i:Interaction.Triggers>
-						</ContentControl>
-					</DataTemplate>
-				</ListBox.ItemTemplate>
-			</ListBox>
 
-			<ToggleButton Grid.Row="1"
-			              Grid.Column="0"
-			              Command="{Binding SelectedMedia.PlayOrPauseCommand}"
-			              Content="再生/一時停止(_P)"
-			              IsChecked="{Binding SelectedMedia.IsPlaying,
-			                                  Mode=OneWay}"
-			              IsEnabled="{Binding SelectedMedia,
-			                                  Converter={StaticResource nullConv}}" />
-			<Button Grid.Row="1"
-			        Grid.Column="1"
-			        Command="{Binding SelectedMedia.StopCommand}"
-			        Content="停止"
-			        IsEnabled="{Binding SelectedMedia,
-			                            Converter={StaticResource nullConv}}" />
-		</Grid>
+		<DockPanel Grid.Column="0">
+			<ComboBox Height="30"
+			          DisplayMemberPath="Name"
+			          DockPanel.Dock="Top"
+			          ItemsSource="{Binding Sets}"
+			          SelectedItem="{Binding SelectedSet}" />
+			<ListBox DisplayMemberPath="FileName"
+			         IsSynchronizedWithCurrentItem="True"
+			         ItemsSource="{Binding Medias}"
+			         SelectedItem="{Binding SelectedMedia}"
+			         SelectionMode="Single" />
+		</DockPanel>
 
 		<GridSplitter Grid.Column="1"
 		              Width="3"
@@ -74,145 +50,70 @@
 				<RowDefinition Height="Auto" />
 				<RowDefinition Height="*" />
 			</Grid.RowDefinitions>
-			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="Auto" />
-				<ColumnDefinition Width="*" />
-			</Grid.ColumnDefinitions>
 
-			<TextBlock Grid.Row="0"
-			           Grid.Column="0"
-			           Margin="5"
-			           Text="得点" />
-			<xctk:IntegerUpDown Grid.Row="0"
-			                    Grid.Column="1"
-			                    Margin="5"
-			                    Increment="10"
-			                    Value="{Binding GetPoint}" />
+			<WrapPanel HorizontalAlignment="Center" Orientation="Horizontal">
+				<Button Grid.Row="0"
+				        Height="80"
+				        Command="{Binding SelectedMedia.PlayOrPauseCommand}"
+				        Content="再生/一時停止" />
+				<Button Grid.Row="0"
+				        Height="80"
+				        Command="{Binding SelectedMedia.StopCommand}"
+				        Content="停止" />
+			</WrapPanel>
 
-			<TextBlock Grid.Row="1"
-			           Grid.Column="0"
-			           Margin="5"
-			           Text="初期値" />
-			<xctk:IntegerUpDown Grid.Row="1"
-			                    Grid.Column="1"
-			                    Margin="5"
-			                    Increment="10"
-			                    Value="{Binding InitPoint}" />
+			<Viewbox Grid.Row="1">
+				<WrapPanel HorizontalAlignment="Center" Orientation="Horizontal">
+					<Label Content="解答権チーム" />
+					<Label MinWidth="100" Content="{Binding AnswerTeam.Model.TeamName}" />
+					<Label Content="追加ポイント" />
+					<xcd:IntegerUpDown Width="60"
+					                   Margin="10"
+					                   Increment="10"
+					                   Value="{Binding AddPoint,
+					                                   UpdateSourceTrigger=PropertyChanged}" />
+					<Button Command="{Binding CorrectCommand}" Content="正解！" />
+					<Button Command="{Binding IncorrectCommand}" Content="不正解！" />
+				</WrapPanel>
+			</Viewbox>
 
-			<TextBlock Grid.Row="2"
-			           Grid.Column="0"
-			           Margin="5"
-			           Text="ミス加算" />
-			<xctk:IntegerUpDown Grid.Row="2"
-			                    Grid.Column="1"
-			                    Margin="5"
-			                    Increment="10"
-			                    Value="{Binding MissPoint}" />
+			<ListView Grid.Row="2" ItemsSource="{Binding Teams}">
+				<ListView.View>
+					<GridView>
+						<GridViewColumn DisplayMemberBinding="{Binding Model.TeamName}" Header="チーム名" />
+						<GridViewColumn Header="プッシュ権">
+							<GridViewColumn.CellTemplate>
+								<DataTemplate>
+									<CheckBox HorizontalAlignment="Center"
+									          VerticalAlignment="Center"
+									          HorizontalContentAlignment="Center"
+									          VerticalContentAlignment="Center"
+									          IsChecked="{Binding Pushable,
+									                              UpdateSourceTrigger=PropertyChanged}" />
+								</DataTemplate>
+							</GridViewColumn.CellTemplate>
+						</GridViewColumn>
+						<GridViewColumn Header="ポイント">
+							<GridViewColumn.CellTemplate>
+								<DataTemplate>
+									<xcd:IntegerUpDown MinWidth="100"
+									                   Increment="10"
+									                   Value="{Binding Model.Point,
+									                                   UpdateSourceTrigger=PropertyChanged}" />
+								</DataTemplate>
+							</GridViewColumn.CellTemplate>
+						</GridViewColumn>
+					</GridView>
+				</ListView.View>
+			</ListView>
 
-			<DataGrid Grid.Row="3"
-			          Grid.ColumnSpan="2"
-			          AutoGenerateColumns="False"
-			          CanUserAddRows="False"
-			          CanUserDeleteRows="False"
-			          ItemsSource="{Binding Teams}"
-			          RowHeaderWidth="0"
-			          SelectionMode="Single">
-				<DataGrid.Columns>
-					<DataGridTextColumn Binding="{Binding Model.TeamName}"
-					                    Header="チーム"
-					                    IsReadOnly="True" />
-					<DataGridTemplateColumn Width="*"
-					                        Header="得点"
-					                        IsReadOnly="True">
-						<DataGridTemplateColumn.CellTemplate>
-							<DataTemplate>
-								<xctk:IntegerUpDown Increment="10" Value="{Binding Model.Point, UpdateSourceTrigger=PropertyChanged}" />
-							</DataTemplate>
-						</DataGridTemplateColumn.CellTemplate>
-					</DataGridTemplateColumn>
-					<DataGridTemplateColumn Header="得点を追加" IsReadOnly="True">
-						<DataGridTemplateColumn.CellTemplate>
-							<DataTemplate>
-								<Button Command="{Binding AddPointCommand}" Content="追加" />
-							</DataTemplate>
-						</DataGridTemplateColumn.CellTemplate>
-					</DataGridTemplateColumn>
-				</DataGrid.Columns>
-			</DataGrid>
+			<Viewbox Grid.Row="3">
+				<Rectangle Width="192" Height="108">
+					<Rectangle.Fill>
+						<VisualBrush Stretch="Uniform" Visual="{Binding PlayView}" />
+					</Rectangle.Fill>
+				</Rectangle>
+			</Viewbox>
 		</Grid>
-
-		<GridSplitter Grid.Column="3"
-		              Width="3"
-		              ResizeBehavior="PreviousAndNext" />
-		<DockPanel Grid.Column="4">
-			<Menu DockPanel.Dock="Top">
-				<MenuItem Command="{Binding StartCommand}"
-				          Header="リセット(_R)"
-				          IsEnabled="{Binding IsSettingMode,
-				                              Converter={StaticResource brConv}}" />
-				<MenuItem Command="{Binding ResetCommand}" Header="解答権復活(_A)" />
-			</Menu>
-			<StackPanel Margin="10"
-			            HorizontalAlignment="Center"
-			            DockPanel.Dock="Bottom"
-			            Orientation="Horizontal">
-				<StackPanel.Resources>
-					<Style TargetType="Button">
-						<Setter Property="Margin" Value="5" />
-						<Setter Property="Width" Value="80" />
-						<Setter Property="Height" Value="40" />
-					</Style>
-					<Style TargetType="ToggleButton">
-						<Setter Property="Margin" Value="5" />
-						<Setter Property="Width" Value="80" />
-						<Setter Property="Height" Value="40" />
-					</Style>
-				</StackPanel.Resources>
-				<ToggleButton Content="クイズシュート" IsChecked="{Binding IsAcceptance}" />
-				<ToggleButton Content="解答停止" IsChecked="{Binding IsAcceptance, Converter={StaticResource brConv}}" />
-				<Button Command="{Binding CorrectCommand}" Content="正解！" />
-				<Button Command="{Binding MissCommand}" Content="不正解！" />
-			</StackPanel>
-			<DataGrid AutoGenerateColumns="False"
-			          CanUserAddRows="False"
-			          CanUserDeleteRows="False"
-			          ItemsSource="{Binding Members}"
-			          RowHeaderWidth="0"
-			          SelectionMode="Single">
-				<DataGrid.Columns>
-					<DataGridTextColumn Binding="{Binding RankStr}"
-					                    Header="順位"
-					                    IsReadOnly="True"
-					                    SortMemberPath="Rank" />
-					<DataGridTemplateColumn Header="解答権" IsReadOnly="True">
-						<DataGridTemplateColumn.CellTemplate>
-							<DataTemplate>
-								<CheckBox HorizontalAlignment="Center"
-								          VerticalAlignment="Center"
-								          IsChecked="{Binding CanAnswer,
-								                              UpdateSourceTrigger=PropertyChanged}" />
-							</DataTemplate>
-						</DataGridTemplateColumn.CellTemplate>
-					</DataGridTemplateColumn>
-					<DataGridTextColumn MinWidth="100"
-					                    Binding="{Binding Model.Name}"
-					                    Header="名前"
-					                    IsReadOnly="True"
-					                    SortMemberPath="Sort" />
-					<DataGridTextColumn Binding="{Binding Parent.Model.TeamName}"
-					                    Header="チーム名"
-					                    IsReadOnly="True"
-					                    SortMemberPath="Sort" />
-					<DataGridTextColumn Header="キー" IsReadOnly="True">
-						<DataGridTextColumn.Binding>
-							<MultiBinding StringFormat="{}{0} : {1}">
-								<Binding Path="Model.Key" />
-								<Binding Path="Model.DeviceGuid" />
-							</MultiBinding>
-						</DataGridTextColumn.Binding>
-					</DataGridTextColumn>
-				</DataGrid.Columns>
-			</DataGrid>
-		</DockPanel>
 	</Grid>
 </UserControl>

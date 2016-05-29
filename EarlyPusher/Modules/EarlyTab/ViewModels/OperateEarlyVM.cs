@@ -18,33 +18,42 @@ namespace EarlyPusher.Modules.EarlyTab.ViewModels
 {
 	public class OperateEarlyVM : OperateTabVMBase
 	{
-		private ObservableHashVMCollection<MediaVM> medias = new ObservableHashVMCollection<MediaVM>();
-		private ObservableVMCollection<TeamData, TeamEarlyVM> teams = new ObservableVMCollection<TeamData, TeamEarlyVM>();
-		private ObservableVMCollection<MemberData, MemberEarlyVM> members = new ObservableVMCollection<MemberData, MemberEarlyVM>();
-
 		private ViewModelsAdapter<TeamEarlyVM,TeamData> adapter;
+		private IEnumerable<SetData> sets;
+		private SetData selectedSet;
 
 		private PlayEarlyView view = new PlayEarlyView();
 
 		private MediaVM selectedMedia;
-		private MediaVM answerSound;
+		private MediaVM pushSound;
 		private MediaVM correctSound;
 		private MediaVM missSound;
 
-		private int rank = 0;
-
-		private int getPoint = 0;
-		private int initPoint = 0;
-		private int missPoint = 0;
-
-		private bool isAcceptance = false;
+		private TeamEarlyVM answerTeam;
+		private bool receivable;
+		private int addPoint;
 
 		#region プロパティ
 
-		public DelegateCommand StartCommand { get; private set; }
-		public DelegateCommand ResetCommand { get; private set; }
-		public DelegateCommand CorrectCommand { get; private set; }
-		public DelegateCommand MissCommand { get; private set; }
+		public DelegateCommand CorrectCommand { get; }
+		public DelegateCommand MissCommand { get; }
+
+		public IEnumerable<SetData> Sets
+		{
+			get { return this.sets; }
+			set { SetProperty( ref this.sets, value ); }
+		}
+
+		public SetData SelectedSet
+		{
+			get { return this.selectedSet; }
+			set { SetProperty( ref this.selectedSet, value, SetChanged ); }
+		}
+
+		/// <summary>
+		/// メディアのリスト
+		/// </summary>
+		public ObservableHashVMCollection<MediaVM> Medias { get; }
 
 		/// <summary>
 		/// チームのリスト
@@ -52,21 +61,7 @@ namespace EarlyPusher.Modules.EarlyTab.ViewModels
 		/// <remarks>
 		/// プレイウィンドウに表示するチームごとの列のリスト
 		/// </remarks>
-		public ObservableVMCollection<TeamData, TeamEarlyVM> Teams
-		{
-			get { return this.teams; }
-		}
-
-		/// <summary>
-		/// メンバーのリスト
-		/// </summary>
-		/// <remarks>
-		/// オペレーションウィンドウに表示する回答者のリスト
-		/// </remarks>
-		public ObservableVMCollection<MemberData, MemberEarlyVM> Members
-		{
-			get { return this.members; }
-		}
+		public ObservableVMCollection<TeamData, TeamEarlyVM> Teams { get; }
 
 		/// <summary>
 		/// 選択しているメディア
@@ -78,43 +73,30 @@ namespace EarlyPusher.Modules.EarlyTab.ViewModels
 		}
 
 		/// <summary>
-		/// メディアのリスト
+		/// プッシュ受付可能
 		/// </summary>
-		public ObservableHashVMCollection<MediaVM> Medias
+		public bool Receivable
 		{
-			get
-			{
-				return this.medias;
-			}
+			get { return this.receivable; }
+			set { SetProperty( ref this.receivable, value ); }
 		}
 
-		public MediaVM CorrectSound
+		/// <summary>
+		/// 解答権を持つチーム
+		/// </summary>
+		public TeamEarlyVM AnswerTeam
 		{
-			get { return this.correctSound; }
+			get { return this.answerTeam; }
+			set { SetProperty( ref this.answerTeam, value, AnswerTeamChanged, AnswerTeamChanging ); }
 		}
 
-		public int GetPoint
+		/// <summary>
+		/// 追加するポイント
+		/// </summary>
+		public int AddPoint
 		{
-			get { return this.getPoint; }
-			set { SetProperty( ref this.getPoint, value ); }
-		}
-
-		public int InitPoint
-		{
-			get { return this.initPoint; }
-			set { SetProperty( ref this.initPoint, value ); }
-		}
-
-		public int MissPoint
-		{
-			get { return this.missPoint; }
-			set { SetProperty( ref this.missPoint, value ); }
-		}
-
-		public bool IsAcceptance
-		{
-			get { return this.isAcceptance; }
-			set { SetProperty( ref this.isAcceptance, value ); }
+			get { return this.addPoint; }
+			set { SetProperty( ref this.addPoint, value ); }
 		}
 
 		#endregion
@@ -122,10 +104,11 @@ namespace EarlyPusher.Modules.EarlyTab.ViewModels
 		public OperateEarlyVM( MainVM parent )
 			: base( parent )
 		{
+			this.Teams = new ObservableVMCollection<TeamData, TeamEarlyVM>();
+			this.Medias = new ObservableHashVMCollection<MediaVM>();
+
 			this.View = new OperateEarlyView();
 			this.Header = "早押し";
-			this.StartCommand = new DelegateCommand( Start );
-			this.ResetCommand = new DelegateCommand( Reset );
 			this.CorrectCommand = new DelegateCommand( Correct );
 			this.MissCommand = new DelegateCommand( Miss );
 		}
@@ -145,9 +128,9 @@ namespace EarlyPusher.Modules.EarlyTab.ViewModels
 
 			if( !string.IsNullOrEmpty( this.Parent.Data.AnswerSoundPath ) )
 			{
-				this.answerSound = new MediaVM();
-				this.answerSound.FilePath = this.Parent.Data.AnswerSoundPath;
-				this.answerSound.LoadFile();
+				this.pushSound = new MediaVM();
+				this.pushSound.FilePath = this.Parent.Data.AnswerSoundPath;
+				this.pushSound.LoadFile();
 			}
 
 			if( !string.IsNullOrEmpty( this.Parent.Data.CorrectSoundPath ) )
@@ -164,23 +147,10 @@ namespace EarlyPusher.Modules.EarlyTab.ViewModels
 				this.missSound.LoadFile();
 			}
 
-			this.adapter = new ViewModelsAdapter<TeamEarlyVM, TeamData>( CreateTeamVM, DeleteTeamVM );
+			this.adapter = new ViewModelsAdapter<TeamEarlyVM, TeamData>( m => new TeamEarlyVM( m ) );
 			this.adapter.Adapt( this.Teams, this.Parent.Data.TeamList );
 
-			LoadVideos();
-		}
-
-		private TeamEarlyVM CreateTeamVM( TeamData arg )
-		{
-			var vm = new TeamEarlyVM( this, arg );
-			vm.Members.CollectionChanged += Members_CollectionChanged;
-
-			return vm;
-		}
-
-		private void DeleteTeamVM( TeamEarlyVM obj )
-		{
-			obj.Members.CollectionChanged -= Members_CollectionChanged;
+			this.Sets = this.Parent.Data.Sets;
 		}
 
 		#endregion
@@ -201,42 +171,20 @@ namespace EarlyPusher.Modules.EarlyTab.ViewModels
 
 		#region イベント
 
-		private void Members_CollectionChanged( object sender, NotifyCollectionChangedEventArgs e )
-		{
-			if( e.OldItems != null )
-			{
-				foreach( MemberEarlyVM member in e.OldItems )
-				{
-					this.Members.Remove( member );
-				}
-			}
-
-			if( e.NewItems != null )
-			{
-				foreach( MemberEarlyVM member in e.NewItems )
-				{
-					this.Members.Add( member );
-				}
-			}
-		}
-
 		private void Data_PropertyChanged( object sender, PropertyChangedEventArgs e )
 		{
 			switch( e.PropertyName )
 			{
-				case "EarlyVideoDir":
-					LoadVideos();
-					break;
 				case "AnswerSoundPath":
 					if( !string.IsNullOrEmpty( this.Parent.Data.AnswerSoundPath ) )
 					{
-						this.answerSound = new MediaVM();
-						this.answerSound.FilePath = this.Parent.Data.AnswerSoundPath;
-						this.answerSound.LoadFile();
+						this.pushSound = new MediaVM();
+						this.pushSound.FilePath = this.Parent.Data.AnswerSoundPath;
+						this.pushSound.LoadFile();
 					}
 					else
 					{
-						this.answerSound = null;
+						this.pushSound = null;
 					}
 					break;
 				case "CorrectSoundPath":
@@ -270,23 +218,28 @@ namespace EarlyPusher.Modules.EarlyTab.ViewModels
 
 		private void Manager_KeyPushed( object sender, Manager.DeviceKeyEventArgs e )
 		{
-			if( !this.IsAcceptance )
+			if( this.Receivable )
 			{
-				return;
-			}
-
-			var item = this.Members.FirstOrDefault( i => i.Model.DeviceGuid == e.InstanceID && i.Model.Key == e.Key );
-			if( item != null && item.Rank == 100 && item.CanAnswer )
-			{
-				rank++;
-				item.Rank = rank;
-				if( this.answerSound != null )
+				var team = this.Teams.FirstOrDefault( t => t.Model.Members.Any( m => m.DeviceGuid == e.InstanceID && m.Key == e.Key ) );
+				if( team?.Pushable ?? false )
 				{
-					this.answerSound.Play();
-				}
-				if( this.SelectedMedia != null )
-				{
+					this.pushSound.Play();
+					this.AnswerTeam = team;
 					this.SelectedMedia.Pause();
+				}
+			}
+		}
+
+		private void SetChanged()
+		{
+			if( this.SelectedSet != null )
+			{
+				this.Medias.Clear();
+				foreach( string path in Directory.EnumerateFiles( this.SelectedSet.Path, "*", SearchOption.AllDirectories ) )
+				{
+					var media = new MediaVM() { FilePath = path };
+					media.LoadFile();
+					this.Medias.Add( media );
 				}
 			}
 		}
@@ -302,77 +255,51 @@ namespace EarlyPusher.Modules.EarlyTab.ViewModels
 			}
 		}
 
+		private void AnswerTeamChanging()
+		{
+			if( this.AnswerTeam != null )
+			{
+				this.AnswerTeam.Answerable = false;
+			}
+		}
+
+		private void AnswerTeamChanged()
+		{
+			if( this.AnswerTeam != null )
+			{
+				this.AnswerTeam.Answerable = true;
+			}
+			this.CorrectCommand.RaiseCanExecuteChanged();
+			this.MissCommand.RaiseCanExecuteChanged();
+		}
+
 		#endregion
 
 		#region コマンド
 
-		/// <summary>
-		/// 解答順位の初期化
-		/// </summary>
-		/// <param name="obj"></param>
-		private void Start( object obj )
-		{
-			InitRank();
-		}
-
-		/// <summary>
-		/// 解答権のリセット
-		/// </summary>
-		/// <param name="obj"></param>
-		private void Reset( object obj )
-		{
-			foreach( var item in this.Members )
-			{
-				item.CanAnswer = true;
-			}
-		}
-
 		private void Correct( object obj )
 		{
-			if( this.CorrectSound != null )
+			if( this.AddPoint == 0 )
 			{
-				this.CorrectSound.Play();
+				if( MessageBox.Show( App.Current.MainWindow, "追加ポイント0だけどいいの？", string.Empty, MessageBoxButton.OKCancel ) != MessageBoxResult.OK )
+				{
+					return;
+				}
 			}
+
+			this.correctSound.Play();
+			this.AnswerTeam.Add( this.AddPoint );
+			this.AddPoint = 0;
+
+			this.AnswerTeam = null;
 		}
 
 		private void Miss( object obj )
 		{
-			this.GetPoint += this.MissPoint;
-			if( this.missSound != null )
-			{
-				this.missSound.Play();
-			}
+			this.missSound.Play();
+			this.AnswerTeam = null;
 		}
 
 		#endregion
-
-		/// <summary>
-		/// メディアフォルダが変更されたとき、メディア一覧を更新します。
-		/// </summary>
-		private void LoadVideos()
-		{
-			//if( !string.IsNullOrEmpty( this.Parent.Data.EarlyVideoDir ) && Directory.Exists( this.Parent.Data.EarlyVideoDir ) )
-			//{
-			//	this.Medias.Clear();
-			//	foreach( string path in Directory.EnumerateFiles( this.Parent.Data.EarlyVideoDir, "*", SearchOption.AllDirectories ) )
-			//	{
-			//		var media = new MediaVM() { FilePath = path, FileName = Path.GetFileName( path ) };
-			//		media.LoadFile();
-			//		this.Medias.Add( media );
-			//	}
-			//}
-		}
-
-		/// <summary>
-		/// 順位を初期化します。
-		/// </summary>
-		private void InitRank()
-		{
-			this.rank = 0;
-			foreach( var i in this.Members )
-			{
-				i.Rank = 100;
-			}
-		}
 	}
 }

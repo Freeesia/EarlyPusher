@@ -12,106 +12,34 @@ namespace EarlyPusher.Modules.EarlyTab.ViewModels
 {
 	public class TeamEarlyVM : ViewModelBase<TeamData>
 	{
-		private ObservableVMCollection<MemberData, MemberEarlyVM> members = new ObservableVMCollection<MemberData, MemberEarlyVM>();
+		private bool answerable = false;
+		private bool pushPermission = true;
 
-		#region プロパティ
-
-		public ObservableVMCollection<MemberData, MemberEarlyVM> Members
+		/// <summary>
+		/// 解答権
+		/// </summary>
+		public bool Answerable
 		{
-			get { return this.members; }
+			get { return this.answerable; }
+			set { SetProperty( ref this.answerable, value ); }
 		}
 
-		public OperateEarlyVM Parent { get; private set; }
-
-		public DelegateCommand AddPointCommand { get; private set; }
-
-		#endregion
-
-		public TeamEarlyVM( OperateEarlyVM parent, TeamData data )
-			: base( data )
+		/// <summary>
+		/// プッシュ権
+		/// </summary>
+		public bool Pushable
 		{
-			this.Parent = parent;
-
-			this.AddPointCommand = new DelegateCommand( AddPoint );
+			get { return this.pushPermission; }
+			set { SetProperty( ref this.pushPermission, value ); }
 		}
 
-		private void AddPoint( object obj )
+		public TeamEarlyVM( TeamData model ) : base( model )
 		{
-			this.Model.Point += this.Parent.GetPoint;
-			this.Parent.GetPoint = this.Parent.InitPoint;
 		}
 
-		private void CreateVM( MemberData member )
+		public void Add( int point )
 		{
-			member.PropertyChanged += MemberData_PropertyChanged;
-			if( !string.IsNullOrEmpty( member.Name ) )
-			{
-				this.Members.Add( new MemberEarlyVM( this, member ) );
-			}
+			this.Model.Point += point;
 		}
-
-		#region オーバーライド
-
-		public override void AttachModel()
-		{
-			this.Model.Members.CollectionChanged += MemberDatas_CollectionChanged;
-			foreach( MemberData member in this.Model.Members )
-			{
-				CreateVM( member );
-			}
-
-			base.AttachModel();
-		}
-
-		public override void DettachModel()
-		{
-			this.Model.Members.CollectionChanged -= MemberDatas_CollectionChanged;
-			foreach( var member in this.Model.Members )
-			{
-				member.PropertyChanged -= MemberData_PropertyChanged;
-			}
-			this.members.Clear();
-
-			base.DettachModel();
-		}
-
-		#endregion
-
-		#region イベント
-
-		private void MemberDatas_CollectionChanged( object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e )
-		{
-			if( e.OldItems != null )
-			{
-				foreach( MemberData member in e.OldItems )
-				{
-					member.PropertyChanged -= MemberData_PropertyChanged;
-					this.Members.Remove( member );
-				}
-			}
-
-			if( e.NewItems != null )
-			{
-				foreach( MemberData member in e.NewItems )
-				{
-					CreateVM( member );
-				}
-			}
-		}
-
-		private void MemberData_PropertyChanged( object sender, System.ComponentModel.PropertyChangedEventArgs e )
-		{
-			var member = sender as MemberData;
-			if( string.IsNullOrEmpty( member.Name ) )
-			{
-				this.Members.Remove( member );
-			}
-			else if( !this.Members.Contains( member ) )
-			{
-				this.Members.Add( new MemberEarlyVM( this, member ) );
-			}
-		}
-
-		#endregion
 	}
 }
