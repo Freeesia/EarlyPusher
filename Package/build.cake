@@ -11,7 +11,7 @@ var configuration = Argument("configuration", "Release");
 //////////////////////////////////////////////////////////////////////
 
 // Define directories.
-var buildDir = Directory("../EarlyPusher/bin") + Directory(configuration);
+var buildDir = Directory("../EarlyPusher/bin/x64") + Directory(configuration);
 
 //////////////////////////////////////////////////////////////////////
 // TASKS
@@ -39,11 +39,17 @@ Task("Build").IsDependentOn("Clean")
     }
 });
 
+Task("Package").IsDependentOn("Build")
+               .Does(() =>
+{
+   Zip(buildDir, "EarlyPusher.zip");     
+});
+
 //////////////////////////////////////////////////////////////////////
 // TASK TARGETS
 //////////////////////////////////////////////////////////////////////
 
-Task("Default").IsDependentOn("Build");
+Task("Default").IsDependentOn("Package");
 
 //////////////////////////////////////////////////////////////////////
 // EXECUTION
