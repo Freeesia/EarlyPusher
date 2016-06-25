@@ -33,6 +33,7 @@ namespace EarlyPusher.Modules.EarlyTab.ViewModels
 		private TeamEarlyVM answerTeam;
 		private bool receivable;
 		private int addPoint = 0;
+		private int missCount = 0;
 
 		#region プロパティ
 
@@ -106,6 +107,12 @@ namespace EarlyPusher.Modules.EarlyTab.ViewModels
 		{
 			get { return this.addPoint; }
 			set { SetProperty( ref this.addPoint, value ); }
+		}
+
+		public int MissCount
+		{
+			get { return this.missCount; }
+			set { SetProperty( ref this.missCount, value ); }
 		}
 
 		#endregion
@@ -340,6 +347,7 @@ namespace EarlyPusher.Modules.EarlyTab.ViewModels
 			this.correctSound.Play();
 			this.AnswerTeam.Add( this.AddPoint );
 			this.AddPoint = 0;
+			this.MissCount = 0;
 
 			this.AnswerTeam = null;
 		}
@@ -348,6 +356,7 @@ namespace EarlyPusher.Modules.EarlyTab.ViewModels
 		{
 			this.missSound.Play();
 			this.AnswerTeam = null;
+			this.MissCount++;
 
 			this.AddPoint += this.SelectedSet.BasePoint;
 		}

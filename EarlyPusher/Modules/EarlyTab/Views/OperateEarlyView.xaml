@@ -83,6 +83,12 @@
 					<WrapPanel HorizontalAlignment="Center" Orientation="Horizontal">
 						<Button Command="{Binding CorrectCommand}" Content="正解！" />
 						<Button Command="{Binding MissCommand}" Content="不正解！" />
+						<Label Content="不正解数" />
+						<xcd:IntegerUpDown Width="60"
+										   Margin="10"
+										   Increment="1"
+										   Value="{Binding MissCount,
+														   UpdateSourceTrigger=PropertyChanged}" />
 					</WrapPanel>
 				</StackPanel>
 			</Viewbox>
