@@ -25,15 +25,15 @@
 		<Menu Grid.Row="0"
 			  Grid.Column="0"
 			  Grid.ColumnSpan="3">
-			<MenuItem Command="{Binding AddSetCommand}" Header="セット追加" />
-			<MenuItem Command="{Binding RemSetCommand}" Header="セット削除" />
+			<MenuItem Command="{Binding AddSubjectCommand}" Header="問題追加" />
+			<MenuItem Command="{Binding RemSubjectCommand}" Header="問題削除" />
 		</Menu>
 
 		<ListBox Grid.Row="1"
 				 Grid.Column="0"
 				 DisplayMemberPath="Model.Name"
-				 ItemsSource="{Binding Sets}"
-				 SelectedItem="{Binding SelectedSet}" />
+				 ItemsSource="{Binding Subjects}"
+				 SelectedItem="{Binding SelectedSubject}" />
 		<GridSplitter Grid.Row="1"
 					  Grid.Column="1"
 					  Width="3"
@@ -113,9 +113,9 @@
 						Content="参照" />
 
 			</Grid>
-			<StackPanel DataContext="{Binding SelectedSet}" IsEnabled="{Binding Converter={StaticResource o2tConv}}">
+			<StackPanel DataContext="{Binding SelectedSubject}" IsEnabled="{Binding Converter={StaticResource o2tConv}}">
 
-				<Label Content="セット名" />
+				<Label Content="問題名" />
 				<TextBox Margin="40 0 0 0" Text="{Binding Model.Name, UpdateSourceTrigger=PropertyChanged}" />
 
 				<Label Content="フォルダ" />
@@ -126,12 +126,6 @@
 						HorizontalAlignment="Right"
 						Command="{Binding RefPathCommand}"
 						Content="参照" />
-
-				<Label Content="基準ポイント" />
-				<xcd:IntegerUpDown Margin="40 0 0 0"
-								   DefaultValue="10"
-								   Increment="10"
-								   Value="{Binding Model.BasePoint}" />
 			</StackPanel>
 		</StackPanel>
 	</Grid>

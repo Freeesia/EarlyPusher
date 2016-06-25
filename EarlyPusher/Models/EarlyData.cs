@@ -16,7 +16,7 @@ namespace EarlyPusher.Models
 		private string pushPath;
 		private string questionPath;
 
-		public ObservableCollection<SetData> Sets { get; } = new ObservableCollection<SetData>();
+		public ObservableCollection<SubjectData> Subjects { get; } = new ObservableCollection<SubjectData>();
 
 		/// <summary>
 		/// プッシュ音

@@ -19,8 +19,8 @@ namespace EarlyPusher.Modules.EarlyTab.ViewModels
 	{
 		private bool playingQuestion;
 		private ViewModelsAdapter<TeamEarlyVM,TeamData> adapter;
-		private IEnumerable<SetData> sets;
-		private SetData selectedSet;
+		private IEnumerable<SubjectData> subjects;
+		private SubjectData selectedSubject;
 
 		private PlayEarlyView view = new PlayEarlyView();
 
@@ -30,6 +30,7 @@ namespace EarlyPusher.Modules.EarlyTab.ViewModels
 		private MediaVM missSound = new MediaVM();
 		private MediaVM questionSound = new MediaVM();
 
+		private int basePoint;
 		private TeamEarlyVM answerTeam;
 		private bool receivable;
 		private int addPoint = 0;
@@ -41,6 +42,7 @@ namespace EarlyPusher.Modules.EarlyTab.ViewModels
 		public DelegateCommand MissCommand { get; }
 		public DelegateCommand SetBasePointCommand { get; }
 		public DelegateCommand PlayOrPauseCommand { get; }
+		public DelegateCommand PlayAnswerCommand { get; }
 
 		public bool PlayingQuestion
 		{
@@ -48,16 +50,16 @@ namespace EarlyPusher.Modules.EarlyTab.ViewModels
 			set { SetProperty( ref this.playingQuestion, value ); }
 		}
 
-		public IEnumerable<SetData> Sets
+		public IEnumerable<SubjectData> Subjects
 		{
-			get { return this.sets; }
-			set { SetProperty( ref this.sets, value ); }
+			get { return this.subjects; }
+			set { SetProperty( ref this.subjects, value ); }
 		}
 
-		public SetData SelectedSet
+		public SubjectData SelectedSubject
 		{
-			get { return this.selectedSet; }
-			set { SetProperty( ref this.selectedSet, value, SetChanged ); }
+			get { return this.selectedSubject; }
+			set { SetProperty( ref this.selectedSubject, value, SubjectChanged ); }
 		}
 
 		/// <summary>
@@ -80,6 +82,12 @@ namespace EarlyPusher.Modules.EarlyTab.ViewModels
 		{
 			get { return this.selectedMedia; }
 			set { SetProperty( ref this.selectedMedia, value, SelectedMediaChanged, SelectedMediaChanging ); }
+		}
+
+		public int BasePoint
+		{
+			get { return this.basePoint; }
+			set { SetProperty( ref this.basePoint, value ); }
 		}
 
 		/// <summary>
@@ -127,6 +135,7 @@ namespace EarlyPusher.Modules.EarlyTab.ViewModels
 			this.View = new OperateEarlyView();
 			this.Header = "早押し";
 			this.PlayOrPauseCommand = new DelegateCommand( PlayOrPause, p => this.SelectedMedia != null );
+			this.PlayAnswerCommand = new DelegateCommand( PlayAnPlayAnswer, p => this.Medias.Any( m => Path.GetFileNameWithoutExtension( m.FilePath ).EndsWith( "_ans" ) ) );
 			this.CorrectCommand = new DelegateCommand( Correct, o => this.AnswerTeam != null );
 			this.MissCommand = new DelegateCommand( Miss, o => this.AnswerTeam != null );
 			this.SetBasePointCommand = new DelegateCommand( SetBasePoint );
@@ -148,7 +157,7 @@ namespace EarlyPusher.Modules.EarlyTab.ViewModels
 			this.adapter = new ViewModelsAdapter<TeamEarlyVM, TeamData>( m => new TeamEarlyVM( m ) );
 			this.adapter.Adapt( this.Teams, this.Parent.Data.TeamList );
 
-			this.Sets = this.Parent.Data.Early.Sets;
+			this.Subjects = this.Parent.Data.Early.Subjects;
 
 			var baseDir = Path.GetDirectoryName( Assembly.GetExecutingAssembly().Location );
 			{
@@ -233,17 +242,18 @@ namespace EarlyPusher.Modules.EarlyTab.ViewModels
 			}
 		}
 
-		private void SetChanged()
+		private void SubjectChanged()
 		{
-			if( this.SelectedSet != null )
+			if( this.SelectedSubject != null )
 			{
 				this.Medias.Clear();
-				foreach( string path in Directory.EnumerateFiles( this.SelectedSet.Path, "*", SearchOption.AllDirectories ) )
+				foreach( string path in Directory.EnumerateFiles( this.SelectedSubject.Path, "*", SearchOption.AllDirectories ) )
 				{
 					var media = new MediaVM() { FilePath = path };
 					media.LoadFile();
 					this.Medias.Add( media );
 				}
+				this.PlayAnswerCommand.RaiseCanExecuteChanged();
 			}
 		}
 
@@ -334,6 +344,12 @@ namespace EarlyPusher.Modules.EarlyTab.ViewModels
 			}
 		}
 
+		private void PlayAnPlayAnswer( object obj )
+		{
+			this.SelectedMedia = this.Medias.FirstOrDefault( m => Path.GetFileNameWithoutExtension( m.FilePath ).EndsWith( "_ans" ) );
+			this.SelectedMedia?.Play();
+		}
+
 		private void Correct( object obj )
 		{
 			if( this.AddPoint == 0 )
@@ -358,12 +374,12 @@ namespace EarlyPusher.Modules.EarlyTab.ViewModels
 			this.AnswerTeam = null;
 			this.MissCount++;
 
-			this.AddPoint += this.SelectedSet.BasePoint;
+			this.AddPoint += this.BasePoint;
 		}
 
 		private void SetBasePoint( object obj )
 		{
-			this.AddPoint += this.SelectedSet.BasePoint;
+			this.AddPoint += this.BasePoint;
 		}
 
 		#endregion

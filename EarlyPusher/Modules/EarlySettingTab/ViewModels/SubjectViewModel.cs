@@ -7,11 +7,11 @@ using StFrLibs.Core.Commands;
 
 namespace EarlyPusher.Modules.EarlySettingTab.ViewModels
 {
-	public class SetViewModel : ViewModelBase<SetData>
+	public class SubjectViewModel : ViewModelBase<SubjectData>
 	{
 		public ICommand RefPathCommand { get; }
 
-		public SetViewModel( SetData model ) : base( model )
+		public SubjectViewModel( SubjectData model ) : base( model )
 		{
 			this.RefPathCommand = new DelegateCommand( RefPath );
 		}

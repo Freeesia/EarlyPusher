@@ -20,13 +20,13 @@ namespace EarlyPusher.Modules.EarlySettingTab.ViewModels
 		private string incorrectPath;
 		private string questionPath;
 
-		private ViewModelsAdapter<SetViewModel,SetData> adapter;
-		private SetViewModel selectedSet;
+		private ViewModelsAdapter<SubjectViewModel,SubjectData> adapter;
+		private SubjectViewModel selectedSubject;
 
-		public DelegateCommand AddSetCommand { get; }
-		public DelegateCommand RemSetCommand { get; }
+		public DelegateCommand AddSubjectCommand { get; }
+		public DelegateCommand RemSubjectCommand { get; }
 
-		public ObservableVMCollection<SetData, SetViewModel> Sets { get; }
+		public ObservableVMCollection<SubjectData, SubjectViewModel> Subjects { get; }
 
 		/// <summary>
 		/// プッシュ音
@@ -64,10 +64,10 @@ namespace EarlyPusher.Modules.EarlySettingTab.ViewModels
 			set { SetProperty( ref this.questionPath, value ); }
 		}
 
-		public SetViewModel SelectedSet
+		public SubjectViewModel SelectedSubject
 		{
-			get { return this.selectedSet; }
-			set { SetProperty( ref this.selectedSet, value, SelectedSetChanged ); }
+			get { return this.selectedSubject; }
+			set { SetProperty( ref this.selectedSubject, value, SelectedSubjectChanged ); }
 		}
 
 		public DelegateCommand OpenPushPathCommand { get; }
@@ -85,17 +85,17 @@ namespace EarlyPusher.Modules.EarlySettingTab.ViewModels
 			this.OpenIncorrectPathCommand = new DelegateCommand( OpenIncorrectPath );
 			this.OpenQuestionPathCommand = new DelegateCommand( OpenQuestionPath );
 
-			this.AddSetCommand = new DelegateCommand( AddSet );
-			this.RemSetCommand = new DelegateCommand( RemSet, CanRemSet );
+			this.AddSubjectCommand = new DelegateCommand( AddSubject );
+			this.RemSubjectCommand = new DelegateCommand( RemSubject, CanRemSubject );
 
-			this.Sets = new ObservableVMCollection<SetData, SetViewModel>();
+			this.Subjects = new ObservableVMCollection<SubjectData, SubjectViewModel>();
 
-			this.adapter = new ViewModelsAdapter<SetViewModel, SetData>( m => new SetViewModel( m ) );
+			this.adapter = new ViewModelsAdapter<SubjectViewModel, SubjectData>( m => new SubjectViewModel( m ) );
 		}
 
-		private void SelectedSetChanged()
+		private void SelectedSubjectChanged()
 		{
-			this.RemSetCommand.RaiseCanExecuteChanged();
+			this.RemSubjectCommand.RaiseCanExecuteChanged();
 		}
 
 		#region コマンド
@@ -140,29 +140,29 @@ namespace EarlyPusher.Modules.EarlySettingTab.ViewModels
 			}
 		}
 
-		private void AddSet( object obj )
+		private void AddSubject( object obj )
 		{
-			this.Parent.Data.Early.Sets.Add( new SetData() { Name = "Set" } );
+			this.Parent.Data.Early.Subjects.Add( new SubjectData() { Name = "問題" } );
 		}
 
-		private bool CanRemSet( object obj )
+		private bool CanRemSubject( object obj )
 		{
-			return this.SelectedSet != null;
+			return this.SelectedSubject != null;
 		}
 
-		private void RemSet( object obj )
+		private void RemSubject( object obj )
 		{
-			Debug.Assert( this.SelectedSet != null );
+			Debug.Assert( this.SelectedSubject != null );
 
-			this.Parent.Data.Early.Sets.Remove( this.SelectedSet.Model );
-			this.SelectedSet = null;
+			this.Parent.Data.Early.Subjects.Remove( this.SelectedSubject.Model );
+			this.SelectedSubject = null;
 		}
 
 		#endregion
 
 		public override void LoadData()
 		{
-			this.adapter.Adapt( this.Sets, this.Parent.Data.Early.Sets );
+			this.adapter.Adapt( this.Subjects, this.Parent.Data.Early.Subjects );
 
 			this.PushPath = this.Parent.Data.Early.PushPath;
 			this.CorrectPath = this.Parent.Data.Early.CorrectPath;
