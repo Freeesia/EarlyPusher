@@ -26,8 +26,16 @@ namespace EarlyPusher.Modules.BinkanOperateTab.ViewModels
 		private MediaVM pushSound = new MediaVM();
 		private MediaVM correctSound = new MediaVM();
 		private MediaVM incorrectSound = new MediaVM();
+		private MediaVM questionSound = new MediaVM();
+		private bool playingQuestion;
 
 		#region プロパティ
+
+		public bool PlayingQuestion
+		{
+			get { return this.playingQuestion; }
+			set { SetProperty( ref this.playingQuestion, value ); }
+		}
 
 		/// <summary>
 		/// ヒント動画一覧
@@ -37,7 +45,7 @@ namespace EarlyPusher.Modules.BinkanOperateTab.ViewModels
 		public MediaVM SelectedMedia
 		{
 			get { return this.selectedMedia; }
-			set { SetProperty( ref this.selectedMedia, value ); }
+			set { SetProperty( ref this.selectedMedia, value, SelectedMediaChanged ); }
 		}
 
 		/// <summary>
@@ -72,6 +80,7 @@ namespace EarlyPusher.Modules.BinkanOperateTab.ViewModels
 			set { SetProperty( ref this.addPoint, value ); }
 		}
 
+		public DelegateCommand PlayOrPauseCommand { get; }
 		public DelegateCommand CorrectCommand { get; }
 		public DelegateCommand IncorrectCommand { get; }
 
@@ -88,13 +97,40 @@ namespace EarlyPusher.Modules.BinkanOperateTab.ViewModels
 			this.Medias = new ObservableCollection<MediaVM>();
 			this.Teams = new ObservableCollection<TeamViewModel>();
 
+			this.PlayOrPauseCommand = new DelegateCommand( PlayOrPause, p => this.SelectedMedia != null );
 			this.CorrectCommand = new DelegateCommand( Correct, p => this.AnswerTeam != null );
 			this.IncorrectCommand = new DelegateCommand( Incorrect, p => this.AnswerTeam != null );
+
+			this.questionSound.MediaStoped += QuestionSound_MediaStoped;
 
 			this.PlayView = new BinkanPlayView();
 		}
 
 		#region コマンド
+
+		private void SelectedMediaChanged()
+		{
+			this.PlayOrPauseCommand.RaiseCanExecuteChanged();
+		}
+
+		private void PlayOrPause( object obj )
+		{
+			if( !this.SelectedMedia.IsPlaying )
+			{
+				this.questionSound.Play();
+				this.PlayingQuestion = true;
+			}
+			else
+			{
+				this.SelectedMedia.Pause();
+			}
+		}
+
+		private void QuestionSound_MediaStoped( object sender, EventArgs e )
+		{
+			this.SelectedMedia.Play();
+			this.PlayingQuestion = false;
+		}
 
 		private void AnswerTeamChanging()
 		{
@@ -169,6 +205,10 @@ namespace EarlyPusher.Modules.BinkanOperateTab.ViewModels
 				this.incorrectSound.FilePath = PathUtility.GetAbsolutePath( baseDir, this.Parent.Data.Binkan.IncorrectPath );
 				this.incorrectSound.LoadFile();
 			}
+			{
+				this.questionSound.FilePath = PathUtility.GetAbsolutePath( baseDir, this.Parent.Data.Binkan.QuestionPath );
+				this.questionSound.LoadFile();
+			}
 			this.Parent.Data.Binkan.PropertyChanged += Binkan_PropertyChanged;
 		}
 
@@ -192,6 +232,12 @@ namespace EarlyPusher.Modules.BinkanOperateTab.ViewModels
 			{
 				this.incorrectSound.FilePath = PathUtility.GetAbsolutePath( baseDir, this.Parent.Data.Binkan.IncorrectPath );
 				this.incorrectSound.LoadFile();
+			}
+
+			if( e.PropertyName == nameof( this.Parent.Data.Binkan.QuestionPath ) )
+			{
+				this.questionSound.FilePath = PathUtility.GetAbsolutePath( baseDir, this.Parent.Data.Binkan.QuestionPath );
+				this.questionSound.LoadFile();
 			}
 		}
 

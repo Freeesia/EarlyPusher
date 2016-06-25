@@ -1,14 +1,14 @@
 ﻿<UserControl x:Class="EarlyPusher.Modules.EarlySettingTab.Views.EarlySettingTabView"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:conv="clr-namespace:StFrLibs.Core.Converter;assembly=StFrCore"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:local="clr-namespace:EarlyPusher.Modules.EarlySettingTab.Views"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:xcd="http://schemas.xceed.com/wpf/xaml/toolkit"
-             d:DesignHeight="600"
-             d:DesignWidth="800"
-             mc:Ignorable="d">
+			 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			 xmlns:conv="clr-namespace:StFrLibs.Core.Converter;assembly=StFrCore"
+			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+			 xmlns:local="clr-namespace:EarlyPusher.Modules.EarlySettingTab.Views"
+			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 xmlns:xcd="http://schemas.xceed.com/wpf/xaml/toolkit"
+			 d:DesignHeight="600"
+			 d:DesignWidth="800"
+			 mc:Ignorable="d">
 	<UserControl.Resources>
 		<conv:IsNullConverter x:Key="o2tConv" IsNull="False" />
 	</UserControl.Resources>
@@ -23,24 +23,24 @@
 			<ColumnDefinition Width="2*" />
 		</Grid.ColumnDefinitions>
 		<Menu Grid.Row="0"
-		      Grid.Column="0"
-		      Grid.ColumnSpan="3">
+			  Grid.Column="0"
+			  Grid.ColumnSpan="3">
 			<MenuItem Command="{Binding AddSetCommand}" Header="セット追加" />
 			<MenuItem Command="{Binding RemSetCommand}" Header="セット削除" />
 		</Menu>
 
 		<ListBox Grid.Row="1"
-		         Grid.Column="0"
-		         DisplayMemberPath="Model.Name"
-		         ItemsSource="{Binding Sets}"
-		         SelectedItem="{Binding SelectedSet}" />
+				 Grid.Column="0"
+				 DisplayMemberPath="Model.Name"
+				 ItemsSource="{Binding Sets}"
+				 SelectedItem="{Binding SelectedSet}" />
 		<GridSplitter Grid.Row="1"
-		              Grid.Column="1"
-		              Width="3"
-		              ResizeBehavior="PreviousAndNext" />
+					  Grid.Column="1"
+					  Width="3"
+					  ResizeBehavior="PreviousAndNext" />
 		<StackPanel Grid.Row="1"
-		            Grid.Column="2"
-		            Margin="20">
+					Grid.Column="2"
+					Margin="20">
 			<Grid DockPanel.Dock="Top">
 				<Grid.Resources>
 					<Style TargetType="Button">
@@ -52,6 +52,7 @@
 					<RowDefinition Height="Auto" />
 					<RowDefinition Height="Auto" />
 					<RowDefinition Height="Auto" />
+					<RowDefinition Height="Auto" />
 				</Grid.RowDefinitions>
 				<Grid.ColumnDefinitions>
 					<ColumnDefinition Width="Auto" />
@@ -60,43 +61,56 @@
 				</Grid.ColumnDefinitions>
 
 				<Label Grid.Row="0"
-				       Grid.Column="0"
-				       Content="プッシュ音" />
+					   Grid.Column="0"
+					   Content="プッシュ音" />
 				<TextBox Grid.Row="0"
-				         Grid.Column="1"
-				         IsReadOnly="True"
-				         Text="{Binding PushPath,
-				                        Mode=OneWay}" />
+						 Grid.Column="1"
+						 IsReadOnly="True"
+						 Text="{Binding PushPath,
+										Mode=OneWay}" />
 				<Button Grid.Row="0"
-				        Grid.Column="2"
-				        Command="{Binding OpenPushPathCommand}"
-				        Content="参照" />
+						Grid.Column="2"
+						Command="{Binding OpenPushPathCommand}"
+						Content="参照" />
 
 				<Label Grid.Row="1"
-				       Grid.Column="0"
-				       Content="正解音" />
+					   Grid.Column="0"
+					   Content="正解音" />
 				<TextBox Grid.Row="1"
-				         Grid.Column="1"
-				         IsReadOnly="True"
-				         Text="{Binding CorrectPath,
-				                        Mode=OneWay}" />
+						 Grid.Column="1"
+						 IsReadOnly="True"
+						 Text="{Binding CorrectPath,
+										Mode=OneWay}" />
 				<Button Grid.Row="1"
-				        Grid.Column="2"
-				        Command="{Binding OpenCorrectPathCommand}"
-				        Content="参照" />
+						Grid.Column="2"
+						Command="{Binding OpenCorrectPathCommand}"
+						Content="参照" />
 
 				<Label Grid.Row="2"
-				       Grid.Column="0"
-				       Content="不正解音" />
+					   Grid.Column="0"
+					   Content="不正解音" />
 				<TextBox Grid.Row="2"
-				         Grid.Column="1"
-				         IsReadOnly="True"
-				         Text="{Binding IncorrectPath,
-				                        Mode=OneWay}" />
+						 Grid.Column="1"
+						 IsReadOnly="True"
+						 Text="{Binding IncorrectPath,
+										Mode=OneWay}" />
 				<Button Grid.Row="2"
-				        Grid.Column="2"
-				        Command="{Binding OpenIncorrectPathCommand}"
-				        Content="参照" />
+						Grid.Column="2"
+						Command="{Binding OpenIncorrectPathCommand}"
+						Content="参照" />
+
+				<Label Grid.Row="3"
+					   Grid.Column="0"
+					   Content="出題音" />
+				<TextBox Grid.Row="3"
+						 Grid.Column="1"
+						 IsReadOnly="True"
+						 Text="{Binding QuestionPath,
+										Mode=OneWay}" />
+				<Button Grid.Row="3"
+						Grid.Column="2"
+						Command="{Binding OpenQuestionPathCommand}"
+						Content="参照" />
 
 			</Grid>
 			<StackPanel DataContext="{Binding SelectedSet}" IsEnabled="{Binding Converter={StaticResource o2tConv}}">
@@ -106,18 +120,18 @@
 
 				<Label Content="フォルダ" />
 				<TextBox Margin="40 0 0 0"
-				         IsReadOnly="True"
-				         Text="{Binding Model.Path}" />
+						 IsReadOnly="True"
+						 Text="{Binding Model.Path}" />
 				<Button Width="80"
-				        HorizontalAlignment="Right"
-				        Command="{Binding RefPathCommand}"
-				        Content="参照" />
+						HorizontalAlignment="Right"
+						Command="{Binding RefPathCommand}"
+						Content="参照" />
 
 				<Label Content="基準ポイント" />
 				<xcd:IntegerUpDown Margin="40 0 0 0"
-				                   DefaultValue="10"
-				                   Increment="10"
-				                   Value="{Binding Model.BasePoint}" />
+								   DefaultValue="10"
+								   Increment="10"
+								   Value="{Binding Model.BasePoint}" />
 			</StackPanel>
 		</StackPanel>
 	</Grid>

@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
 using EarlyPusher.Models;
 using EarlyPusher.Modules.EarlySettingTab.Views;
 using EarlyPusher.Utils;
@@ -24,6 +18,7 @@ namespace EarlyPusher.Modules.EarlySettingTab.ViewModels
 		private string pushPath;
 		private string correctPath;
 		private string incorrectPath;
+		private string questionPath;
 
 		private ViewModelsAdapter<SetViewModel,SetData> adapter;
 		private SetViewModel selectedSet;
@@ -60,6 +55,15 @@ namespace EarlyPusher.Modules.EarlySettingTab.ViewModels
 			set { SetProperty( ref this.incorrectPath, value ); }
 		}
 
+		/// <summary>
+		/// 出題音
+		/// </summary>
+		public string QuestionPath
+		{
+			get { return this.questionPath; }
+			set { SetProperty( ref this.questionPath, value ); }
+		}
+
 		public SetViewModel SelectedSet
 		{
 			get { return this.selectedSet; }
@@ -69,6 +73,7 @@ namespace EarlyPusher.Modules.EarlySettingTab.ViewModels
 		public DelegateCommand OpenPushPathCommand { get; }
 		public DelegateCommand OpenCorrectPathCommand { get; }
 		public DelegateCommand OpenIncorrectPathCommand { get; }
+		public DelegateCommand OpenQuestionPathCommand { get; }
 
 		public EarlySettingTabViewModel( MainVM parent ) : base( parent )
 		{
@@ -78,6 +83,7 @@ namespace EarlyPusher.Modules.EarlySettingTab.ViewModels
 			this.OpenPushPathCommand = new DelegateCommand( OpenPushPath );
 			this.OpenCorrectPathCommand = new DelegateCommand( OpenCorrectPath );
 			this.OpenIncorrectPathCommand = new DelegateCommand( OpenIncorrectPath );
+			this.OpenQuestionPathCommand = new DelegateCommand( OpenQuestionPath );
 
 			this.AddSetCommand = new DelegateCommand( AddSet );
 			this.RemSetCommand = new DelegateCommand( RemSet, CanRemSet );
@@ -124,6 +130,16 @@ namespace EarlyPusher.Modules.EarlySettingTab.ViewModels
 			}
 		}
 
+		private void OpenQuestionPath( object obj )
+		{
+			var dlg = new OpenFileDialog();
+			if( dlg.ShowDialog( App.Current.MainWindow ) == true )
+			{
+				var baseDir = Path.GetDirectoryName( Assembly.GetExecutingAssembly().Location );
+				this.Parent.Data.Early.QuestionPath = PathUtility.GetRelativePath( baseDir, dlg.FileName );
+			}
+		}
+
 		private void AddSet( object obj )
 		{
 			this.Parent.Data.Early.Sets.Add( new SetData() { Name = "Set" } );
@@ -148,18 +164,20 @@ namespace EarlyPusher.Modules.EarlySettingTab.ViewModels
 		{
 			this.adapter.Adapt( this.Sets, this.Parent.Data.Early.Sets );
 
-			this.PushPath      = this.Parent.Data.Early.PushPath;
-			this.CorrectPath   = this.Parent.Data.Early.CorrectPath;
+			this.PushPath = this.Parent.Data.Early.PushPath;
+			this.CorrectPath = this.Parent.Data.Early.CorrectPath;
 			this.IncorrectPath = this.Parent.Data.Early.IncorrectPath;
+			this.QuestionPath = this.Parent.Data.Early.QuestionPath;
 
 			this.Parent.Data.Early.PropertyChanged += Early_PropertyChanged;
 		}
 
 		private void Early_PropertyChanged( object sender, PropertyChangedEventArgs e )
 		{
-			this.PushPath      = this.Parent.Data.Early.PushPath;
-			this.CorrectPath   = this.Parent.Data.Early.CorrectPath;
+			this.PushPath = this.Parent.Data.Early.PushPath;
+			this.CorrectPath = this.Parent.Data.Early.CorrectPath;
 			this.IncorrectPath = this.Parent.Data.Early.IncorrectPath;
+			this.QuestionPath = this.Parent.Data.Early.QuestionPath;
 		}
 	}
 }

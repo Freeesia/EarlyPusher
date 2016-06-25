@@ -1,15 +1,16 @@
 ﻿<UserControl x:Class="EarlyPusher.Modules.EarlyTab.Views.OperateEarlyView"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:c="clr-namespace:StFrLibs.Core.Converter;assembly=StFrCore"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:xcd="http://schemas.xceed.com/wpf/xaml/toolkit"
-             d:DesignHeight="600"
-             d:DesignWidth="800"
-             mc:Ignorable="d">
+			 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			 xmlns:c="clr-namespace:StFrLibs.Core.Converter;assembly=StFrCore"
+			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+			 xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 xmlns:xcd="http://schemas.xceed.com/wpf/xaml/toolkit"
+			 d:DesignHeight="600"
+			 d:DesignWidth="800"
+			 mc:Ignorable="d">
 	<UserControl.Resources>
+		<c:BoolReverseConverter x:Key="revConv" />
 		<Style TargetType="Label">
 			<Setter Property="Margin" Value="10" />
 			<Setter Property="VerticalAlignment" Value="Center" />
@@ -19,7 +20,7 @@
 			<Setter Property="Width" Value="90" />
 		</Style>
 	</UserControl.Resources>
-	<Grid>
+	<Grid IsEnabled="{Binding PlayingQuestion, Converter={StaticResource revConv}}">
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="*" />
 			<ColumnDefinition Width="Auto" />
@@ -28,20 +29,20 @@
 
 		<DockPanel Grid.Column="0">
 			<ComboBox Height="30"
-			          DisplayMemberPath="Name"
-			          DockPanel.Dock="Top"
-			          ItemsSource="{Binding Sets}"
-			          SelectedItem="{Binding SelectedSet}" />
+					  DisplayMemberPath="Name"
+					  DockPanel.Dock="Top"
+					  ItemsSource="{Binding Sets}"
+					  SelectedItem="{Binding SelectedSet}" />
 			<ListBox DisplayMemberPath="FileName"
-			         IsSynchronizedWithCurrentItem="True"
-			         ItemsSource="{Binding Medias}"
-			         SelectedItem="{Binding SelectedMedia}"
-			         SelectionMode="Single" />
+					 IsSynchronizedWithCurrentItem="True"
+					 ItemsSource="{Binding Medias}"
+					 SelectedItem="{Binding SelectedMedia}"
+					 SelectionMode="Single" />
 		</DockPanel>
 
 		<GridSplitter Grid.Column="1"
-		              Width="3"
-		              ResizeBehavior="PreviousAndNext" />
+					  Width="3"
+					  ResizeBehavior="PreviousAndNext" />
 
 		<Grid Grid.Column="2">
 			<Grid.RowDefinitions>
@@ -53,13 +54,13 @@
 
 			<WrapPanel HorizontalAlignment="Center" Orientation="Horizontal">
 				<Button Grid.Row="0"
-				        Height="80"
-				        Command="{Binding SelectedMedia.PlayOrPauseCommand}"
-				        Content="再生/一時停止" />
+						Height="80"
+						Command="{Binding PlayOrPauseCommand}"
+						Content="再生/一時停止" />
 				<Button Grid.Row="0"
-				        Height="80"
-				        Command="{Binding SelectedMedia.StopCommand}"
-				        Content="停止" />
+						Height="80"
+						Command="{Binding SelectedMedia.StopCommand}"
+						Content="停止" />
 			</WrapPanel>
 
 			<Viewbox Grid.Row="1">
@@ -74,10 +75,10 @@
 						<Label MinWidth="100" Content="{Binding AnswerTeam.Model.TeamName}" />
 						<Label Content="追加ポイント" />
 						<xcd:IntegerUpDown Width="60"
-						                   Margin="10"
-						                   Increment="10"
-						                   Value="{Binding AddPoint,
-						                                   UpdateSourceTrigger=PropertyChanged}" />
+										   Margin="10"
+										   Increment="10"
+										   Value="{Binding AddPoint,
+														   UpdateSourceTrigger=PropertyChanged}" />
 					</WrapPanel>
 					<WrapPanel HorizontalAlignment="Center" Orientation="Horizontal">
 						<Button Command="{Binding CorrectCommand}" Content="正解！" />
@@ -94,11 +95,11 @@
 							<GridViewColumn.CellTemplate>
 								<DataTemplate>
 									<CheckBox HorizontalAlignment="Center"
-									          VerticalAlignment="Center"
-									          HorizontalContentAlignment="Center"
-									          VerticalContentAlignment="Center"
-									          IsChecked="{Binding Pushable,
-									                              UpdateSourceTrigger=PropertyChanged}" />
+											  VerticalAlignment="Center"
+											  HorizontalContentAlignment="Center"
+											  VerticalContentAlignment="Center"
+											  IsChecked="{Binding Pushable,
+																  UpdateSourceTrigger=PropertyChanged}" />
 								</DataTemplate>
 							</GridViewColumn.CellTemplate>
 						</GridViewColumn>
@@ -106,9 +107,9 @@
 							<GridViewColumn.CellTemplate>
 								<DataTemplate>
 									<xcd:IntegerUpDown MinWidth="100"
-									                   Increment="10"
-									                   Value="{Binding Model.Point,
-									                                   UpdateSourceTrigger=PropertyChanged}" />
+													   Increment="10"
+													   Value="{Binding Model.Point,
+																	   UpdateSourceTrigger=PropertyChanged}" />
 								</DataTemplate>
 							</GridViewColumn.CellTemplate>
 						</GridViewColumn>

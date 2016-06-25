@@ -1,18 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
 using EarlyPusher.Modules.BinkanSettingTab.Views;
 using EarlyPusher.Utils;
 using EarlyPusher.ViewModels;
 using Microsoft.Win32;
-using StFrLibs.Core.Basis;
 using StFrLibs.Core.Commands;
 
 namespace EarlyPusher.Modules.BinkanSettingTab.ViewModels
@@ -22,6 +15,7 @@ namespace EarlyPusher.Modules.BinkanSettingTab.ViewModels
 		private string pushPath;
 		private string correctPath;
 		private string incorrectPath;
+		private string questionPath;
 
 		private string selectedItem;
 
@@ -53,6 +47,15 @@ namespace EarlyPusher.Modules.BinkanSettingTab.ViewModels
 		}
 
 		/// <summary>
+		/// 出題音
+		/// </summary>
+		public string QuestionPath
+		{
+			get { return this.questionPath; }
+			set { SetProperty( ref this.questionPath, value ); }
+		}
+
+		/// <summary>
 		/// ヒント動画のリスト
 		/// </summary>
 		public ObservableCollection<string> Hints => this.Parent.Data?.Binkan.Hints;
@@ -69,6 +72,7 @@ namespace EarlyPusher.Modules.BinkanSettingTab.ViewModels
 		public DelegateCommand OpenPushPathCommand { get; }
 		public DelegateCommand OpenCorrectPathCommand { get; }
 		public DelegateCommand OpenIncorrectPathCommand { get; }
+		public DelegateCommand OpenQuestionPathCommand { get; }
 
 		public DelegateCommand AddCommand { get; }
 		public DelegateCommand RemCommand { get; }
@@ -84,6 +88,7 @@ namespace EarlyPusher.Modules.BinkanSettingTab.ViewModels
 			this.OpenPushPathCommand      = new DelegateCommand( OpenPushPath );
 			this.OpenCorrectPathCommand   = new DelegateCommand( OpenCorrectPath );
 			this.OpenIncorrectPathCommand = new DelegateCommand( OpenIncorrectPath );
+			this.OpenQuestionPathCommand = new DelegateCommand( OpenQuestionPath );
 
 			this.AddCommand  = new DelegateCommand( Add );
 			this.RemCommand  = new DelegateCommand( Rem, p => this.SelectedItem != null );
@@ -100,6 +105,7 @@ namespace EarlyPusher.Modules.BinkanSettingTab.ViewModels
 			this.PushPath      = this.Parent.Data.Binkan.PushPath;
 			this.CorrectPath   = this.Parent.Data.Binkan.CorrectPath;
 			this.IncorrectPath = this.Parent.Data.Binkan.IncorrectPath;
+			this.QuestionPath = this.Parent.Data.Binkan.QuestionPath;
 
 			this.Parent.Data.Binkan.PropertyChanged += Binkan_PropertyChanged;
 		}
@@ -109,6 +115,7 @@ namespace EarlyPusher.Modules.BinkanSettingTab.ViewModels
 			this.PushPath      = this.Parent.Data.Binkan.PushPath;
 			this.CorrectPath   = this.Parent.Data.Binkan.CorrectPath;
 			this.IncorrectPath = this.Parent.Data.Binkan.IncorrectPath;
+			this.QuestionPath = this.Parent.Data.Binkan.QuestionPath;
 		}
 
 		public override void SaveData()
@@ -154,6 +161,16 @@ namespace EarlyPusher.Modules.BinkanSettingTab.ViewModels
 			{
 				var baseDir = Path.GetDirectoryName( Assembly.GetExecutingAssembly().Location );
 				this.Parent.Data.Binkan.IncorrectPath = PathUtility.GetRelativePath( baseDir, dlg.FileName );
+			}
+		}
+
+		private void OpenQuestionPath( object obj )
+		{
+			var dlg = new OpenFileDialog();
+			if( dlg.ShowDialog( App.Current.MainWindow ) == true )
+			{
+				var baseDir = Path.GetDirectoryName( Assembly.GetExecutingAssembly().Location );
+				this.Parent.Data.Binkan.QuestionPath = PathUtility.GetRelativePath( baseDir, dlg.FileName );
 			}
 		}
 

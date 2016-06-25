@@ -17,6 +17,7 @@ namespace EarlyPusher.Modules.EarlyTab.ViewModels
 {
 	public class OperateEarlyVM : OperateTabVMBase
 	{
+		private bool playingQuestion;
 		private ViewModelsAdapter<TeamEarlyVM,TeamData> adapter;
 		private IEnumerable<SetData> sets;
 		private SetData selectedSet;
@@ -27,6 +28,7 @@ namespace EarlyPusher.Modules.EarlyTab.ViewModels
 		private MediaVM pushSound = new MediaVM();
 		private MediaVM correctSound = new MediaVM();
 		private MediaVM missSound = new MediaVM();
+		private MediaVM questionSound = new MediaVM();
 
 		private TeamEarlyVM answerTeam;
 		private bool receivable;
@@ -37,6 +39,13 @@ namespace EarlyPusher.Modules.EarlyTab.ViewModels
 		public DelegateCommand CorrectCommand { get; }
 		public DelegateCommand MissCommand { get; }
 		public DelegateCommand SetBasePointCommand { get; }
+		public DelegateCommand PlayOrPauseCommand { get; }
+
+		public bool PlayingQuestion
+		{
+			get { return this.playingQuestion; }
+			set { SetProperty( ref this.playingQuestion, value ); }
+		}
 
 		public IEnumerable<SetData> Sets
 		{
@@ -69,7 +78,7 @@ namespace EarlyPusher.Modules.EarlyTab.ViewModels
 		public MediaVM SelectedMedia
 		{
 			get { return this.selectedMedia; }
-			set { SetProperty( ref this.selectedMedia, value, null, SelectedMediaChanging ); }
+			set { SetProperty( ref this.selectedMedia, value, SelectedMediaChanged, SelectedMediaChanging ); }
 		}
 
 		/// <summary>
@@ -110,9 +119,12 @@ namespace EarlyPusher.Modules.EarlyTab.ViewModels
 
 			this.View = new OperateEarlyView();
 			this.Header = "早押し";
+			this.PlayOrPauseCommand = new DelegateCommand( PlayOrPause, p => this.SelectedMedia != null );
 			this.CorrectCommand = new DelegateCommand( Correct, o => this.AnswerTeam != null );
 			this.MissCommand = new DelegateCommand( Miss, o => this.AnswerTeam != null );
 			this.SetBasePointCommand = new DelegateCommand( SetBasePoint );
+
+			this.questionSound.MediaStoped += QuestionSound_MediaStoped;
 		}
 
 		public override UIElement PlayView
@@ -144,6 +156,10 @@ namespace EarlyPusher.Modules.EarlyTab.ViewModels
 				this.missSound.FilePath = PathUtility.GetAbsolutePath( baseDir, this.Parent.Data.Early.IncorrectPath );
 				this.missSound.LoadFile();
 			}
+			{
+				this.questionSound.FilePath = PathUtility.GetAbsolutePath( baseDir, this.Parent.Data.Early.QuestionPath );
+				this.questionSound.LoadFile();
+			}
 			this.Parent.Data.Early.PropertyChanged += Early_PropertyChanged;
 		}
 
@@ -167,6 +183,12 @@ namespace EarlyPusher.Modules.EarlyTab.ViewModels
 			{
 				this.missSound.FilePath = PathUtility.GetAbsolutePath( baseDir, this.Parent.Data.Early.IncorrectPath );
 				this.missSound.LoadFile();
+			}
+
+			if( e.PropertyName == nameof( this.Parent.Data.Early.QuestionPath ) )
+			{
+				this.questionSound.FilePath = PathUtility.GetAbsolutePath( baseDir, this.Parent.Data.Early.QuestionPath );
+				this.questionSound.LoadFile();
 			}
 		}
 
@@ -238,6 +260,12 @@ namespace EarlyPusher.Modules.EarlyTab.ViewModels
 			}
 		}
 
+		private void QuestionSound_MediaStoped( object sender, EventArgs e )
+		{
+			this.SelectedMedia.Play();
+			this.PlayingQuestion = false;
+		}
+
 		private void Media_MediaStoped( object sender, EventArgs e )
 		{
 			this.Receivable = false;
@@ -257,6 +285,11 @@ namespace EarlyPusher.Modules.EarlyTab.ViewModels
 			{
 				this.SelectedMedia.Stop();
 			}
+		}
+
+		private void SelectedMediaChanged()
+		{
+			this.PlayOrPauseCommand.RaiseCanExecuteChanged();
 		}
 
 		private void AnswerTeamChanging()
@@ -280,6 +313,19 @@ namespace EarlyPusher.Modules.EarlyTab.ViewModels
 		#endregion
 
 		#region コマンド
+
+		private void PlayOrPause( object obj )
+		{
+			if( !this.SelectedMedia.IsPlaying )
+			{
+				this.questionSound.Play();
+				this.PlayingQuestion = true;
+			}
+			else
+			{
+				this.SelectedMedia.Pause();
+			}
+		}
 
 		private void Correct( object obj )
 		{

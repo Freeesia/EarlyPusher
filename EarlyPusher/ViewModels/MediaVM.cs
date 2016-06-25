@@ -132,11 +132,7 @@ namespace EarlyPusher.ViewModels
 
 		private void OnMediaPlayed()
 		{
-			var d = this.MediaPlayed;
-			if( d != null )
-			{
-				d( this, EventArgs.Empty );
-			}
+			this.MediaPlayed?.Invoke( this, EventArgs.Empty );
 		}
 
 		private void OnMediaStoped()
