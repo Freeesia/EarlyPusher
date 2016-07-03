@@ -19,6 +19,7 @@ namespace EarlyPusher.ViewModels
 		private bool isPlaying;
 
 		public event EventHandler MediaPlayed;
+		public event EventHandler MediaPaused;
 		public event EventHandler MediaStoped;
 
 		public MediaElement Media
@@ -120,6 +121,7 @@ namespace EarlyPusher.ViewModels
 			{
 				this.Media.Pause();
 				this.IsPlaying = false;
+				OnMediaPaused();
 			}
 		}
 
@@ -135,13 +137,14 @@ namespace EarlyPusher.ViewModels
 			this.MediaPlayed?.Invoke( this, EventArgs.Empty );
 		}
 
+		private void OnMediaPaused()
+		{
+			this.MediaPaused?.Invoke( this, EventArgs.Empty );
+		}
+
 		private void OnMediaStoped()
 		{
-			var d = this.MediaStoped;
-			if( d != null )
-			{
-				d( this, EventArgs.Empty );
-			}
+			this.MediaStoped?.Invoke( this, EventArgs.Empty );
 		}
 	}
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -33,6 +34,7 @@ namespace EarlyPusher.Modules.EarlyTab.ViewModels
 		private int basePoint;
 		private TeamEarlyVM answerTeam;
 		private bool receivable;
+		private bool answerMode = false;
 		private int addPoint = 0;
 		private int missCount = 0;
 
@@ -135,7 +137,7 @@ namespace EarlyPusher.Modules.EarlyTab.ViewModels
 			this.View = new OperateEarlyView();
 			this.Header = "早押し";
 			this.PlayOrPauseCommand = new DelegateCommand( PlayOrPause, p => this.SelectedMedia != null );
-			this.PlayAnswerCommand = new DelegateCommand( PlayAnPlayAnswer, p => this.Medias.Any( m => Path.GetFileNameWithoutExtension( m.FilePath ).EndsWith( "_ans" ) ) );
+			this.PlayAnswerCommand = new DelegateCommand( PlayAnswer, p => this.Medias.Any( m => Path.GetFileNameWithoutExtension( m.FilePath ).EndsWith( "_ans" ) ) );
 			this.CorrectCommand = new DelegateCommand( Correct, o => this.AnswerTeam != null );
 			this.MissCommand = new DelegateCommand( Miss, o => this.AnswerTeam != null );
 			this.SetBasePointCommand = new DelegateCommand( SetBasePoint );
@@ -264,6 +266,7 @@ namespace EarlyPusher.Modules.EarlyTab.ViewModels
 				foreach( MediaVM media in e.NewItems )
 				{
 					media.MediaPlayed += Media_MediaPlayed;
+					media.MediaPaused += Media_MediaStoped;
 					media.MediaStoped += Media_MediaStoped;
 				}
 			}
@@ -272,6 +275,7 @@ namespace EarlyPusher.Modules.EarlyTab.ViewModels
 				foreach( MediaVM media in e.OldItems )
 				{
 					media.MediaPlayed -= Media_MediaPlayed;
+					media.MediaPaused -= Media_MediaStoped;
 					media.MediaStoped -= Media_MediaStoped;
 				}
 			}
@@ -286,11 +290,17 @@ namespace EarlyPusher.Modules.EarlyTab.ViewModels
 		private void Media_MediaStoped( object sender, EventArgs e )
 		{
 			this.Receivable = false;
+			this.answerMode = false;
+			Debug.WriteLine( $"MediaStoped : {this.answerMode}" );
 		}
 
 		private void Media_MediaPlayed( object sender, EventArgs e )
 		{
-			this.Receivable = true;
+			Debug.WriteLine( $"MediaStart : {this.answerMode}" );
+			if( !this.answerMode )
+			{
+				this.Receivable = true;
+			}
 		}
 
 		/// <summary>
@@ -344,11 +354,16 @@ namespace EarlyPusher.Modules.EarlyTab.ViewModels
 			}
 		}
 
-		private void PlayAnPlayAnswer( object obj )
+		private void PlayAnswer( object obj )
 		{
 			this.MissCount = 0;
 			this.SelectedMedia = this.Medias.FirstOrDefault( m => Path.GetFileNameWithoutExtension( m.FilePath ).EndsWith( "_ans" ) );
-			this.SelectedMedia?.Play();
+			if( this.SelectedMedia != null )
+			{
+				this.answerMode = true;
+				Debug.WriteLine( $"PlayAnswer : {this.answerMode}" );
+				this.SelectedMedia.Play();
+			}
 		}
 
 		private void Correct( object obj )
