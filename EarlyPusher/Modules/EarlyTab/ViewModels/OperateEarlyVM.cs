@@ -346,6 +346,7 @@ namespace EarlyPusher.Modules.EarlyTab.ViewModels
 
 		private void PlayAnPlayAnswer( object obj )
 		{
+			this.MissCount = 0;
 			this.SelectedMedia = this.Medias.FirstOrDefault( m => Path.GetFileNameWithoutExtension( m.FilePath ).EndsWith( "_ans" ) );
 			this.SelectedMedia?.Play();
 		}
@@ -363,7 +364,6 @@ namespace EarlyPusher.Modules.EarlyTab.ViewModels
 			this.correctSound.Play();
 			this.AnswerTeam.Add( this.AddPoint );
 			this.AddPoint = 0;
-			this.MissCount = 0;
 
 			this.AnswerTeam = null;
 		}
