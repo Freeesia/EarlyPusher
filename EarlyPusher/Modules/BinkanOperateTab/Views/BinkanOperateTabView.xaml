@@ -26,6 +26,7 @@
 			<ColumnDefinition Width="Auto" />
 			<ColumnDefinition Width="2*" />
 		</Grid.ColumnDefinitions>
+
 		<ListBox Grid.Column="0"
 				 DisplayMemberPath="FileName"
 				 IsSynchronizedWithCurrentItem="True"
@@ -45,7 +46,9 @@
 				<RowDefinition Height="*" />
 			</Grid.RowDefinitions>
 
-			<WrapPanel HorizontalAlignment="Center" Orientation="Horizontal">
+			<WrapPanel Grid.Row="0"
+					   HorizontalAlignment="Center"
+					   Orientation="Horizontal">
 				<Button Grid.Row="0"
 						Height="80"
 						Command="{Binding PlayOrPauseCommand}"
