@@ -27,6 +27,8 @@
 			  Grid.ColumnSpan="3">
 			<MenuItem Command="{Binding AddSubjectCommand}" Header="問題追加" />
 			<MenuItem Command="{Binding RemSubjectCommand}" Header="問題削除" />
+			<MenuItem Command="{Binding UpSubjectCommand}" Header="↑" />
+			<MenuItem Command="{Binding DownSubjectCommand}" Header="↓" />
 		</Menu>
 
 		<ListBox Grid.Row="1"

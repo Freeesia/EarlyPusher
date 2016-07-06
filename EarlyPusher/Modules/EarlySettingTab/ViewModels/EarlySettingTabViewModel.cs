@@ -1,6 +1,8 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using EarlyPusher.Models;
 using EarlyPusher.Modules.EarlySettingTab.Views;
@@ -25,6 +27,8 @@ namespace EarlyPusher.Modules.EarlySettingTab.ViewModels
 
 		public DelegateCommand AddSubjectCommand { get; }
 		public DelegateCommand RemSubjectCommand { get; }
+		public DelegateCommand UpSubjectCommand { get; }
+		public DelegateCommand DownSubjectCommand { get; }
 
 		public ObservableVMCollection<SubjectData, SubjectViewModel> Subjects { get; }
 
@@ -87,6 +91,8 @@ namespace EarlyPusher.Modules.EarlySettingTab.ViewModels
 
 			this.AddSubjectCommand = new DelegateCommand( AddSubject );
 			this.RemSubjectCommand = new DelegateCommand( RemSubject, CanRemSubject );
+			this.UpSubjectCommand = new DelegateCommand( UpSubject, CanUpSubject );
+			this.DownSubjectCommand = new DelegateCommand( DownSubject, CanDownSubject );
 
 			this.Subjects = new ObservableVMCollection<SubjectData, SubjectViewModel>();
 
@@ -96,6 +102,8 @@ namespace EarlyPusher.Modules.EarlySettingTab.ViewModels
 		private void SelectedSubjectChanged()
 		{
 			this.RemSubjectCommand.RaiseCanExecuteChanged();
+			this.UpSubjectCommand.RaiseCanExecuteChanged();
+			this.DownSubjectCommand.RaiseCanExecuteChanged();
 		}
 
 		#region コマンド
@@ -156,6 +164,34 @@ namespace EarlyPusher.Modules.EarlySettingTab.ViewModels
 
 			this.Parent.Data.Early.Subjects.Remove( this.SelectedSubject.Model );
 			this.SelectedSubject = null;
+		}
+
+		private bool CanUpSubject( object obj )
+		{
+			return this.SelectedSubject != null && this.Subjects.FirstOrDefault() != this.SelectedSubject;
+		}
+
+		private void UpSubject( object obj )
+		{
+			var target = this.SelectedSubject.Model;
+			var index = this.Parent.Data.Early.Subjects.IndexOf( target );
+			this.Parent.Data.Early.Subjects.RemoveAt( index );
+			this.Parent.Data.Early.Subjects.Insert( index - 1, target );
+			this.SelectedSubject = this.Subjects[target];
+		}
+
+		private bool CanDownSubject( object obj )
+		{
+			return this.SelectedSubject != null && this.Subjects.LastOrDefault() != this.SelectedSubject;
+		}
+
+		private void DownSubject( object obj )
+		{
+			var target = this.SelectedSubject.Model;
+			var index = this.Parent.Data.Early.Subjects.IndexOf( target );
+			this.Parent.Data.Early.Subjects.RemoveAt( index );
+			this.Parent.Data.Early.Subjects.Insert( index + 1, target );
+			this.SelectedSubject = this.Subjects[target];
 		}
 
 		#endregion
