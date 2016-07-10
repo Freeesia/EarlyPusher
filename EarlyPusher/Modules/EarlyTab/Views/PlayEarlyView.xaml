@@ -1,25 +1,25 @@
 ﻿<UserControl x:Class="EarlyPusher.Modules.EarlyTab.Views.PlayEarlyView"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:c="clr-namespace:StFrLibs.Core.Converter;assembly=StFrCore"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             d:DesignHeight="300"
-             d:DesignWidth="300"
-             Background="Black"
-             FontFamily="HGPSoeiKakupoptai"
-             mc:Ignorable="d">
+			 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			 xmlns:c="clr-namespace:StFrLibs.Core.Converter;assembly=StFrCore"
+			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 d:DesignHeight="300"
+			 d:DesignWidth="300"
+			 Background="Black"
+			 FontFamily="HGPSoeiKakupoptai"
+			 mc:Ignorable="d">
 	<UserControl.Resources>
 		<ResourceDictionary>
 			<ResourceDictionary.MergedDictionaries>
 				<ResourceDictionary Source="pack://application:,,,/Themes/Generic.xaml" />
 			</ResourceDictionary.MergedDictionaries>
 			<c:BoolToVisibilityConverter x:Key="f2vConv"
-			                             False="Visible"
-			                             True="Collapsed" />
+										 False="Visible"
+										 True="Collapsed" />
 			<c:BoolToVisibilityConverter x:Key="t2vConv"
-			                             False="Collapsed"
-			                             True="Visible" />
+										 False="Collapsed"
+										 True="Visible" />
 			<c:BoolAndMultiConverter x:Key="bmConv" UnsetValue="False" />
 		</ResourceDictionary>
 	</UserControl.Resources>
@@ -43,27 +43,27 @@
 					<RowDefinition Height="*" />
 				</Grid.RowDefinitions>
 				<Border Width="200"
-				        Margin="10"
-				        HorizontalAlignment="Center"
-				        VerticalAlignment="Center"
-				        Background="White"
-				        CornerRadius="10">
+						Margin="10"
+						HorizontalAlignment="Center"
+						VerticalAlignment="Center"
+						Background="White"
+						CornerRadius="10">
 					<StackPanel>
 						<TextBlock Margin="10"
-						           HorizontalAlignment="Center"
-						           VerticalAlignment="Center"
-						           FontSize="20"
-						           Text="得点プール" />
+								   HorizontalAlignment="Center"
+								   VerticalAlignment="Center"
+								   FontSize="20"
+								   Text="得点プール" />
 						<TextBlock Margin="10"
-						           HorizontalAlignment="Center"
-						           VerticalAlignment="Center"
-						           FontSize="40"
-						           Text="{Binding AddPoint}" />
+								   HorizontalAlignment="Center"
+								   VerticalAlignment="Center"
+								   FontSize="40"
+								   Text="{Binding PointPool}" />
 					</StackPanel>
 				</Border>
 				<ItemsControl Grid.Row="1"
-				              ItemTemplate="{StaticResource teamPanel}"
-				              ItemsSource="{Binding Teams}">
+							  ItemTemplate="{StaticResource teamPanel}"
+							  ItemsSource="{Binding Teams}">
 					<ItemsControl.ItemsPanel>
 						<ItemsPanelTemplate>
 							<StackPanel Orientation="Horizontal" />

@@ -85,8 +85,9 @@
 						<xcd:IntegerUpDown Width="60"
 										   Margin="10"
 										   Increment="10"
-										   Value="{Binding AddPoint,
+										   Value="{Binding PointPool,
 														   UpdateSourceTrigger=PropertyChanged}" />
+						<Button Command="{Binding AddPointCommand}" Content="得点追加" />
 					</WrapPanel>
 					<WrapPanel HorizontalAlignment="Center" Orientation="Horizontal">
 						<Button Command="{Binding CorrectCommand}" Content="正解！" />

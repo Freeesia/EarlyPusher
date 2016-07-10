@@ -35,7 +35,7 @@ namespace EarlyPusher.Modules.EarlyTab.ViewModels
 		private TeamEarlyVM answerTeam;
 		private bool receivable;
 		private bool answerMode = false;
-		private int addPoint = 0;
+		private int pointPool = 0;
 		private int missCount = 0;
 
 		#region プロパティ
@@ -45,6 +45,7 @@ namespace EarlyPusher.Modules.EarlyTab.ViewModels
 		public DelegateCommand SetBasePointCommand { get; }
 		public DelegateCommand PlayOrPauseCommand { get; }
 		public DelegateCommand PlayAnswerCommand { get; }
+		public DelegateCommand AddPointCommand { get; }
 
 		public bool PlayingQuestion
 		{
@@ -113,10 +114,10 @@ namespace EarlyPusher.Modules.EarlyTab.ViewModels
 		/// <summary>
 		/// 追加するポイント
 		/// </summary>
-		public int AddPoint
+		public int PointPool
 		{
-			get { return this.addPoint; }
-			set { SetProperty( ref this.addPoint, value ); }
+			get { return this.pointPool; }
+			set { SetProperty( ref this.pointPool, value ); }
 		}
 
 		public int MissCount
@@ -141,6 +142,7 @@ namespace EarlyPusher.Modules.EarlyTab.ViewModels
 			this.CorrectCommand = new DelegateCommand( Correct, o => this.AnswerTeam != null );
 			this.MissCommand = new DelegateCommand( Miss, o => this.AnswerTeam != null );
 			this.SetBasePointCommand = new DelegateCommand( SetBasePoint );
+			this.AddPointCommand = new DelegateCommand( AddPoint );
 
 			this.questionSound.MediaStoped += QuestionSound_MediaStoped;
 		}
@@ -368,19 +370,7 @@ namespace EarlyPusher.Modules.EarlyTab.ViewModels
 
 		private void Correct( object obj )
 		{
-			if( this.AddPoint == 0 )
-			{
-				if( MessageBox.Show( App.Current.MainWindow, "追加ポイント0だけどいいの？", string.Empty, MessageBoxButton.OKCancel ) != MessageBoxResult.OK )
-				{
-					return;
-				}
-			}
-
 			this.correctSound.Play();
-			this.AnswerTeam.Add( this.AddPoint );
-			this.AddPoint = 0;
-
-			this.AnswerTeam = null;
 		}
 
 		private void Miss( object obj )
@@ -389,12 +379,28 @@ namespace EarlyPusher.Modules.EarlyTab.ViewModels
 			this.AnswerTeam = null;
 			this.MissCount++;
 
-			this.AddPoint += this.BasePoint;
+			this.PointPool += this.BasePoint;
 		}
 
 		private void SetBasePoint( object obj )
 		{
-			this.AddPoint += this.BasePoint;
+			this.PointPool += this.BasePoint;
+		}
+
+		private void AddPoint( object obj )
+		{
+			if( this.PointPool == 0 )
+			{
+				if( MessageBox.Show( App.Current.MainWindow, "追加ポイント0だけどいいの？", string.Empty, MessageBoxButton.OKCancel ) != MessageBoxResult.OK )
+				{
+					return;
+				}
+			}
+
+			this.AnswerTeam.Add( this.PointPool );
+			this.PointPool = 0;
+
+			this.AnswerTeam = null;
 		}
 
 		#endregion
