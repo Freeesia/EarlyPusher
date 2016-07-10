@@ -10,6 +10,7 @@ using EarlyPusher.Modules.BinkanOperateTab.Views;
 using EarlyPusher.Utils;
 using EarlyPusher.ViewModels;
 using StFrLibs.Core.Adapters;
+using StFrLibs.Core.Basis;
 using StFrLibs.Core.Commands;
 
 namespace EarlyPusher.Modules.BinkanOperateTab.ViewModels
@@ -60,7 +61,7 @@ namespace EarlyPusher.Modules.BinkanOperateTab.ViewModels
 		/// <summary>
 		/// チーム一覧
 		/// </summary>
-		public ObservableCollection<TeamViewModel> Teams { get; }
+		public ObservableVMCollection<TeamData, TeamViewModel> Teams { get; }
 
 		/// <summary>
 		/// 解答権を持つチーム
@@ -95,7 +96,7 @@ namespace EarlyPusher.Modules.BinkanOperateTab.ViewModels
 			this.teamAdapter = new ViewModelsAdapter<TeamViewModel, TeamData>( CrateTeamViewModel );
 
 			this.Medias = new ObservableCollection<MediaVM>();
-			this.Teams = new ObservableCollection<TeamViewModel>();
+			this.Teams = new ObservableVMCollection<TeamData, TeamViewModel>();
 
 			this.PlayOrPauseCommand = new DelegateCommand( PlayOrPause, p => this.SelectedMedia != null );
 			this.CorrectCommand = new DelegateCommand( Correct, p => this.AnswerMember != null );
