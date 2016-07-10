@@ -345,6 +345,10 @@ namespace EarlyPusher.Modules.EarlyTab.ViewModels
 
 		private void PlayOrPause( object obj )
 		{
+			if( this.PointPool == 0 )
+			{
+				this.PointPool = this.BasePoint;
+			}
 			if( !this.SelectedMedia.IsPlaying )
 			{
 				this.questionSound.Play();
