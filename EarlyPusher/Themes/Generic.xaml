@@ -7,14 +7,14 @@
 	<c:ColorToBrushConverter x:Key="c2bConv" />
 	<DataTemplate x:Key="teamPanel">
 		<StackPanel Orientation="Vertical">
-			<Grid x:Name="panel" Margin="2">
+			<Grid x:Name="pointPanel" Margin="2">
 				<Grid.Resources>
 					<Storyboard x:Key="answerMode"
 								AutoReverse="True"
 								RepeatBehavior="Forever">
 						<DoubleAnimation Duration="0:0:00.5"
 										 From="0.2"
-										 Storyboard.TargetName="panel"
+										 Storyboard.TargetName="pointPanel"
 										 Storyboard.TargetProperty="Opacity"
 										 To="1" />
 					</Storyboard>
@@ -50,23 +50,41 @@
 							   Text="{Binding Model.Point}" />
 				</StackPanel>
 			</Grid>
-			<ItemsControl ItemsSource="{Binding Model.Members}">
+			<ItemsControl ItemsSource="{Binding Members}">
 				<ItemsControl.ItemTemplate>
 					<DataTemplate>
-						<Grid Margin="2">
+						<Grid x:Name="memberPanel" Margin="2">
+							<Grid.Resources>
+								<Storyboard x:Key="answerMode"
+											AutoReverse="True"
+											RepeatBehavior="Forever">
+									<DoubleAnimation Duration="0:0:00.5"
+													 From="0.2"
+													 Storyboard.TargetName="memberPanel"
+													 Storyboard.TargetProperty="Opacity"
+													 To="1" />
+								</Storyboard>
+							</Grid.Resources>
+							<i:Interaction.Triggers>
+								<ei:DataTrigger Binding="{Binding Answerable}" Value="True">
+									<ei:ControlStoryboardAction ControlStoryboardOption="Play" Storyboard="{StaticResource answerMode}" />
+								</ei:DataTrigger>
+								<ei:DataTrigger Binding="{Binding Answerable}" Value="False">
+									<ei:ControlStoryboardAction ControlStoryboardOption="Stop" Storyboard="{StaticResource answerMode}" />
+								</ei:DataTrigger>
+							</i:Interaction.Triggers>
 							<Border Margin="1"
 									Background="White"
 									CornerRadius="10" />
 							<Border Margin="1"
-									Background="{Binding DataContext.Model.TeamColor,
-														 Converter={StaticResource c2bConv},
-														 ElementName=panel}"
+									Background="{Binding Parent.Model.TeamColor,
+														 Converter={StaticResource c2bConv}}"
 									CornerRadius="10"
 									Opacity="0.4" />
 							<Border BorderBrush="White"
 									BorderThickness="2"
 									CornerRadius="10" />
-							<TextBlock Margin="5" Text="{Binding Name}" />
+							<TextBlock Margin="5" Text="{Binding Model.Name}" />
 						</Grid>
 					</DataTemplate>
 				</ItemsControl.ItemTemplate>

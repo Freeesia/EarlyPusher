@@ -80,7 +80,10 @@
 					</WrapPanel>
 					<WrapPanel HorizontalAlignment="Center" Orientation="Horizontal">
 						<Label Content="解答権チーム" />
-						<Label MinWidth="100" Content="{Binding AnswerTeam.Model.TeamName}" />
+						<StackPanel MinWidth="100" Orientation="Vertical">
+							<TextBlock Text="{Binding AnswerMember.Parent.Model.TeamName}" />
+							<TextBlock Text="{Binding AnswerMember.Model.Name}" />
+						</StackPanel>
 						<Label Content="得点プール" />
 						<xcd:IntegerUpDown Width="60"
 										   Margin="10"

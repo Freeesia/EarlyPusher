@@ -20,7 +20,7 @@ namespace EarlyPusher.Modules.BinkanOperateTab.ViewModels
 		private ViewModelsAdapter<TeamViewModel,TeamData> teamAdapter;
 		private MediaVM selectedMedia;
 		private bool receivable;
-		private TeamViewModel answerTeam;
+		private MemberViewModel answerMember;
 		private int addPoint;
 
 		private MediaVM pushSound = new MediaVM();
@@ -65,10 +65,10 @@ namespace EarlyPusher.Modules.BinkanOperateTab.ViewModels
 		/// <summary>
 		/// 解答権を持つチーム
 		/// </summary>
-		public TeamViewModel AnswerTeam
+		public MemberViewModel AnswerMember
 		{
-			get { return this.answerTeam; }
-			set { SetProperty( ref this.answerTeam, value, AnswerTeamChanged, AnswerTeamChanging ); }
+			get { return this.answerMember; }
+			set { SetProperty( ref this.answerMember, value, AnswerMemberChanged, AnswerMemberChanging ); }
 		}
 
 		/// <summary>
@@ -98,8 +98,8 @@ namespace EarlyPusher.Modules.BinkanOperateTab.ViewModels
 			this.Teams = new ObservableCollection<TeamViewModel>();
 
 			this.PlayOrPauseCommand = new DelegateCommand( PlayOrPause, p => this.SelectedMedia != null );
-			this.CorrectCommand = new DelegateCommand( Correct, p => this.AnswerTeam != null );
-			this.IncorrectCommand = new DelegateCommand( Incorrect, p => this.AnswerTeam != null );
+			this.CorrectCommand = new DelegateCommand( Correct, p => this.AnswerMember != null );
+			this.IncorrectCommand = new DelegateCommand( Incorrect, p => this.AnswerMember != null );
 
 			this.questionSound.MediaStoped += QuestionSound_MediaStoped;
 
@@ -132,19 +132,19 @@ namespace EarlyPusher.Modules.BinkanOperateTab.ViewModels
 			this.PlayingQuestion = false;
 		}
 
-		private void AnswerTeamChanging()
+		private void AnswerMemberChanging()
 		{
-			if( this.AnswerTeam != null )
+			if( this.AnswerMember != null )
 			{
-				this.AnswerTeam.Answerable = false;
+				this.AnswerMember.Answerable = false;
 			}
 		}
 
-		private void AnswerTeamChanged()
+		private void AnswerMemberChanged()
 		{
-			if( this.AnswerTeam != null )
+			if( this.AnswerMember != null )
 			{
-				this.AnswerTeam.Answerable = true;
+				this.AnswerMember.Answerable = true;
 			}
 			this.CorrectCommand.RaiseCanExecuteChanged();
 			this.IncorrectCommand.RaiseCanExecuteChanged();
@@ -161,16 +161,16 @@ namespace EarlyPusher.Modules.BinkanOperateTab.ViewModels
 			}
 
 			this.correctSound.Play();
-			this.AnswerTeam.Add( this.AddPoint );
+			this.AnswerMember.Parent.Add( this.AddPoint );
 			this.AddPoint = 0;
 
-			this.AnswerTeam = null;
+			this.AnswerMember = null;
 		}
 
 		private void Incorrect( object obj )
 		{
 			this.incorrectSound.Play();
-			this.AnswerTeam = null;
+			this.AnswerMember = null;
 		}
 
 		#endregion
@@ -303,11 +303,11 @@ namespace EarlyPusher.Modules.BinkanOperateTab.ViewModels
 		{
 			if( this.Receivable )
 			{
-				var team = this.Teams.FirstOrDefault( t => t.Model.Members.Any( m => m.DeviceGuid == e.InstanceID && m.Key == e.Key ) );
-				if( team?.Pushable ?? false )
+				var member = this.Teams.SelectMany( t => t.Members ).FirstOrDefault( m => m.Model.DeviceGuid == e.InstanceID && m.Model.Key == e.Key );
+				if( member?.Parent?.Pushable ?? false )
 				{
 					this.pushSound.Play();
-					this.AnswerTeam = team;
+					this.AnswerMember = member;
 					this.SelectedMedia.Pause();
 
 					this.Receivable = false;

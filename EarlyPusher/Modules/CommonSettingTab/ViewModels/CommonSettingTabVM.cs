@@ -18,15 +18,15 @@ namespace EarlyPusher.Modules.CommonSettingTab.ViewModels
 {
 	public class CommonSettingTabVM : OperateTabVMBase
 	{
-		private ObservableVMCollection<TeamData,TeamVM> teams = new ObservableVMCollection<TeamData,TeamVM>();
-		private ObservableCollection<MemberVM> members = new ObservableCollection<MemberVM>();
+		private ObservableVMCollection<TeamData,CommonTeamVM> teams = new ObservableVMCollection<TeamData,CommonTeamVM>();
+		private ObservableCollection<CommonMemberVM> members = new ObservableCollection<CommonMemberVM>();
 		private ObservableCollection<string> devices = new ObservableCollection<string>();
-		private ViewModelsAdapter<TeamVM,TeamData> teamAdapter;
+		private ViewModelsAdapter<CommonTeamVM,TeamData> teamAdapter;
 
 		private long updateTime;
 
-		private TeamVM selectedTeam;
-		private MemberVM selectedMember;
+		private CommonTeamVM selectedTeam;
+		private CommonMemberVM selectedMember;
 
 		#region プロパティ
 
@@ -42,7 +42,7 @@ namespace EarlyPusher.Modules.CommonSettingTab.ViewModels
 		/// <summary>
 		/// チームのリスト
 		/// </summary>
-		public ObservableVMCollection<TeamData, TeamVM> Teams
+		public ObservableVMCollection<TeamData, CommonTeamVM> Teams
 		{
 			get { return this.teams; }
 		}
@@ -50,7 +50,7 @@ namespace EarlyPusher.Modules.CommonSettingTab.ViewModels
 		/// <summary>
 		/// メンバーのリスト
 		/// </summary>
-		public ObservableCollection<MemberVM> Members
+		public ObservableCollection<CommonMemberVM> Members
 		{
 			get { return this.members; }
 		}
@@ -58,7 +58,7 @@ namespace EarlyPusher.Modules.CommonSettingTab.ViewModels
 		/// <summary>
 		/// 選択しているチーム
 		/// </summary>
-		public TeamVM SelectedTeam
+		public CommonTeamVM SelectedTeam
 		{
 			get { return this.selectedTeam; }
 			set { SetProperty( ref this.selectedTeam, value, SeletedTeamChanged ); }
@@ -67,7 +67,7 @@ namespace EarlyPusher.Modules.CommonSettingTab.ViewModels
 		/// <summary>
 		/// 選択しているメンバー
 		/// </summary>
-		public MemberVM SelectedMember
+		public CommonMemberVM SelectedMember
 		{
 			get { return selectedMember; }
 			set { SetProperty( ref selectedMember, value, SelectedMemberChanged ); }
@@ -136,7 +136,7 @@ namespace EarlyPusher.Modules.CommonSettingTab.ViewModels
 		{
 			base.LoadData();
 
-			this.teamAdapter = new ViewModelsAdapter<TeamVM, TeamData>( CreateTeamVM, DeleteTeamVM );
+			this.teamAdapter = new ViewModelsAdapter<CommonTeamVM, TeamData>( CreateTeamVM, DeleteTeamVM );
 			this.teamAdapter.Adapt( this.Teams, this.Parent.Data.TeamList );
 		}
 
@@ -145,9 +145,9 @@ namespace EarlyPusher.Modules.CommonSettingTab.ViewModels
 		/// </summary>
 		/// <param name="data">モデル</param>
 		/// <returns>VM</returns>
-		private TeamVM CreateTeamVM( TeamData data )
+		private CommonTeamVM CreateTeamVM( TeamData data )
 		{
-			var vm = new TeamVM( data );
+			var vm = new CommonTeamVM( data );
 			vm.Members.CollectionChanged += Members_CollectionChanged;
 			return vm;
 		}
@@ -156,7 +156,7 @@ namespace EarlyPusher.Modules.CommonSettingTab.ViewModels
 		/// VMが削除されたときの処理
 		/// </summary>
 		/// <param name="vm"></param>
-		private void DeleteTeamVM( TeamVM vm )
+		private void DeleteTeamVM( CommonTeamVM vm )
 		{
 			this.Members.RemoveWhere( m => m.Parent == vm );
 			vm.Members.CollectionChanged -= Members_CollectionChanged;
@@ -202,7 +202,7 @@ namespace EarlyPusher.Modules.CommonSettingTab.ViewModels
 		{
 			if( e.OldItems != null )
 			{
-				foreach( MemberVM member in e.OldItems )
+				foreach( CommonMemberVM member in e.OldItems )
 				{
 					this.Members.Remove( member );
 				}
@@ -210,7 +210,7 @@ namespace EarlyPusher.Modules.CommonSettingTab.ViewModels
 
 			if( e.NewItems != null )
 			{
-				foreach( MemberVM member in e.NewItems )
+				foreach( CommonMemberVM member in e.NewItems )
 				{
 					this.Members.Add( member );
 				}
