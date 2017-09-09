@@ -1,90 +1,66 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.ComponentModel;
-using System.Diagnostics.Contracts;
-using System.IO;
-using System.Linq;
-using System.Windows;
-using System.Windows.Threading;
-using System.Xml.Serialization;
-using EarlyPusher.Basis;
-using EarlyPusher.Manager;
-using EarlyPusher.Models;
-using EarlyPusher.Views;
-using Microsoft.Win32;
-using Ookii.Dialogs.Wpf;
-using SlimDX.DirectInput;
-using StFrLibs.Core.Basis;
-using StFrLibs.Core.Commands;
+﻿using System.Windows;
+using SFLibs.Core.Basis;
 
 namespace EarlyPusher.ViewModels
 {
-	public abstract class OperateTabVMBase : ViewModelBase
-	{
-		private MainVM parent;
+    public abstract class OperateTabVMBase : ViewModelBase
+    {
+        #region プロパティ
 
+        public MainVM Parent { get; }
 
-		#region プロパティ
+        public virtual UIElement PlayView
+        {
+            get;
+            set;
+        }
 
-		public MainVM Parent
-		{
-			get { return this.parent; }
-		}
+        public UIElement View
+        {
+            get;
+            protected set;
+        }
 
-		public virtual UIElement PlayView
-		{
-			get;
-			set;
-		}
+        public string Header
+        {
+            get;
+            protected set;
+        }
 
-		public UIElement View
-		{
-			get;
-			protected set;
-		}
+        #endregion
 
-		public string Header
-		{
-			get;
-			protected set;
-		}
+        /// <summary>
+        /// コンストラクタ
+        /// </summary>
+        public OperateTabVMBase(MainVM parent)
+        {
+            this.Parent = parent;
+        }
 
-		#endregion
+        #region 設定読み書き
 
-		/// <summary>
-		/// コンストラクタ
-		/// </summary>
-		public OperateTabVMBase( MainVM parent )
-		{
-			this.parent = parent;
-		}
+        /// <summary>
+        /// 設定を読み込みます。
+        /// </summary>
+        public virtual void LoadData()
+        {
+        }
 
-		#region 設定読み書き
+        /// <summary>
+        /// 設定を保存します。
+        /// </summary>
+        public virtual void SaveData()
+        {
+        }
 
-		/// <summary>
-		/// 設定を読み込みます。
-		/// </summary>
-		public virtual void LoadData()
-		{
-		}
+        #endregion
 
-		/// <summary>
-		/// 設定を保存します。
-		/// </summary>
-		public virtual void SaveData()
-		{
-		}
+        public virtual void Activate()
+        {
+        }
 
-		#endregion
-
-		public virtual void Activate()
-		{
-		}
-
-		public virtual void Deactivate()
-		{
-		}
-	}
+        public virtual void Deactivate()
+        {
+        }
+    }
 }

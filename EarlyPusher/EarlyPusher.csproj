@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>EarlyPusher</RootNamespace>
     <AssemblyName>アーリーぷっしゃー！</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
@@ -273,18 +273,21 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\StFrCore\StFrCore.csproj">
-      <Project>{14e72138-8fd3-45dd-8df4-35b85cab50ae}</Project>
-      <Name>StFrCore</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Resources\SortWinnerBack.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\SortOtherBack.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\SFLibs\SFCore\SFCore.csproj">
+      <Project>{741fcc71-d5a0-4fd5-809e-841e1bbfa28d}</Project>
+      <Name>SFCore</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SFLibs\SFWPF\SFWPF.csproj">
+      <Project>{b4038fa0-83d3-4901-b342-fdeb4deca85f}</Project>
+      <Name>SFWPF</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

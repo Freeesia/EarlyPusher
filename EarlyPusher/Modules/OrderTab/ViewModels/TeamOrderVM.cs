@@ -1,128 +1,123 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Collections.Specialized;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Media;
 using EarlyPusher.Models;
 using EarlyPusher.Modules.OrderTab.Interfaces;
-using StFrLibs.Core.Basis;
-using StFrLibs.Core.Extensions;
+using SFLibs.Core.Basis;
 
 namespace EarlyPusher.Modules.OrderTab.ViewModels
 {
-	public class TeamOrderVM : ViewModelBase<TeamData>, IBackColorHolder
-	{
-		private OperateOrderVM parent;
-		private ObservableCollection<OrderItemVM> sortedList = new ObservableCollection<OrderItemVM>();
-		private bool isWinner;
-		private int nextIndex = 0;
-		private bool isCorrect = true;
+    public class TeamOrderVM : ViewModelBase<TeamData>, IBackColorHolder
+    {
+        private OperateOrderVM parent;
+        private ObservableCollection<OrderItemVM> sortedList = new ObservableCollection<OrderItemVM>();
+        private bool isWinner;
+        private int nextIndex = 0;
+        private bool isCorrect = true;
 
-		#region プロパティ
+        #region プロパティ
 
-		public ObservableCollection<OrderItemVM> SortedList
-		{
-			get { return this.sortedList; }
-		}
+        public ObservableCollection<OrderItemVM> SortedList
+        {
+            get { return this.sortedList; }
+        }
 
-		public bool IsWinner
-		{
-			get { return this.isWinner; }
-			set { SetProperty( ref this.isWinner, value, IsWinnerChanged ); }
-		}
+        public bool IsWinner
+        {
+            get { return this.isWinner; }
+            set { SetProperty(ref this.isWinner, value, IsWinnerChanged); }
+        }
 
-		public Color BackColor
-		{
-			get { return this.Model.TeamColor; }
-		}
+        public Color BackColor
+        {
+            get { return this.Model.TeamColor; }
+        }
 
-		public bool IsCorrect
-		{
-			get { return this.isCorrect; }
-			set { SetProperty( ref this.isCorrect, value ); }
-		}
-						
-		#endregion
+        public bool IsCorrect
+        {
+            get { return this.isCorrect; }
+            set { SetProperty(ref this.isCorrect, value); }
+        }
 
-		public TeamOrderVM( OperateOrderVM parent, TeamData data )
-			: base( data )
-		{
-			this.parent = parent;
-			for( int i = 0; i < 4; i++ )
-			{
-				this.SortedList.Add( new OrderItemVM( this ) );
-			}
-		}
+        #endregion
 
-		private void IsWinnerChanged()
-		{
-			this.parent.CommandRaiseCanExecuteChanged();
-		}
+        public TeamOrderVM(OperateOrderVM parent, TeamData data)
+            : base(data)
+        {
+            this.parent = parent;
+            for (int i = 0; i < 4; i++)
+            {
+                this.SortedList.Add(new OrderItemVM(this));
+            }
+        }
 
-		public void Clear()
-		{
-			this.nextIndex = 0;
-			foreach( var item in this.SortedList )
-			{
-				item.Choice = null;
-			}
-			this.IsCorrect = true;
-		}
+        private void IsWinnerChanged()
+        {
+            this.parent.CommandRaiseCanExecuteChanged();
+        }
 
-		public bool SetKey( Guid device, int key )
-		{
-			if( this.nextIndex > 3 )
-			{
-				return false;
-			}
+        public void Clear()
+        {
+            this.nextIndex = 0;
+            foreach (var item in this.SortedList)
+            {
+                item.Choice = null;
+            }
+            this.IsCorrect = true;
+        }
 
-			var data = this.Model.Members.FirstOrDefault( d => d.DeviceGuid == device && d.Key == key );
-			if( data == null )
-			{
-				return false;
-			}
+        public bool SetKey(Guid device, int key)
+        {
+            if (this.nextIndex > 3)
+            {
+                return false;
+            }
 
-			var choice =(Choice)this.Model.Members.IndexOf( data );
+            var data = this.Model.Members.FirstOrDefault(d => d.DeviceGuid == device && d.Key == key);
+            if (data == null)
+            {
+                return false;
+            }
 
-			if( this.SortedList.Any( i => i.Choice == choice ) )
-			{
-				return false;
-			}
+            var choice = (Choice)this.Model.Members.IndexOf(data);
 
-			this.SortedList[this.nextIndex].Choice = choice;
-			this.nextIndex++;
+            if (this.SortedList.Any(i => i.Choice == choice))
+            {
+                return false;
+            }
 
-			return true;
-		}
+            this.SortedList[this.nextIndex].Choice = choice;
+            this.nextIndex++;
 
-		public void CheckCorrect( ChoiceOrderMediaVM media, int count )
-		{
-			if( this.SortedList.Any( i => i.Choice == null ) )
-			{
-				this.IsCorrect = false;
-				return;
-			}
+            return true;
+        }
 
-			for( int i = 0; i < count; i++ )
-			{
-				if( media.SortedList[i].Choice != this.SortedList[i].Choice )
-				{
-					this.IsCorrect = false;
-				}
-			}
-		}
+        public void CheckCorrect(ChoiceOrderMediaVM media, int count)
+        {
+            if (this.SortedList.Any(i => i.Choice == null))
+            {
+                this.IsCorrect = false;
+                return;
+            }
 
-		private int SortItemGetHash( OrderItemVMBase arg )
-		{
-			return arg.Choice.GetHashCode();
-		}
+            for (int i = 0; i < count; i++)
+            {
+                if (media.SortedList[i].Choice != this.SortedList[i].Choice)
+                {
+                    this.IsCorrect = false;
+                }
+            }
+        }
 
-		private bool SortItemEqual( OrderItemVMBase arg1, OrderItemVMBase arg2 )
-		{
-			return arg1.Choice == arg2.Choice;
-		}
-	}
+        private int SortItemGetHash(OrderItemVMBase arg)
+        {
+            return arg.Choice.GetHashCode();
+        }
+
+        private bool SortItemEqual(OrderItemVMBase arg1, OrderItemVMBase arg2)
+        {
+            return arg1.Choice == arg2.Choice;
+        }
+    }
 }
