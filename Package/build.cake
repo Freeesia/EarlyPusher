@@ -1,10 +1,10 @@
-#tool nuget:?package=NUnit.ConsoleRunner&version=3.2.1
 //////////////////////////////////////////////////////////////////////
 // ARGUMENTS
 //////////////////////////////////////////////////////////////////////
 
 var target = Argument("target", "Default");
 var configuration = Argument("configuration", "Release");
+var sln = File("../EarlyPusher.sln");
 
 //////////////////////////////////////////////////////////////////////
 // PREPARATION
@@ -22,27 +22,27 @@ Task("Clean").Does(() =>
     CleanDirectory(buildDir);
 });
 
-Task("Build").IsDependentOn("Clean")
-             .Does(() =>
+Task("Restore-NuGet-Packages")
+    .IsDependentOn("Clean")
+    .Does(() =>
 {
-    if(IsRunningOnWindows())
-    {
-      // Use MSBuild
-      MSBuild("../EarlyPusher.sln", settings =>
+    NuGetRestore(sln);
+});
+
+Task("Build")
+    .IsDependentOn("Restore-NuGet-Packages")
+    .Does(() =>
+{
+      MSBuild(sln, settings =>
         settings.SetConfiguration(configuration));
-    }
-    else
-    {
-      // Use XBuild
-      XBuild("../EarlyPusher.sln", settings =>
-        settings.SetConfiguration(configuration));
-    }
 });
 
 Task("Package").IsDependentOn("Build")
                .Does(() =>
 {
-   Zip(buildDir, "EarlyPusher.zip");     
+    CopyDirectory("../license", buildDir + Directory("license"));
+    CopyFileToDirectory("../ReadMe.md", buildDir);
+    Zip(buildDir, "EarlyPusher.zip");     
 });
 
 //////////////////////////////////////////////////////////////////////
