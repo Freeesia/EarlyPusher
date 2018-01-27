@@ -13,11 +13,19 @@ var sln = File("../EarlyPusher.sln");
 // Define directories.
 var buildDir = Directory("../EarlyPusher/bin/x64") + Directory(configuration);
 
+private void OutputException(Exception ex)
+{
+    Error(ex.Message);
+    Error(ex.StackTrace);
+    Error("============");
+}
+
 //////////////////////////////////////////////////////////////////////
 // TASKS
 //////////////////////////////////////////////////////////////////////
 
-Task("Clean").Does(() =>
+Task("Clean")
+    .Does(() =>
 {
     CleanDirectory(buildDir);
 });
@@ -37,19 +45,25 @@ Task("Build")
         settings.SetConfiguration(configuration));
 });
 
-Task("Package").IsDependentOn("Build")
-               .Does(() =>
+Task("Package")
+    .IsDependentOn("Build")
+    .Does(() =>
 {
-    CopyDirectory("../license", buildDir + Directory("license"));
+    CopyDirectory("../licenses", buildDir + Directory("license"));
     CopyFileToDirectory("../ReadMe.md", buildDir);
     Zip(buildDir, "EarlyPusher.zip");     
+})
+.ReportError(ex =>
+{
+    OutputException(ex);
 });
 
 //////////////////////////////////////////////////////////////////////
 // TASK TARGETS
 //////////////////////////////////////////////////////////////////////
 
-Task("Default").IsDependentOn("Package");
+Task("Default")
+    .IsDependentOn("Package");
 
 //////////////////////////////////////////////////////////////////////
 // EXECUTION
